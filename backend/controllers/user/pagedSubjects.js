@@ -9,10 +9,20 @@ function getElements(data,page) {
 
 const pagedSubjectsController=async (req,res)=>{
     try {
-        const reviews=await pool.query("SELECT subject_id,subject_name,course_code,CAST((5 + stars) AS FLOAT) / CAST((10 + comments * 5) AS FLOAT) AS weighted_value FROM subjects ORDER BY weighted_value DESC;");
+        const pageQuery=`SELECT 
+        subject_id,
+        subject_name,
+        course_code,
+        CAST((5 + stars) AS FLOAT) / CAST((10 + comments * 5) AS FLOAT) AS weighted_value 
+    FROM 
+        subjects 
+    ORDER BY 
+        weighted_value DESC;
+    `
+        const reviews=await pool.query(pageQuery);
         return res.status(200).json({
             success:true,
-            message:'Fetched reviews successfully',
+            message:'Fetched subjects successfully',
             reviews:getElements(reviews.rows,req.params.page)
         })
     } catch (error) {

@@ -53,7 +53,7 @@ const registerController = async (req, res) => {
 
     if (unVerifiedUser.rows.length > 0) {
     
-     sendOTP(email);
+     await sendOTP(email);
 
       return res.json({
         success: false,
@@ -70,7 +70,7 @@ const registerController = async (req, res) => {
       [username, email, hashedPassword, false, hashedPassword]
     );
 
-    sendOTP(email);
+    await sendOTP(email);
 
     return res.json({
       success: true,

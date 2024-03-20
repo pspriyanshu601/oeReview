@@ -26,7 +26,7 @@ const forgotPasswordController = async (req, res) => {
       });
     }
 
-    sendOTP(email);
+    await sendOTP(email);
     //updating the password
     const hashedPassword = await bcrypt.hash(newPassword, saltRounds);
     await pool.query(
