@@ -46,7 +46,7 @@ const loginController = async (req, res) => {
         });
       }
       //generating authentication token
-      const token = jwt.sign({ id: admin.rows[0].id }, "jwtsecret", {
+      const token = jwt.sign({ id: admin.rows[0].id }, process.env.JWT_SECRET, {
         expiresIn: "15d",
       });
 
@@ -94,7 +94,7 @@ const loginController = async (req, res) => {
       });
     }
     //generating authentication token
-    const token = jwt.sign({ id: userData.rows[0].id }, "jwtsecret", {
+    const token = jwt.sign({ id: userData.rows[0].id }, process.env.JWT_SECRET, {
       expiresIn: "15d",
     });
 

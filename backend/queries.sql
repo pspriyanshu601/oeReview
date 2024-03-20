@@ -34,3 +34,24 @@ VALUES ('Civil Engineering'),
     newPassword TEXT,
     subject_ids JSONB DEFAULT '{}' ::JSONB
 );
+
+CREATE TABLE reviews (
+    review_id SERIAL PRIMARY KEY,
+    details TEXT,
+    stars INT,
+    review_date DATE,
+    subject_id INT,
+    user_id INT,
+    isadminverified BOOLEAN DEFAULT FALSE,
+    FOREIGN KEY (subject_id) REFERENCES subjects(subject_id),
+    FOREIGN KEY (user_id) REFERENCES users(user_id)
+);
+ALTER TABLE reviews 
+ALTER COLUMN review_date SET DEFAULT CURRENT_DATE;
+
+CREATE TABLE user_subjects (
+    user_subjects_id SERIAL PRIMARY KEY,
+    user_id INT,
+    subject_ids JSONB NOT NULL CHECK (jsonb_array_length(subject_ids) >= 1 AND jsonb_array_length(subject_ids) <= 3),
+    FOREIGN KEY (user_id) REFERENCES users(id)
+);

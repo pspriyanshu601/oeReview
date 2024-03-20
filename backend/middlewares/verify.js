@@ -4,7 +4,7 @@ const verifyMiddleware = async (req, res, next) => {
   try {
     const token = req.headers.authorization;
     try {
-      const decoded = jwt.verify(token, "jwtsecret");
+      const decoded = jwt.verify(token, process.env.JWT_SECRET);
       req.body.userId = decoded.id;
     } catch (error) {
       return res.status(200).json({
