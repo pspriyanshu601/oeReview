@@ -14,6 +14,6 @@ userRouter.get("/allDepartments",verifyMiddleware,allDepartmentsController);
 userRouter.get("/allSubjects",verifyMiddleware,allSubjectsController);
 userRouter.get("/subjects/:page", verifyMiddleware,pagedSubjectsController);
 userRouter.get("/allDepartments/:departmentName",verifyMiddleware,departmentSubjectsController);
-userRouter.get("/allDepartments/:departmentName/:courseCode",verifyMiddleware,subjectReviewsController)
+userRouter.get("/allDepartments/:departmentName/:courseCode",verifyMiddleware,subjectReviewsController);
 
 export default userRouter;

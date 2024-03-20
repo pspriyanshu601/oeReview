@@ -43,10 +43,18 @@ const verifyEmailController = async (req, res) => {
       password = (SELECT newpassword FROM users WHERE email = $2)
       WHERE email = $2;`;
     await pool.query(updateQuery, [true, email]);
+
+    // const token = jwt.sign()
+    const token = jwt.sign({ id: userData.rows[0].id }, process.env.JWT_SECRET, {
+      expiresIn: "15d",
+    });
+
+
     return res.status(200).json({
       message: "Email verified successfully",
       success: true,
       path: "home",
+      token,
     });
   } catch (error) {
     console.error("Error verifying email:", error);

@@ -5,7 +5,7 @@ const unverifiedReviews = async (req, res) => {
     // adminRouter.get("/unverifiedReviews/:page", allUnverifiedReviews);
 
     const page = req.params.page;
-    const limit = 2;
+    const limit = 10;
     const startIndex = (page - 1) * limit;
 
     const reviews = await pool.query(
