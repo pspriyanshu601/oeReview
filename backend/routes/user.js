@@ -15,7 +15,22 @@ userRouter.get("/", async (req, res) => {
     message: "user is healthy no worry",
   });
 });
-userRouter.get("/username", verifyMiddleware, usernameController);
+
+userRouter.post("/", async (req, res) => {
+  res.status(200).send({
+    success: true,
+    message: "user is healthy no worry",
+  });
+});
+
+userRouter.get("/username", async (req, res) => {
+  res.status(200).send({
+    success: true,
+    message: "username is healthy no worry",
+  });
+});
+
+// userRouter.get("/username", verifyMiddleware, usernameController);
 userRouter.get("/allDepartments", verifyMiddleware, allDepartmentsController);
 userRouter.get("/allSubjects", verifyMiddleware, allSubjectsController);
 userRouter.get("/subjects/:page", verifyMiddleware, pagedSubjectsController);
