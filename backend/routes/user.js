@@ -23,7 +23,7 @@ userRouter.post("/", async (req, res) => {
   });
 });
 
-userRouter.post(
+userRouter.get(
   "/username",
   async (req, res, next) => {
     try {
