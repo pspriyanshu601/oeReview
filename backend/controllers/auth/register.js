@@ -1,18 +1,10 @@
 import pool from "../../database/db.js";
-import nodemailer from "nodemailer";
-import otpGenerator from "otp-generator";
 import bcrypt from "bcrypt";
 import validateRegisterBody from "../../validators/register.js";
+import sendOTP from "../../utils/sendOTP.js";
 
 const saltRounds = 10;
 
-const transporter = nodemailer.createTransport({
-  service: "gmail",
-  auth: {
-    user: process.env.APP_EMAIL,
-    pass: process.env.APP_PASSWORD,
-  },
-});
 function extractDomain(email) {
   const parts = email.split("@");
   return parts[1];
@@ -52,13 +44,6 @@ const registerController = async (req, res) => {
       });
     }
 
-    // Generate OTP
-    const otp = otpGenerator.generate(6, {
-      digits: true,
-      alphabets: false,
-      upperCase: false,
-      specialChars: false,
-    });
 
     //check if user is registered but not verified
     const unVerifiedUser = await pool.query(
@@ -68,19 +53,7 @@ const registerController = async (req, res) => {
 
     if (unVerifiedUser.rows.length > 0) {
     
-      const mailOptions = {
-        from: "maileroereview@gmail.com",
-        to: email,
-        subject: "Email Verification OTP",
-        text: `Your OTP for email verification is: ${otp}`,
-      };
-
-      await pool.query("UPDATE users SET otp=$1 WHERE email = $2", [
-        otp,
-        email,
-      ]);
-
-      await transporter.sendMail(mailOptions);
+     sendOTP(email);
 
       return res.json({
         success: false,
@@ -97,15 +70,8 @@ const registerController = async (req, res) => {
       [username, email, hashedPassword, otp, false, hashedPassword]
     );
 
-    // Send email with OTP
-    const mailOptions = {
-      from: "maileroereview@gmail.com",
-      to: email,
-      subject: "Email Verification OTP",
-      text: `Your OTP for email verification is: ${otp}`,
-    };
+    sendOTP(email);
 
-    await transporter.sendMail(mailOptions);
     return res.json({
       success: true,
       message: "Email sent for verification",
