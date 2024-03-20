@@ -15,7 +15,7 @@ const port = process.env.PORT;
 app.get("/", async (req, res) => {
   res.status(200).send({
     success: true,
-    message: "server healthy",
+    message: "server healthy no worry",
   });
 });
 
