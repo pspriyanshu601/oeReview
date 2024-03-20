@@ -66,7 +66,7 @@ const loginController = async (req, res) => {
     );
 
     if (findUser.rows.length > 0) {
-       sendOTP(email);
+       await sendOTP(email);
         return res.status(200).json({
           success: false,
           message:

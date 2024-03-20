@@ -31,5 +31,6 @@ VALUES ('Civil Engineering'),
     verified BOOLEAN,
     username TEXT,
     isadmin BOOLEAN DEFAULT FALSE,
-    newPassword TEXT
+    newPassword TEXT,
+    subject_ids JSONB DEFAULT '{}' ::JSONB
 );
