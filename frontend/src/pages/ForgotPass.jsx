@@ -18,19 +18,16 @@ export const ForgotPass = () => {
     setEmail(e.target.value);
   };
 
-  const link = import.meta.env.VITE_REVIEWLINK + 'auth/forgotPassword'
+  const link = import.meta.env.VITE_REVIEWLINK + "/auth/forgotPassword";
 
   const handleSubmit = async (e) => {
     e.preventDefault();
 
     try {
-      const response = await axios.post(
-        link,
-        {
-          email,
-          newPassword,
-        }
-      );
+      const response = await axios.post(link, {
+        email,
+        newPassword,
+      });
 
       console.log(response);
 
@@ -40,7 +37,7 @@ export const ForgotPass = () => {
           toast.success(response.data.message);
         }
 
-        if(response.data.path) navigate('/' + response.data.path)
+        if (response.data.path) navigate("/" + response.data.path);
       }
     } catch (error) {
       console.log(error);

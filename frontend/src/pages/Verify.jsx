@@ -20,31 +20,29 @@ export const Verify = () => {
   const name = useUsername();
 
   useEffect(() => {
-      if(name != null) navigate('/home', {replace: true})
+    if (name != null) navigate("/home", { replace: true });
   }, [navigate, name]);
 
-  const link = import.meta.env.VITE_REVIEWLINK + 'auth/verifyEmail'
+  const link = import.meta.env.VITE_REVIEWLINK + "/auth/verifyEmail";
 
   const handleSubmit = async (e) => {
     e.preventDefault();
 
     try {
-      const response = await axios.post(
-        link,
-        {
-          email,
-          otp,
-        }
-      );
+      const response = await axios.post(link, {
+        email,
+        otp,
+      });
 
       if (response.data.token) {
         localStorage.setItem("token", response.data.token);
       }
 
-      if (response.data.success == true) toast.success(response.data.message)
-      else toast.error(response.data.message)
+      if (response.data.success == true) toast.success(response.data.message);
+      else toast.error(response.data.message);
 
-      if (response.data.path) navigate('/' + response.data.path, { replace: true })
+      if (response.data.path)
+        navigate("/" + response.data.path, { replace: true });
     } catch (error) {
       console.log(error);
       toast.error(error.response.data.message);

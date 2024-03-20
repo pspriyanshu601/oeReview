@@ -11,7 +11,7 @@ export const Register = () => {
   const name = useUsername();
 
   useEffect(() => {
-      if(name != null) navigate('/home', {replace: true})
+    if (name != null) navigate("/home", { replace: true });
   }, [navigate, name]);
 
   const [username, setUsername] = useState("");
@@ -30,30 +30,26 @@ export const Register = () => {
     setUsername(e.target.value);
   };
 
-  const link = import.meta.env.VITE_REVIEWLINK + 'auth/register'
+  const link = import.meta.env.VITE_REVIEWLINK + "/auth/register";
 
   const handleSubmit = async (e) => {
     e.preventDefault();
 
     try {
-      const response = await axios.post(
-        link,
-        {
-          email: email,
-          password: password,
-          username: username
-        }
-      );
+      const response = await axios.post(link, {
+        email: email,
+        password: password,
+        username: username,
+      });
 
       if (response) {
-        if(response.data.success == true) {
-          toast.success(response.data.message)
+        if (response.data.success == true) {
+          toast.success(response.data.message);
+        } else {
+          toast.error(response.data.message);
         }
-        else {
-          toast.error(response.data.message)
-        }
-        if(response.data.path){
-          navigate('/' + response.data.path, {replace : true})
+        if (response.data.path) {
+          navigate("/" + response.data.path, { replace: true });
         }
       }
     } catch (error) {
