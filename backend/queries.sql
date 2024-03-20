@@ -31,5 +31,5 @@ VALUES ('Civil Engineering'),
     verified BOOLEAN,
     username TEXT,
     isadmin BOOLEAN DEFAULT FALSE,
-    new_password TEXT
+    newPassword TEXT
 );

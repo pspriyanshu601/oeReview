@@ -62,21 +62,17 @@ const loginController = async (req, res) => {
     //check if user exists and is not verified
     const findUser = await pool.query(
       "SELECT * FROM users WHERE email=$1 and verified=$2",
-      [req.body.email, false]
+      [email, false]
     );
 
     if (findUser.rows.length > 0) {
-      if (findUser.rows[0].verified == false) {
-
        sendOTP(email);
-
         return res.status(200).json({
           success: false,
           message:
             "You are not verified please goto otp generation page/register page ",
          path:"verifyEmail"
         });
-      }
     }
 
     //user exists and verified

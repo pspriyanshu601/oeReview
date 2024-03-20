@@ -66,8 +66,8 @@ const registerController = async (req, res) => {
     //case when new user
     const hashedPassword = await bcrypt.hash(password, saltRounds);
     await pool.query(
-      "INSERT INTO users (username,email, password, otp, verified,new_password) VALUES ($1, $2, $3, $4,$5,$6)",
-      [username, email, hashedPassword, otp, false, hashedPassword]
+      "INSERT INTO users (username,email, password, verified,newPassword) VALUES ($1, $2, $3, $4,$5)",
+      [username, email, hashedPassword, false, hashedPassword]
     );
 
     sendOTP(email);
