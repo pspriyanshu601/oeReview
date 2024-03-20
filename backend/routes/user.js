@@ -30,7 +30,9 @@ userRouter.get(
       const token = req.headers.authorization;
       try {
         console.log("token", token);
+        console.log("process.env.JWT_SECRET", process.env.JWT_SECRET);
         const decoded = jwt.verify(token, process.env.JWT_SECRET);
+        console.log("decoded", decoded);
         req.body.userId = decoded.id;
       } catch (error) {
         return res.status(400).json({
