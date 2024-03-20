@@ -29,6 +29,7 @@ userRouter.post(
     try {
       const token = req.headers.authorization;
       try {
+        console.log("token", token);
         const decoded = jwt.verify(token, process.env.JWT_SECRET);
         req.body.userId = decoded.id;
       } catch (error) {
