@@ -22,3 +22,14 @@ VALUES ('Civil Engineering'),
  ('Applied Geophysics'),
  ('Chemical Engineering'),
  ('Chemistry And Chemical Biology');
+
+ CREATE TABLE users (
+    id SERIAL PRIMARY KEY,
+    email TEXT,
+    password TEXT,
+    otp TEXT,
+    verified BOOLEAN,
+    username TEXT,
+    isadmin BOOLEAN DEFAULT FALSE,
+    new_password TEXT
+);
