@@ -9,7 +9,7 @@ const app = express();
 app.use(express.json());
 const port=process.env.PORT;
 
-app.get("/",async (res)=>{
+app.get("/",async (req,res)=>{
     res.status(200).send({
         success : true,
         message : "server healthy"
