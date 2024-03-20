@@ -1,36 +1,24 @@
-import { useEffect, useState } from "react";
-import axios from "axios";
-import { Link, useNavigate } from "react-router-dom";
-import toast from "react-hot-toast";
+import { useState } from "react";
 import { InputField } from "../components/InputField";
-import useUsername from "../hooks/useUsername";
+import axios from "axios";
+import toast from "react-hot-toast";
+import { useNavigate } from "react-router-dom";
 
-export const Register = () => {
+export const ForgotPass = () => {
   const navigate = useNavigate();
 
-  const name = useUsername();
-
-  useEffect(() => {
-      if(name != null) navigate('/home', {replace: true})
-  }, [navigate, name]);
-
-  const [username, setUsername] = useState("");
   const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
+  const [newPassword, setNewPassword] = useState("");
 
-  const handlePasswordChange = (e) => {
-    setPassword(e.target.value);
+  const handleNewPasswordChange = (e) => {
+    setNewPassword(e.target.value);
   };
 
   const handleEmailChange = (e) => {
     setEmail(e.target.value);
   };
 
-  const handleUsernameChange = (e) => {
-    setUsername(e.target.value);
-  };
-
-  const link = import.meta.env.VITE_REVIEWLINK + 'auth/register'
+  const link = import.meta.env.VITE_REVIEWLINK + 'auth/forgotPassword'
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -39,25 +27,23 @@ export const Register = () => {
       const response = await axios.post(
         link,
         {
-          email: email,
-          password: password,
-          username: username
+          email,
+          newPassword,
         }
       );
 
+      console.log(response);
+
       if (response) {
-        if(response.data.success == true) {
-          toast.success(response.data.message)
-        }
+        if (!response.data.success) toast.error(response.data.message);
         else {
-          toast.error(response.data.message)
+          toast.success(response.data.message);
         }
-        if(response.data.path){
-          navigate('/' + response.data.path, {replace : true})
-        }
+
+        if(response.data.path) navigate('/' + response.data.path)
       }
     } catch (error) {
-      console.log("error", error);
+      console.log(error);
       toast.error(error.response.data.message);
     }
   };
@@ -68,7 +54,7 @@ export const Register = () => {
         <div className="w-full bg-white rounded-lg shadow dark:border md:mt-0 sm:max-w-md xl:p-0 dark:bg-gray-800 dark:border-gray-700">
           <div className="p-6 space-y-4 md:space-y-6 sm:p-8">
             <h1 className="text-xl font-bold leading-tight tracking-tight text-gray-900 md:text-2xl dark:text-white">
-              Create an account
+              Forgot Password
             </h1>
             <form onSubmit={handleSubmit} className="space-y-4 md:space-y-6">
               <InputField
@@ -79,16 +65,9 @@ export const Register = () => {
                 type={"email"}
               />
               <InputField
-                label={`Username`}
-                value={username}
-                onchange={handleUsernameChange}
-                placeholder={"Eg:- John Doe"}
-                type={"text"}
-              />
-              <InputField
-                label={`Password`}
-                value={password}
-                onchange={handlePasswordChange}
+                label={`New Password`}
+                value={newPassword}
+                onchange={handleNewPasswordChange}
                 placeholder={"••••••••"}
                 type={"password"}
               />
@@ -97,17 +76,8 @@ export const Register = () => {
                 type="submit"
                 className="w-full text-white bg-primary-600 bg-blue-500 hover:bg-blue-700 focus:ring-4 focus:outline-none focus:ring-primary-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-primary-600 dark:hover:bg-primary-700 dark:focus:ring-primary-800"
               >
-                Create an account
+                Submit
               </button>
-              <p className="text-sm font-light text-gray-500 dark:text-gray-400">
-                Already have an account?{" "}
-                <Link
-                  to="/"
-                  className="font-medium text-blue-400 hover:underline dark:text-primary-500"
-                >
-                  Login here
-                </Link>
-              </p>
             </form>
           </div>
         </div>

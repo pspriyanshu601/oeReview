@@ -1,7 +1,8 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import toast from "react-hot-toast";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
+import useUsername from "../hooks/useUsername";
 
 export const Verify = () => {
   const navigate = useNavigate();
@@ -16,7 +17,13 @@ export const Verify = () => {
     setOtp(e.target.value);
   };
 
-  const link = import.meta.env.VITE_REVIEWLINK + 'verifyEmail'
+  const name = useUsername();
+
+  useEffect(() => {
+      if(name != null) navigate('/home', {replace: true})
+  }, [navigate, name]);
+
+  const link = import.meta.env.VITE_REVIEWLINK + 'auth/verifyEmail'
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -30,13 +37,17 @@ export const Verify = () => {
         }
       );
 
-      if (response) {
-        toast.success("User created successfully!");
-        navigate("/");
+      if (response.data.token) {
+        localStorage.setItem("token", response.data.token);
       }
+
+      if (response.data.success == true) toast.success(response.data.message)
+      else toast.error(response.data.message)
+
+      if (response.data.path) navigate('/' + response.data.path, { replace: true })
     } catch (error) {
       console.log(error);
-      toast.error("Error during verification, please try again later!");
+      toast.error(error.response.data.message);
     }
   };
 
