@@ -18,7 +18,7 @@ const subjectReviewsController = async (req, res) => {
     `;
 
     const subjectReviews = await pool.query(subjectReviewsQuery, [dept_name, courseCode, true]);
-    return res.json({
+    return res.status(200).json({
       success: true,
       message: 'Fetched reviews successfully',
       subjectReviews: subjectReviews.rows // Assuming the result is an array of rows

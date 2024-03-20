@@ -23,6 +23,17 @@ VALUES ('Civil Engineering'),
  ('Chemical Engineering'),
  ('Chemistry And Chemical Biology');
 
+
+ CREATE TABLE subjects (
+    subject_id SERIAL PRIMARY KEY,
+    subject_name text,
+    course_code text,
+    department_id int ,
+    stars int DEFAULT 0,
+    comments int DEFAULT 0,
+    FOREIGN KEY (department_id) REFERENCES departments(department_id)
+);
+
  CREATE TABLE users (
     id SERIAL PRIMARY KEY,
     email TEXT,
@@ -48,10 +59,3 @@ CREATE TABLE reviews (
 );
 ALTER TABLE reviews 
 ALTER COLUMN review_date SET DEFAULT CURRENT_DATE;
-
-CREATE TABLE user_subjects (
-    user_subjects_id SERIAL PRIMARY KEY,
-    user_id INT,
-    subject_ids JSONB NOT NULL CHECK (jsonb_array_length(subject_ids) >= 1 AND jsonb_array_length(subject_ids) <= 3),
-    FOREIGN KEY (user_id) REFERENCES users(id)
-);

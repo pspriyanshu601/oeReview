@@ -6,6 +6,7 @@ import allSubjectsController from "../controllers/user/allSubjects.js";
 import pagedSubjectsController from "../controllers/user/pagedSubjects.js";
 import departmentSubjectsController from "../controllers/user/departmentSubjects.js";
 import subjectReviewsController from "../controllers/user/subjectReviews.js";
+import addReviewController from "../controllers/user/addReview.js";
 
 const userRouter = express.Router();
 
@@ -15,5 +16,6 @@ userRouter.get("/allSubjects",verifyMiddleware,allSubjectsController);
 userRouter.get("/subjects/:page", verifyMiddleware,pagedSubjectsController);
 userRouter.get("/allDepartments/:departmentName",verifyMiddleware,departmentSubjectsController);
 userRouter.get("/allDepartments/:departmentName/:courseCode",verifyMiddleware,subjectReviewsController);
+userRouter.post("/submitReview/:courseCode",verifyMiddleware,addReviewController);
 
 export default userRouter;
