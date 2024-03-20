@@ -23,30 +23,30 @@ userRouter.post("/", async (req, res) => {
   });
 });
 
-userRouter.post("/username", async (req, res, next) => {
-  try {
-    const token = req.headers.authorization;
+userRouter.post(
+  "/username",
+  async (req, res, next) => {
     try {
-      const decoded = jwt.verify(token, process.env.JWT_SECRET);
-      req.body.userId = decoded.id;
+      const token = req.headers.authorization;
+      try {
+        const decoded = jwt.verify(token, process.env.JWT_SECRET);
+        req.body.userId = decoded.id;
+      } catch (error) {
+        return res.status(400).json({
+          success: false,
+          message: "Unauthorized User",
+        });
+      }
+      next();
     } catch (error) {
-      return res.status(400).json({
+      return res.status(500).json({
         success: false,
-        message: "Unauthorized User",
+        message: "internal server error",
       });
     }
-    //  next();
-    return res.status(200).json({
-      success: true,
-      message: "user is healthy no worry",
-    });
-  } catch (error) {
-    return res.status(500).json({
-      success: false,
-      message: "internal server error",
-    });
-  }
-});
+  },
+  usernameController
+);
 
 // userRouter.get("/username", verifyMiddleware, usernameController);
 userRouter.get("/allDepartments", verifyMiddleware, allDepartmentsController);
