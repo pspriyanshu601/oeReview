@@ -11,4 +11,4 @@ authRouter.post("/login", loginController);
 authRouter.post("/verifyEmail", emailVerifyController);
 authRouter.post("/forgotPassword", forgotPasswordController);
 
-export default authRouter
+export default authRouter;
