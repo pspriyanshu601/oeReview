@@ -23,7 +23,7 @@ userRouter.post("/", async (req, res) => {
   });
 });
 
-userRouter.get("/username", async (req, res) => {
+userRouter.post("/username", async (req, res) => {
   res.status(200).send({
     success: true,
     message: "username is healthy no worry",
