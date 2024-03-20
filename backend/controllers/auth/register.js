@@ -40,10 +40,9 @@ const registerController = async (req, res) => {
       return res.status(200).json({
         success: false,
         message: "User already registered please go to login",
-        path:"login"
+        path: "login",
       });
     }
-
 
     //check if user is registered but not verified
     const unVerifiedUser = await pool.query(
@@ -52,14 +51,13 @@ const registerController = async (req, res) => {
     );
 
     if (unVerifiedUser.rows.length > 0) {
-    
-     await sendOTP(email);
+      await sendOTP(email);
 
       return res.json({
         success: false,
         message:
           "Your account is not verified please check the otp sent at mail",
-        path:"verifyEmail"
+        path: "verifyEmail",
       });
     }
 
@@ -75,9 +73,8 @@ const registerController = async (req, res) => {
     return res.json({
       success: true,
       message: "Email sent for verification",
-      path:"verifyEmail"
+      path: "verifyEmail",
     });
-
   } catch (error) {
     console.log(error);
     return res.status(500).json({
