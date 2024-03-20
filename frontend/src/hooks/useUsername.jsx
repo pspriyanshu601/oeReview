@@ -24,7 +24,7 @@ export default function useUsername() {
         setUsername(response.data.name);
       } catch (error) {
         console.log(error);
-        toast.error(error.message + ", please try again later");
+        toast.error(error.response.data.message);
       }
     }
 
