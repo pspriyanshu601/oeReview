@@ -6,6 +6,7 @@ import allSubjectsController from "../controllers/user/allSubjects.js";
 import pagedSubjectsController from "../controllers/user/pagedSubjects.js";
 import departmentSubjectsController from "../controllers/user/departmentSubjects.js";
 import subjectReviewsController from "../controllers/user/subjectReviews.js";
+import jwt from "jsonwebtoken";
 
 const userRouter = express.Router();
 
@@ -29,10 +30,7 @@ userRouter.get(
     try {
       const token = req.headers.authorization;
       try {
-        // console.log("token", token);
-        // console.log("process.env.JWT_SECRET", process.env.JWT_SECRET);
         const decoded = jwt.verify(token, process.env.JWT_SECRET);
-        console.log("decoded", decoded);
         req.body.userId = decoded.id;
       } catch (error) {
         return res.status(400).json({
