@@ -6,7 +6,7 @@ const adminVerifyMiddleware = async (req, res, next) => {
     var data;
     const token = req.headers.authorization;
     try {
-      data = jwt.verify(token, "jwtsecret");
+      data = jwt.verify(token, process.env.JWT_SECRET);
     } catch (error) {
       return res.status(500).json({
         success: false,
