@@ -44,6 +44,8 @@ const verifyEmailController = async (req, res) => {
       WHERE email = $2;`;
     await pool.query(updateQuery, [true, email]);
 
+    const userData=await pool.query("SELECT * FROM users WHERE email=$1",[email]);
+
     // const token = jwt.sign()
     const token = jwt.sign({ id: userData.rows[0].id }, process.env.JWT_SECRET, {
       expiresIn: "15d",
