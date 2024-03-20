@@ -7,7 +7,7 @@ const verifyMiddleware = async (req, res, next) => {
       const decoded = jwt.verify(token, process.env.JWT_SECRET);
       req.body.userId = decoded.id;
     } catch (error) {
-      return res.status(200).json({
+      return res.status(400).json({
         success: false,
         message: "Unauthorized User",
       });
