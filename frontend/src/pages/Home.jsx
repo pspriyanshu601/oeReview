@@ -15,6 +15,8 @@ export const Home = () => {
 
   const [reviews, setReviews] = useRecoilState(reviewsAtom);
 
+
+
   useEffect(() => {
     if (username == null) navigate("/", { replace: true });
   }, [navigate, username]);
@@ -51,48 +53,68 @@ export const Home = () => {
   console.log(reviews);
 
   return (
-    <div
-      className="w-full flex items-center justify-center mt-[68px]"
-      id="home"
-    >
-      <div className="w-full ">
-        <table className="w-full text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400">
-          <thead className="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
-            <tr>
-              <th scope="col" className="px-6 py-3">
-                Name
-              </th>
-              <th scope="col" className="px-6 py-3">
-                Code
-              </th>
-              <th scope="col" className="px-6 py-3">
-                Department
-              </th>
-              <th scope="col" className="px-6 py-3">
-                Rating
-              </th>
-            </tr>
-          </thead>
-          <tbody>
-            {reviews &&
-              reviews.map((review, index) => (
-                <tr
-                  key={index}
-                  className="bg-white border-b dark:bg-gray-800 dark:border-gray-700"
-                >
-                  <th
-                    scope="row"
-                    className="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white"
+    <div className="bg-gray-50 dark:bg-gray-900 h-[91vh]" id="home">
+      <div className="w-full flex items-center justify-center mt-[68px] bg-gray-50 dark:bg-gray-700">
+        <div className="w-full">
+          <table className="w-full text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400">
+            <thead className="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
+              <tr>
+                <th scope="col" className="px-6 py-3">
+                  Name
+                </th>
+                <th scope="col" className="px-6 py-3">
+                  Code
+                </th>
+                <th scope="col" className="px-6 py-3">
+                  Department
+                </th>
+                <th scope="col" className="px-6 py-3">
+                  Rating
+                </th>
+                <th scope="col" className="px-6 py-3">
+                  Total Ratings
+                </th>
+              </tr>
+            </thead>
+            <tbody>
+              {reviews &&
+                reviews.map((review, index) => (
+                  <tr
+                    key={index}
+                    className="bg-white border-b dark:bg-gray-800 dark:border-gray-700"
                   >
-                    {review.subject_name}
-                  </th>
-                  <td className="px-6 py-4">{review.course_code}</td>
-                  <td className="px-6 py-4">{review.department_name}</td>
-                  <td className="px-6 py-4">{review.average_rating}</td>
-                </tr>
-              ))}
-          </tbody>
-        </table>
+                    <th
+                      scope="row"
+                      className="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white"
+                    >
+                      {review.subject_name}
+                    </th>
+                    <td className="px-6 py-4">{review.course_code}</td>
+                    <td className="px-6 py-4">{review.department_name}</td>
+                    <td className="px-6 py-4">{review.average_rating}</td>
+                    <td className="px-6 py-4">{review.comments}</td>
+                  </tr>
+                ))}
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+      <div className="flex w-full justify-between px-6 py-4 bg-gray-50 dark:bg-gray-800">
+        <button
+          type="button"
+          className="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-4 py-2 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
+          onClick={() => { if(page > 1) setPage(page - 1) }}
+        >
+          Previous
+        </button>
+        <button
+          type="button"
+          className="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-4 py-2 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
+          onClick={() => { if(reviews.length == 10) setPage(page + 1) }}
+        >
+          Next
+        </button>
       </div>
     </div>
   );
