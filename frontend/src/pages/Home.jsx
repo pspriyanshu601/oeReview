@@ -9,6 +9,7 @@ import { reviewsAtom } from "../store";
 
 export const Home = () => {
   const [username, loading] = useUsername();
+  const [loadingClick, setLoadingClick] = useState(false);
   const navigate = useNavigate();
   const [page, setPage] = useState(1);
 
@@ -20,6 +21,7 @@ export const Home = () => {
 
   const link = import.meta.env.VITE_REVIEWLINK + "/user/subjects/" + page;
   useEffect(() => {
+    setLoadingClick(true);
     async function responses() {
       try {
         const token = localStorage.getItem("token");
@@ -32,8 +34,10 @@ export const Home = () => {
         if (response && response.data.reviews) {
           setReviews(response.data.reviews);
         }
+        setLoadingClick(false);
       } catch (error) {
         console.log(error);
+        setLoadingClick(false);
         if (error.response.data.message)
           toast.error(error.response.data.message);
         else toast.error("Something went wrong");
@@ -42,13 +46,16 @@ export const Home = () => {
     responses();
   }, [page, link, setReviews]);
 
-  if (loading) return <Loading />;
+  if (loading || loadingClick) return <Loading />;
 
   console.log(reviews);
 
   return (
-    <div className="w-full h-screen bg-slate-900 items-center flex justify-center">
-      <div className="w-1/2">
+    <div
+      className="w-full flex items-center justify-center mt-[68px]"
+      id="home"
+    >
+      <div className="w-full ">
         <table className="w-full text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400">
           <thead className="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
             <tr>
@@ -86,24 +93,6 @@ export const Home = () => {
               ))}
           </tbody>
         </table>
-        <div>
-          <button
-            onClick={() => {
-              if (page > 1) setPage(page - 1);
-            }}
-            className="bg-gray-200 text-gray-800 p-2 rounded-lg w-30"
-          >
-            Previous
-          </button>
-          <button
-            onClick={() => {
-              if (reviews.length === 10) setPage(page + 1);
-            }}
-            className="bg-gray-200 text-gray-800 p-2 rounded-lg w-30"
-          >
-            Next
-          </button>
-        </div>
       </div>
     </div>
   );
