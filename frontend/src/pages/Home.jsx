@@ -53,7 +53,7 @@ export const Home = () => {
   console.log(reviews);
 
   return (
-    <div className="bg-gray-50 dark:bg-gray-900 h-[91vh]" id="home">
+    <div className="bg-gray-50 dark:bg-gray-800 h-[91vh]" id="home">
       <div className="w-full flex items-center justify-center mt-[68px] bg-gray-50 dark:bg-gray-700">
         <div className="w-full">
           <table className="w-full text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400">
