@@ -1,7 +1,14 @@
 import pool from "../../database/db.js";
+import validateReviewBody from "../../validators/addReview.js";
 
 const addReviewController = async (req, res) => {
   try {
+    if(!validateReviewBody(req.body)){
+      return res.status(400).json({
+        success: false,
+        message: "Invalid Data",
+      });
+    }
     const user_id = req.body.userId;
     const { details, stars } = req.body;
     const subject = await pool.query(
