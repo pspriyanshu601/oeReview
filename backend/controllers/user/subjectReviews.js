@@ -4,9 +4,7 @@ import _ from "lodash";
 const subjectReviewsController = async (req, res) => {
   try {
     const { courseCode, departmentName } = req.params;
-    console.log(req.params);
     const dept_name = _.startCase(_.replace(departmentName, /-/g, ' '));
-    console.log(dept_name);
 
     const subjectReviewsQuery = `
       SELECT r.details, r.stars, r.review_date 
