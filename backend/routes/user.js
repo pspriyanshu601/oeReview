@@ -13,7 +13,7 @@ const userRouter = express.Router();
 userRouter.get("/username", verifyMiddleware,usernameController);
 userRouter.get("/allDepartments",verifyMiddleware,allDepartmentsController);
 userRouter.get("/allSubjects",verifyMiddleware,allSubjectsController);
-userRouter.get("/allSubjects",verifyMiddleware,subjectReviewsController);
+userRouter.get("/allSubjects/:courseCode",verifyMiddleware,subjectReviewsController);
 userRouter.get("/subjects/:page", verifyMiddleware,pagedSubjectsController);
 userRouter.get("/allDepartments/:departmentName",verifyMiddleware,departmentSubjectsController);
 userRouter.get("/allDepartments/:departmentName/:courseCode",verifyMiddleware,subjectReviewsController);
