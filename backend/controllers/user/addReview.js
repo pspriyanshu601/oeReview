@@ -1,8 +1,15 @@
 import pool from "../../database/db.js";
 import validateReviewBody from "../../validators/addReview.js";
+import courseCodeChecker from "../../validators/courseCodeChecker.js";
 
 const addReviewController = async (req, res) => {
   try {
+    if(!courseCodeChecker(req.params.courseCode)){
+      return res.status(400).json({
+        success:false,
+        message:'Invalid Data'
+      });
+    }
     if (!validateReviewBody(req.body)) {
       return res.status(400).json({
         success: false,

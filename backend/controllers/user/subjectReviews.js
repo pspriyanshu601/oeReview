@@ -1,8 +1,15 @@
 import pool from "../../database/db.js";
 import _ from "lodash";
+import courseCodeChecker from "../../validators/courseCodeChecker.js";
 
 const subjectReviewsController = async (req, res) => {
   try {
+    if(!courseCodeChecker(req.params.courseCode)){
+      return res.status(400).json({
+        success:false,
+        message:'Invalid Data'
+      });
+    }
     const { courseCode } = req.params;
 
     const subjectReviewsQuery = `

@@ -9,7 +9,7 @@ function getElements(data, page) {
 
 const pagedSubjectsQueryController = async (req, res) => {
   try {
-    const query=req.params.query;
+    const query=req.params.filter;
     if(query!=='attendance' && query!=='quality' && query!=='grades'){
       return res.status(400).json({
         success:false,

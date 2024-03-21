@@ -14,11 +14,12 @@ const userRouter = express.Router();
 userRouter.get("/username", verifyMiddleware,usernameController);
 userRouter.get("/allDepartments",verifyMiddleware,allDepartmentsController);
 userRouter.get("/allSubjects",verifyMiddleware,allSubjectsController);
-userRouter.get("/allSubjects/:courseCode",verifyMiddleware,subjectReviewsController);
-userRouter.get("/subjects/:page", verifyMiddleware,pagedSubjectsController);
-userRouter.get("/subjects/:query/:page",verifyMiddleware,pagedSubjectsQueryController)
-userRouter.get("/allDepartments/:departmentName",verifyMiddleware,departmentSubjectsController);
-userRouter.get("/allDepartments/:departmentName/:courseCode",verifyMiddleware,subjectReviewsController);
+userRouter.get("/allVerifiedReviews/:courseCode",verifyMiddleware,subjectReviewsController);
+userRouter.get("/weightedSubjects/:page", verifyMiddleware,pagedSubjectsController);
+userRouter.get("/weightedSubjects/:filter/:page",verifyMiddleware,pagedSubjectsQueryController)
+// todo 
+userRouter.get("/allSubjects/:departmentId",verifyMiddleware,departmentSubjectsController);
 userRouter.post("/submitReview/:courseCode",verifyMiddleware,addReviewController);
+userRouter.get("/hasAddedSubjects",verifyMiddleware);
 
 export default userRouter;
