@@ -30,6 +30,7 @@ VALUES ('Civil Engineering'),
     course_code text,
     department_id int ,
     stars int DEFAULT 0,
+
     comments int DEFAULT 0,
     FOREIGN KEY (department_id) REFERENCES departments(department_id)
 );
@@ -50,6 +51,7 @@ CREATE TABLE reviews (
     review_id SERIAL PRIMARY KEY,
     details TEXT,
     stars INT,
+    
     review_date DATE,
     subject_id INT,
     user_id INT,
