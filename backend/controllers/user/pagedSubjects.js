@@ -40,9 +40,9 @@ const pagedSubjectsController = async (req, res) => {
     });
   } catch (error) {
     console.log(error);
-    return res.json({
-      status: false,
-      message: "Internal Server Error",
+    return res.status(500).json({
+      success: false,
+      message: "Internal server error",
     });
   }
 };
