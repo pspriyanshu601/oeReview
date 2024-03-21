@@ -3,21 +3,17 @@ import _ from "lodash";
 
 const subjectReviewsController = async (req, res) => {
   try {
-    const { courseCode, departmentName } = req.params;
-    console.log(req.params);
-    const dept_name = _.startCase(_.replace(departmentName, /-/g, ' '));
-    console.log(dept_name);
+    const { courseCode } = req.params;
 
     const subjectReviewsQuery = `
       SELECT r.details, r.stars, r.review_date 
       FROM reviews AS r 
       JOIN users AS u ON r.user_id = u.id 
       JOIN subjects AS s ON r.subject_id = s.subject_id 
-      JOIN departments AS d ON s.department_id = d.department_id 
-      WHERE d.department_name = $1 AND s.course_code = $2 AND r.isadminverified = $3;
+      WHERE s.course_code = $1 AND r.isadminverified = $2;
     `;
 
-    const subjectReviews = await pool.query(subjectReviewsQuery, [dept_name, courseCode, true]);
+    const subjectReviews = await pool.query(subjectReviewsQuery, [courseCode, true]);
     return res.status(200).json({
       success: true,
       message: 'Fetched reviews successfully',
