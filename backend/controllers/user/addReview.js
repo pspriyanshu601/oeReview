@@ -3,14 +3,16 @@ import validateReviewBody from "../../validators/addReview.js";
 
 const addReviewController = async (req, res) => {
   try {
-    if(!validateReviewBody(req.body)){
+    if (!validateReviewBody(req.body)) {
       return res.status(400).json({
         success: false,
         message: "Invalid Data",
       });
     }
+
     const user_id = req.body.userId;
-    const { details, stars } = req.body;
+    const { details, stars, attandance_stars, quality_stars, grade_stars } =
+      req.body;
     const subject = await pool.query(
       "SELECT * FROM subjects WHERE course_code=$1",
       [req.params.courseCode]
@@ -49,20 +51,20 @@ const addReviewController = async (req, res) => {
       });
     }
 
-    const increaseStarComment = `UPDATE subjects
-    SET 
-        stars = stars + $1,
-        comments = comments + 1
-    WHERE 
-        subject_id = $2;
+    const addReview = `INSERT INTO reviews (details, stars, subject_id, user_id, attendance_stars, grades_stars, quality_stars)
+    VALUES ($1, $2, $3, $4, $5, $6, $7);
     `;
-    const addReview = `INSERT INTO reviews (details, stars, subject_id, user_id)
-    VALUES ($1, $2, $3, $4);
-    `;
-
+    
     //finally adds the review
-    await pool.query(addReview, [details, stars, subject_id, user_id]);
-    await pool.query(increaseStarComment, [stars, subject_id]);
+   const lol= await pool.query(addReview, [
+      details,
+      stars,
+      subject_id,
+      user_id,
+      attandance_stars,
+      grade_stars,
+      quality_stars,
+    ]);
     return res.status(200).json({
       success: true,
       message: "The review will be added after admin verification",

@@ -21,5 +21,4 @@ userRouter.get("/allDepartments/:departmentName",verifyMiddleware,departmentSubj
 userRouter.get("/allDepartments/:departmentName/:courseCode",verifyMiddleware,subjectReviewsController);
 userRouter.post("/submitReview/:courseCode",verifyMiddleware,addReviewController);
 
-
 export default userRouter;
