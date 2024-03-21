@@ -87,8 +87,8 @@ export const Home = () => {
                     {review.subject_name}
                   </th>
                   <td className="px-6 py-4">{review.course_code}</td>
-                  <td className="px-6 py-4">dept vejo</td>
-                  <td className="px-6 py-4">rating vejo</td>
+                  <td className="px-6 py-4">{review.department_name}</td>
+                  <td className="px-6 py-4">{review.average_rating}</td>
                 </tr>
               ))}
           </tbody>
