@@ -26,7 +26,7 @@ const registerController = async (req, res) => {
     if (domain != "iitism.ac.in") {
       return res.status(200).json({
         success: false,
-        message: "Please register with institute email ID",
+        message: "Please Use Institute Email Id",
       });
     }
 
@@ -39,7 +39,7 @@ const registerController = async (req, res) => {
     if (alreadyRegistered.rows.length > 0) {
       return res.status(200).json({
         success: false,
-        message: "User already registered please go to login",
+        message: "Already Registered",
         path: "login",
       });
     }
@@ -55,8 +55,7 @@ const registerController = async (req, res) => {
 
       return res.json({
         success: false,
-        message:
-          "Your account is not verified please check the otp sent at mail",
+        message: "OTP Sent Via Email",
         path: "verifyEmail",
       });
     }
@@ -72,7 +71,7 @@ const registerController = async (req, res) => {
 
     return res.json({
       success: true,
-      message: "Email sent for verification",
+      message: "OTP Sent Via Email",
       path: "verifyEmail",
     });
   } catch (error) {

@@ -1,18 +1,17 @@
 import bcrypt from "bcrypt";
 import jwt from "jsonwebtoken";
-import pool from '../../database/db.js';
+import pool from "../../database/db.js";
 import validateLoginBody from "../../validators/login.js";
 import sendOTP from "../../utils/sendOTP.js";
-
 
 const loginController = async (req, res) => {
   try {
     //checking correctness of email
-    if(!validateLoginBody(req.body)){
-        return res.status(400).json({
-            success:false,
-            message:'Invalid Data'
-        })
+    if (!validateLoginBody(req.body)) {
+      return res.status(400).json({
+        success: false,
+        message: "Invalid Data",
+      });
     }
     const { email, password } = req.body;
 
@@ -23,8 +22,8 @@ const loginController = async (req, res) => {
     if (user.rows.length == 0) {
       return res.status(200).json({
         success: false,
-        message: "You are not registered please goto register page.",
-        path:"register"
+        message: "No User Found",
+        path: "register",
       });
     }
 
@@ -42,7 +41,7 @@ const loginController = async (req, res) => {
       if (!checkpassword) {
         return res.status(401).json({
           success: false,
-          message: "invalid credentials",
+          message: "Invalid Credentials",
         });
       }
       //generating authentication token
@@ -53,9 +52,9 @@ const loginController = async (req, res) => {
       return res.status(201).json({
         success: true,
         isadmin: true,
-        message: "User logged in successfully",
+        message: "Logged in successfully",
         token,
-        path:"home"
+        path: "home",
       });
     }
 
@@ -66,13 +65,12 @@ const loginController = async (req, res) => {
     );
 
     if (findUser.rows.length > 0) {
-       await sendOTP(email);
-        return res.status(200).json({
-          success: false,
-          message:
-            "You are not verified please goto otp generation page/register page ",
-         path:"verifyEmail"
-        });
+      await sendOTP(email);
+      return res.status(200).json({
+        success: false,
+        message: "OTP sent via Email",
+        path: "verifyEmail",
+      });
     }
 
     //user exists and verified
@@ -94,16 +92,20 @@ const loginController = async (req, res) => {
       });
     }
     //generating authentication token
-    const token = jwt.sign({ id: userData.rows[0].id }, process.env.JWT_SECRET, {
-      expiresIn: "15d",
-    });
+    const token = jwt.sign(
+      { id: userData.rows[0].id },
+      process.env.JWT_SECRET,
+      {
+        expiresIn: "15d",
+      }
+    );
 
     return res.status(201).json({
       success: true,
       isadmin: false,
-      message: "User logged in successfully",
+      message: "Logged in successfully",
       token,
-      path:"home"
+      path: "home",
     });
   } catch (error) {
     console.log(error);

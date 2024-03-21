@@ -1,8 +1,10 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { InputField } from "../components/InputField";
 import axios from "axios";
 import toast from "react-hot-toast";
 import { useNavigate } from "react-router-dom";
+import useUsername from "../hooks/useUsername";
+import Loading from "./Loading";
 
 export const ForgotPass = () => {
   const navigate = useNavigate();
@@ -20,16 +22,22 @@ export const ForgotPass = () => {
 
   const link = import.meta.env.VITE_REVIEWLINK + "/auth/forgotPassword";
 
+  const [username, loading] = useUsername();
+
+  useEffect(() => {
+    if (username != null) navigate("/home", { replace: true });
+  }, [navigate, username]);
+
+  const [loadingClick, setLoadingClick] = useState(false);
+
   const handleSubmit = async (e) => {
     e.preventDefault();
-
+    setLoadingClick(true);
     try {
       const response = await axios.post(link, {
         email,
         newPassword,
       });
-
-      console.log(response);
 
       if (response) {
         if (!response.data.success) toast.error(response.data.message);
@@ -39,12 +47,15 @@ export const ForgotPass = () => {
 
         if (response.data.path) navigate("/" + response.data.path);
       }
+      setLoadingClick(false);
     } catch (error) {
       console.log(error);
+      setLoadingClick(false);
       toast.error(error.response.data.message);
     }
   };
 
+  if (loading || loadingClick) return <Loading />;
   return (
     <section className="bg-gray-50 dark:bg-gray-900">
       <div className="flex flex-col items-center justify-center px-6 py-8 mx-auto md:h-screen lg:py-0">

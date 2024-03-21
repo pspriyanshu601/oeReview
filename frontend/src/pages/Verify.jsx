@@ -3,6 +3,7 @@ import toast from "react-hot-toast";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
 import useUsername from "../hooks/useUsername";
+import Loading from "./Loading";
 
 export const Verify = () => {
   const navigate = useNavigate();
@@ -17,7 +18,8 @@ export const Verify = () => {
     setOtp(e.target.value);
   };
 
-  const name = useUsername();
+  const [name, loading] = useUsername();
+  const [loadingClick, setLoadingClick] = useState(false);
 
   useEffect(() => {
     if (name != null) navigate("/home", { replace: true });
@@ -27,6 +29,7 @@ export const Verify = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    setLoadingClick(true);
 
     try {
       const response = await axios.post(link, {
@@ -43,11 +46,15 @@ export const Verify = () => {
 
       if (response.data.path)
         navigate("/" + response.data.path, { replace: true });
+      setLoadingClick(false);
     } catch (error) {
       console.log(error);
       toast.error(error.response.data.message);
+      setLoadingClick(false);
     }
   };
+
+  if (loading || loadingClick) return <Loading />;
 
   return (
     <>

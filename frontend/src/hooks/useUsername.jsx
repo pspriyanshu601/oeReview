@@ -1,6 +1,5 @@
 import axios from "axios";
-import { useEffect } from "react";
-import toast from "react-hot-toast";
+import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { useRecoilState } from "recoil";
 import { usernameAtom } from "../store";
@@ -8,6 +7,7 @@ import { usernameAtom } from "../store";
 export default function useUsername() {
   const navigate = useNavigate();
   const [username, setUsername] = useRecoilState(usernameAtom);
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     async function responses() {
@@ -22,14 +22,14 @@ export default function useUsername() {
         });
 
         setUsername(response.data.name);
+        setLoading(false);
       } catch (error) {
         console.log(error);
-        toast.error(error.response.data.message);
+        setLoading(false);
       }
     }
-
     responses();
   }, [navigate, setUsername]);
 
-  return username;
+  return [username, loading];
 }

@@ -19,7 +19,7 @@ const verifyEmailController = async (req, res) => {
     if (user.rows.length == 0) {
       return res.status(403).json({
         success: false,
-        message: "You are not registered please goto register",
+        message: "Please Register First",
         path: "register",
       });
     }
@@ -43,12 +43,18 @@ const verifyEmailController = async (req, res) => {
       password = (SELECT newpassword FROM users WHERE email = $2)
       WHERE email = $2;`;
     await pool.query(updateQuery, [true, email]);
-    const userData=await pool.query("SELECT * FROM users WHERE email=$1",[email]);
+    const userData = await pool.query("SELECT * FROM users WHERE email=$1", [
+      email,
+    ]);
 
     // const token = jwt.sign()
-    const token = jwt.sign({ id: userData.rows[0].id }, process.env.JWT_SECRET, {
-      expiresIn: "15d",
-    });
+    const token = jwt.sign(
+      { id: userData.rows[0].id },
+      process.env.JWT_SECRET,
+      {
+        expiresIn: "15d",
+      }
+    );
     return res.status(200).json({
       message: "Email verified successfully",
       success: true,

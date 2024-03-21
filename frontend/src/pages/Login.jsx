@@ -1,10 +1,11 @@
 import { useEffect, useState } from "react";
-import { useNavigate, Link } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import axios from "axios";
 // import toast from "react-hot-toast";
 import { InputField } from "../components/InputField";
 import useUsername from "../hooks/useUsername";
 import toast from "react-hot-toast";
+import Loading from "./Loading";
 
 export const Login = () => {
   const navigate = useNavigate();
@@ -20,7 +21,8 @@ export const Login = () => {
     setEmail(e.target.value);
   };
 
-  const username = useUsername();
+  const [username, loading] = useUsername();
+  const [loadingClick, setLoadingClick] = useState(false);
 
   useEffect(() => {
     if (username != null) navigate("/home", { replace: true });
@@ -30,7 +32,7 @@ export const Login = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-
+    setLoadingClick(true);
     try {
       const response = await axios.post(link, {
         email,
@@ -46,14 +48,18 @@ export const Login = () => {
         toast.error(response.data.message);
       }
 
+      setLoadingClick(false);
       if (response.data.path) {
         navigate("/" + response.data.path, { replace: true });
       }
     } catch (error) {
       console.log(error);
       toast.error(error.response.data.message);
+      setLoadingClick(false);
     }
   };
+
+  if (loading || loadingClick) return <Loading />;
 
   return (
     <section className="bg-gray-50 dark:bg-gray-900">
@@ -87,21 +93,29 @@ export const Login = () => {
               </button>
               <p className="text-sm font-light text-gray-500 dark:text-gray-400">
                 Don{`'`}t have an account?{" "}
-                <Link
+                <a
                   to="register"
-                  className="font-medium text-blue-400 hover:underline dark:text-primary-500"
+                  className="font-medium text-blue-400 hover:underline dark:text-primary-500 cursor-pointer"
+                  onClick={(e) => {
+                    e.preventDefault();
+                    navigate("/register", { replace: true });
+                  }}
                 >
                   Register here
-                </Link>
+                </a>
               </p>
               <p className="text-sm font-light text-gray-500 dark:text-gray-400">
                 Forgot your password?{" "}
-                <Link
+                <a
                   to="forgotPassword"
-                  className="font-medium text-blue-400 hover:underline dark:text-primary-500"
+                  className="font-medium text-blue-400 hover:underline dark:text-primary-500 cursor-pointer"
+                  onClick={(e) => {
+                    e.preventDefault();
+                    navigate("/forgotPassword", { replace: true });
+                  }}
                 >
                   Click here
-                </Link>
+                </a>
               </p>
             </form>
           </div>

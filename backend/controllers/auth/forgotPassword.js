@@ -21,7 +21,7 @@ const forgotPasswordController = async (req, res) => {
     if (user.rows.length == 0) {
       return res.status(200).json({
         success: false,
-        message: "You are not registered please goto register page.",
+        message: "Please Register First",
         path: "register",
       });
     }
@@ -29,15 +29,15 @@ const forgotPasswordController = async (req, res) => {
     await sendOTP(email);
     //updating the password
     const hashedPassword = await bcrypt.hash(newPassword, saltRounds);
-    await pool.query(
-      "UPDATE users SET newpassword=$1 WHERE email=$2",
-      [hashedPassword, email]
-    );
+    await pool.query("UPDATE users SET newpassword=$1 WHERE email=$2", [
+      hashedPassword,
+      email,
+    ]);
 
     return res.json({
       success: true,
-      message: "Email sent for verification",
-      path:"verifyEmail"
+      message: "OTP Sent Via Email",
+      path: "verifyEmail",
     });
   } catch (error) {
     console.log(error);
