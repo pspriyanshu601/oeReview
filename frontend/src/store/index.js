@@ -12,5 +12,5 @@ export const reviewsAtom = atom({
 
 export const sortAtom = atom({
   key: "sortAtom",
-  default: 'Overall'
+  default: 'overall'
 })
