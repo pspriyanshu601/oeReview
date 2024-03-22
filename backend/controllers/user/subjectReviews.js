@@ -13,7 +13,7 @@ const subjectReviewsController = async (req, res) => {
     const { courseCode } = req.params;
 
     const subjectReviewsQuery = `
-      SELECT r.details, r.stars, r.review_date 
+      SELECT r.details, r.stars, r.review_date ,r.attendance_stars,r.grades_stars,r.quality_stars
       FROM reviews AS r 
       JOIN users AS u ON r.user_id = u.id 
       JOIN subjects AS s ON r.subject_id = s.subject_id 
