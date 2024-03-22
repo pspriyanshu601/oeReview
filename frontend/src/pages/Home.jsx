@@ -53,75 +53,51 @@ export const Home = () => {
   console.log(reviews);
 
   return (
-    <div className="bg-gray-800 w-full dark:bg-gray-800 h-[91vh]" id="home">
-      <div className="w-full flex items-center justify-center bg-gray-50 dark:bg-gray-700">
-        <div className="w-full">
-          <table className="w-full text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400">
-            <thead className="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
-              <tr>
-                <th scope="col" className="px-6 py-3">
-                  Name
-                </th>
-                <th scope="col" className="px-6 py-3">
-                  Code
-                </th>
-                <th scope="col" className="px-6 py-3">
-                  Department
-                </th>
-                <th scope="col" className="px-6 py-3">
-                  Rating
-                </th>
-                <th scope="col" className="px-6 py-3">
-                  Total Ratings
-                </th>
-              </tr>
-            </thead>
-            <tbody>
-              {reviews &&
-                reviews.map((review, index) => (
-                  <tr
-                    key={index}
-                    className="bg-white border-b dark:bg-gray-800 dark:border-gray-700"
-                  >
-                    <th
-                      scope="row"
-                      className="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white"
-                    >
-                      {review.subject_name}
-                    </th>
-                    <td className="px-6 py-4">{review.course_code}</td>
-                    <td className="px-6 py-4">{review.department_name}</td>
-                    <td className="px-6 py-4">{review.average_rating}</td>
-                    <td className="px-6 py-4">{review.comments}</td>
-                  </tr>
-                ))}
-            </tbody>
-          </table>
+    <>
+      <div className="h-screen pt-[68px] bg-gray-50 dark:bg-gray-800">
+        <div className="h-16 flex items-center justify-between bg-gray-900 text-white px-5">
+          <div className="flex items-center">
+            <p className="text-white text-2xl">Most reviewed OE</p>
+          </div>
+          <button className="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-4 py-2 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">Sort by</button>
+        </div>
+
+        <div className="grid grid-cols-5 p-2 text-xs text-gray-700 uppercase font-bold bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
+          <div className="flex items-center justify-center">Name</div>
+          <div className="flex items-center justify-center">Code</div>
+          <div className="flex items-center justify-center">Department</div>
+          <div className="flex items-center justify-center">Rating</div>
+          <div className="flex items-center justify-center">Total Ratings</div>
+        </div>
+
+        {
+          reviews &&
+          reviews.map((review, index) => (
+            <div key={index} className="grid grid-cols-5 p-3 text-xs text-gray-700 bg-gray-50 dark:bg-gray-800 dark:text-gray-400 relative">
+              <div className="flex items-center justify-left text-white">{review.subject_name}</div>
+              <div className="flex items-center justify-center">{review.course_code}</div>
+              <div className="flex items-center justify-center">{review.department_name}</div>
+              <div className="flex items-center justify-center">{review.average_rating}</div>
+              <div className="flex items-center justify-center">{review.comments}</div>
+            </div>
+          ))
+        }
+
+        <div className="flex justify-between px-5 py-3 bg-gray-800 text-white">
+          <button
+            onClick={() => { if (page > 1) setPage(page - 1) }}
+            className="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-4 py-2 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
+          >
+            Previous
+          </button>
+          <button
+            onClick={() => { if (reviews.length == 10) setPage(page + 1) }}
+            className="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-4 py-2 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
+          >
+            Next
+          </button>
         </div>
       </div>
-
-      <div className="w-screen h-20 mt-[68px] bg-red-900 text-center">
-        what is this : dont mind this is only for test
-      </div>
-
-
-
-      {/* <div className="fixed bottom-0 left-0 w-full bg-gray-50 dark:bg-gray-800 flex justify-between px-6 py-4">
-        <button
-          type="button"
-          className="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-4 py-2 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
-          onClick={() => { if (page > 1) setPage(page - 1) }}
-        >
-          Previous
-        </button>
-        <button
-          type="button"
-          className="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-4 py-2 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
-          onClick={() => { if (reviews.length === 10) setPage(page + 1) }}
-        >
-          Next
-        </button>
-      </div> */}
-    </div>
+    </>
   );
 };
