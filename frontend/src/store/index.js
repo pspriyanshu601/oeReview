@@ -10,7 +10,13 @@ export const reviewsAtom = atom({
   default: [],
 });
 
-export const sortAtom = atom({
-  key: "sortAtom",
-  default: 'Overall'
-})
+// cheched the name of sort atom to filter atom
+export const filterAtom = atom({
+  key: "filterAtom",
+  default: null,
+});
+
+export const alreadyAddedReviewAtom = atom({
+  key: "alreadyAddedReviewAtom",
+  default: false,
+});
