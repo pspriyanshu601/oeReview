@@ -7,21 +7,28 @@ function getElements(data, page) {
   return data.slice(startIndex, endIndex); // Return elements for the given page
 }
 
-const pagedSubjectsController = async (req, res) => {
+const pagedSubjectsQueryController = async (req, res) => {
   try {
+    const query=req.params.filter;
+    if(query!=='attendance' && query!=='quality' && query!=='grades'){
+      return res.status(400).json({
+        success:false,
+        message:'Invalid Params'
+      })
+    }
     const pageQuery = `
     WITH WeightedSubjects AS (
       SELECT 
           s.*,
-          CAST((5 + s.stars) AS FLOAT) / CAST((10 + s.comments * 5) AS FLOAT) AS weighted_value,
-          ROUND(CAST(s.stars AS NUMERIC) / CAST((s.comments) AS NUMERIC), 2) AS average_rating
+          CAST((5 + s.${query}_stars) AS FLOAT) / CAST((10 + s.comments * 5) AS FLOAT) AS weighted_value,
+          ROUND(CAST(s.${query}_stars AS NUMERIC) / CAST((s.comments) AS NUMERIC), 2) AS average_${query}_rating
       FROM 
           subjects s
   )
   SELECT 
       ws.subject_name,
       ws.course_code,
-      ws.average_rating,
+      ws.average_${query}_rating,
       d.department_name,
       ws.comments
   FROM 
@@ -46,4 +53,4 @@ const pagedSubjectsController = async (req, res) => {
   }
 };
 
-export default pagedSubjectsController;
+export default pagedSubjectsQueryController;
