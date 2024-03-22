@@ -12,16 +12,15 @@ export const reviewsAtom = atom({
 
 export const sortAtom = atom({
   key: "sortAtom",
-  default: 'overall'
-})
-
-// cheched the name of sort atom to filter atom
-export const filterAtom = atom({
-  key: "filterAtom",
-  default: null,
+  default: "overall",
 });
 
 export const alreadyAddedReviewAtom = atom({
   key: "alreadyAddedReviewAtom",
+  default: false,
+});
+
+export const addingReviewAtom = atom({
+  key: "addingReviewAtom",
   default: false,
 });

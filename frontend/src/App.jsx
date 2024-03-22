@@ -6,15 +6,18 @@ import { Verify } from "./pages/Verify";
 import { ForgotPass } from "./pages/ForgotPass";
 import Loading from "./pages/Loading";
 import Navbar from "./components/Navbar";
+import AddSubjects from "./pages/AddSubjects";
+import { Home } from "./pages/Home";
 import AddReview from "./pages/AddReview";
-// import { Home } from "./pages/Home";
 
 function HomeRoutes() {
   return (
     <>
       <Navbar />
       <Routes>
-        <Route path="/" element={<AddReview />} />
+        <Route path="/" element={<Home />} />
+        <Route path="/addSubjects" element={<AddSubjects />} />
+        <Route path="/AddReview" element={<AddReview />} />
       </Routes>
     </>
   );
