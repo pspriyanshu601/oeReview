@@ -19,7 +19,8 @@ const registerController = async (req, res) => {
         message: "Invalid Data",
       });
 
-    const { email, password, username } = req.body;
+    var { email, password, username } = req.body;
+    email=email.toLowerCase();
 
     //check if institue id is used or not
     const domain = extractDomain(email);
