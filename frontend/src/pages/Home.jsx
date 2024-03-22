@@ -21,7 +21,7 @@ export const Home = () => {
     if (username == null) navigate("/", { replace: true });
   }, [navigate, username]);
 
-  const link = import.meta.env.VITE_REVIEWLINK + "/user/weightedSubjects/" + page;
+  const link = import.meta.env.VITE_REVIEWLINK + "/user/weightedSubjects/page/" + page;
   useEffect(() => {
     setLoadingClick(true);
     async function responses() {
