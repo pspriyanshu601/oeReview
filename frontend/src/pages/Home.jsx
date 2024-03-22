@@ -53,8 +53,8 @@ export const Home = () => {
   console.log(reviews);
 
   return (
-    <div className="bg-gray-50 dark:bg-gray-800 h-[91vh]" id="home">
-      <div className="w-full flex items-center justify-center mt-[68px] bg-gray-50 dark:bg-gray-700">
+    <div className="bg-gray-800 w-full dark:bg-gray-800 h-[91vh]" id="home">
+      <div className="w-full flex items-center justify-center bg-gray-50 dark:bg-gray-700">
         <div className="w-full">
           <table className="w-full text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400">
             <thead className="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
@@ -100,22 +100,28 @@ export const Home = () => {
         </div>
       </div>
 
-      <div className="flex w-full justify-between px-6 py-4 bg-gray-50 dark:bg-gray-800">
+      <div className="w-screen h-20 mt-[68px] bg-red-900 text-center">
+        what is this : dont mind this is only for test
+      </div>
+
+
+
+      {/* <div className="fixed bottom-0 left-0 w-full bg-gray-50 dark:bg-gray-800 flex justify-between px-6 py-4">
         <button
           type="button"
           className="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-4 py-2 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
-          onClick={() => { if(page > 1) setPage(page - 1) }}
+          onClick={() => { if (page > 1) setPage(page - 1) }}
         >
           Previous
         </button>
         <button
           type="button"
           className="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-4 py-2 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
-          onClick={() => { if(reviews.length == 10) setPage(page + 1) }}
+          onClick={() => { if (reviews.length === 10) setPage(page + 1) }}
         >
           Next
         </button>
-      </div>
+      </div> */}
     </div>
   );
 };

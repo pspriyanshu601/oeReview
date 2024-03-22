@@ -9,3 +9,8 @@ export const reviewsAtom = atom({
   key: "reviewsAtom",
   default: [],
 });
+
+export const sortAtom = atom({
+  key: "sortAtom",
+  default: 'Overall'
+})
