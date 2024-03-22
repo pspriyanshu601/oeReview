@@ -5,7 +5,7 @@ const pageChecker = async (page) => {
   const pageData = await pool.query("SELECT COUNT(*) FROM subjects");
 
   const limit = Math.ceil(pageData.rows[0].count / 10);
-  const pageCheckerSchema = z.number().int().min(1).max(limit);
+  const pageCheckerSchema = z.number().int().min(0).max(limit);
 
   try {
     pageCheckerSchema.parse(page);
