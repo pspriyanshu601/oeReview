@@ -36,7 +36,7 @@ The following behaviors are considered unacceptable within the oeReview communit
 
 4. **Inappropriate Content:** Posting or sharing content that is offensive, inappropriate, or violates the rights of others.
 
-5. **Misuse of Resources:** Misusing the resources provided by oeReview for illegal or unethical purposes.
+5. **Misuse of Resources:** Misusing the resources provided by oeReview for illegal or any unethical purposes.
 
 ## Reporting Violations
 
