@@ -46,7 +46,7 @@ VALUES ('Civil Engineering'),
     username TEXT,
     isadmin BOOLEAN DEFAULT FALSE,
     newPassword TEXT,
-    
+    no_of_subjects INT DEFAULT 0,
     subject_ids JSONB DEFAULT '{}' ::JSONB
 );
 

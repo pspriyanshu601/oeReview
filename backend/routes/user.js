@@ -8,18 +8,22 @@ import departmentSubjectsController from "../controllers/user/departmentSubjects
 import subjectReviewsController from "../controllers/user/subjectReviews.js";
 import addReviewController from "../controllers/user/addReview.js";
 import pagedSubjectsQueryController from "../controllers/user/pagedSubjectsQuery.js";
+import hasAddedSubjectsController from "../controllers/user/hasAddedSubjects.js";
+import addUserSubjectsController from "../controllers/user/addUserSubjects.js";
+import userSubjectsController from "../controllers/user/userSubjects.js";
 
 const userRouter = express.Router();
 
 userRouter.get("/username", verifyMiddleware,usernameController);
 userRouter.get("/allDepartments",verifyMiddleware,allDepartmentsController);
 userRouter.get("/allSubjects",verifyMiddleware,allSubjectsController);
-userRouter.get("/allVerifiedReviews/:courseCode",verifyMiddleware,subjectReviewsController);
-userRouter.get("/weightedSubjects/:page", verifyMiddleware,pagedSubjectsController);
-userRouter.get("/weightedSubjects/:filter/:page",verifyMiddleware,pagedSubjectsQueryController)
-// todo 
-userRouter.get("/allSubjects/:departmentId",verifyMiddleware,departmentSubjectsController);
-userRouter.post("/submitReview/:courseCode",verifyMiddleware,addReviewController);
-userRouter.get("/hasAddedSubjects",verifyMiddleware);
+userRouter.get("/allVerifiedReviews/courseCode/:courseCode",verifyMiddleware,subjectReviewsController);
+userRouter.get("/weightedSubjects/page/:page", verifyMiddleware,pagedSubjectsController);
+userRouter.get("/weightedSubjects/filter/:filter/page/:page",verifyMiddleware,pagedSubjectsQueryController)
+userRouter.get("/allSubjects/departmentId/:departmentId",verifyMiddleware,departmentSubjectsController);
+userRouter.post("/submitReview/courseCode/:courseCode",verifyMiddleware,addReviewController);
+userRouter.get("/hasAddedSubjects",verifyMiddleware,hasAddedSubjectsController);
+userRouter.post("/userSubjects",verifyMiddleware,addUserSubjectsController);
+userRouter.get("/userSubjects",verifyMiddleware,userSubjectsController);
 
 export default userRouter;

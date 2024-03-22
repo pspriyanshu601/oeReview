@@ -4,10 +4,10 @@ import _ from 'lodash'
 
 const departmentSubjectsController = async (req, res) => {
   try {
-    const dept_name = _.startCase( _.replace(req.params.departmentName, /-/g, ' '));
+    const {departmentId}=req.params;
     const departmentSubjects = await pool.query(
-      "SELECT s.subject_name,s.course_code FROM departments AS d JOIN subjects AS s ON d.department_id = s.department_id WHERE d.department_name = $1;",
-      [dept_name]
+      "SELECT * FROM subjects WHERE department_id=$1",
+      [departmentId]
     );
     return res.status(200).json({
       success: true,
