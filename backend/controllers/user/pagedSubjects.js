@@ -1,4 +1,5 @@
 import pool from "../../database/db.js";
+import pageChecker from "../../validators/page.js";
 
 function getElements(data, page) {
   const pageSize = 10; // Number of elements per page
@@ -9,6 +10,12 @@ function getElements(data, page) {
 
 const pagedSubjectsController = async (req, res) => {
   try {
+    if(!(await pageChecker(parseInt(req.params.page)))){
+      return res.status(400).json({
+        success:false,
+        message:'This page does not exist'
+      })
+    }
     const pageQuery = `
     WITH WeightedSubjects AS (
       SELECT 
