@@ -10,7 +10,8 @@ const verifyEmailController = async (req, res) => {
         message: "Invalid Input",
       });
     }
-    const { email, otp } = req.body;
+    var { email, otp } = req.body;
+    email=email.toLowerCase();
 
     //check if user exist or not
     const user = await pool.query("SELECT * FROM users WHERE email=$1", [

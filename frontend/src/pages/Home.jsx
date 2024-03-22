@@ -83,18 +83,29 @@ export const Home = () => {
           <div className="flex items-center justify-center">Total Ratings</div>
         </div>
 
-        {
-          reviews &&
+        {reviews &&
           reviews.map((review, index) => (
-            <div key={index} className="grid grid-cols-5 p-3 text-xs text-gray-700 bg-gray-50 dark:bg-gray-800 dark:text-gray-400 relative">
-              <div className="flex items-center justify-left text-white">{review.subject_name}</div>
-              <div className="flex items-center justify-center">{review.course_code}</div>
-              <div className="flex items-center justify-center">{review.department_name}</div>
-              <div className="flex items-center justify-center">{review.average_rating}</div>
-              <div className="flex items-center justify-center">{review.comments}</div>
+            <div
+              key={index}
+              className="grid grid-cols-5 p-3 text-xs text-gray-700 bg-gray-50 dark:bg-gray-800 dark:text-gray-400 relative"
+            >
+              <div className="flex items-center justify-left text-white">
+                {review.subject_name}
+              </div>
+              <div className="flex items-center justify-center">
+                {review.course_code}
+              </div>
+              <div className="flex items-center justify-center">
+                {review.department_name}
+              </div>
+              <div className="flex items-center justify-center">
+                {review.average_rating}
+              </div>
+              <div className="flex items-center justify-center">
+                {review.comments}
+              </div>
             </div>
-          ))
-        }
+          ))}
 
         <div className="flex justify-between px-5 py-3 bg-gray-800 text-white">
           <button

@@ -3,6 +3,7 @@ import pageChecker from "../../validators/page.js";
 
 function getElements(data, page) {
   const pageSize = 10; // Number of elements per page
+  if(page==0) return data;
   const startIndex = (page - 1) * pageSize; // Calculate start index
   const endIndex = startIndex + pageSize; // Calculate end index
   return data.slice(startIndex, endIndex); // Return elements for the given page

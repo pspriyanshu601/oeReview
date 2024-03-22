@@ -13,10 +13,11 @@ const forgotPasswordController = async (req, res) => {
         message: "Invalid Data",
       });
     }
-    const { email, newPassword } = req.body;
+    var { email, newPassword } = req.body;
+    email=email.toLowerCase();
     //cheking if user does not exist in the database
     var user = await pool.query("SELECT * FROM users WHERE email=$1", [
-      req.body.email,
+      email,
     ]);
     if (user.rows.length == 0) {
       return res.status(200).json({
