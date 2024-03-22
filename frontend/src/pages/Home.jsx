@@ -5,22 +5,30 @@ import Loading from "./Loading";
 import axios from "axios";
 import toast from "react-hot-toast";
 import { useRecoilState } from "recoil";
-import { reviewsAtom } from "../store";
+import { reviewsAtom, sortAtom } from "../store";
 
 export const Home = () => {
+  const navigate = useNavigate();
+
   const [username, loading] = useUsername();
   const [loadingClick, setLoadingClick] = useState(false);
-  const navigate = useNavigate();
   const [page, setPage] = useState(1);
 
   const [reviews, setReviews] = useRecoilState(reviewsAtom);
+
+  const [sortValue, setSortValue] = useRecoilState(sortAtom)
+
+  const handleChange = (e) => {
+    setSortValue(e.target.value)
+  }
 
   useEffect(() => {
     if (username == null) navigate("/", { replace: true });
   }, [navigate, username]);
 
-  const link =
-    import.meta.env.VITE_REVIEWLINK + "/user/weightedSubjects/page/" + page;
+  var link = import.meta.env.VITE_REVIEWLINK + "/user/weightedSubjects/page/" + page;
+  if(sortValue != 'overall') link = import.meta.env.VITE_REVIEWLINK + '/user/weightedSubjects/filter/' + sortValue + '/page/' + page
+
   useEffect(() => {
     setLoadingClick(true);
     async function responses() {
@@ -49,7 +57,8 @@ export const Home = () => {
 
   if (loading || loadingClick) return <Loading />;
 
-  console.log(reviews);
+  console.log(reviews)
+  console.log(sortValue)
 
   return (
     <>
@@ -58,9 +67,12 @@ export const Home = () => {
           <div className="flex items-center">
             <p className="text-white text-2xl">Most reviewed OE</p>
           </div>
-          <button className="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-4 py-2 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">
-            Sort by
-          </button>
+          <select value={sortValue} onChange={handleChange} className="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">
+            <option value="overall">Overall</option>
+            <option value="attendance">Attendance</option>
+            <option value="quality">Quality</option>
+            <option value="grades">Grades</option>
+          </select>
         </div>
 
         <div className="grid grid-cols-5 p-2 text-xs text-gray-700 uppercase font-bold bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
@@ -97,17 +109,14 @@ export const Home = () => {
 
         <div className="flex justify-between px-5 py-3 bg-gray-800 text-white">
           <button
-            onClick={() => {
-              if (page > 1) setPage(page - 1);
-            }}
+            disabled={page==0}
+            onClick={() => { if (page >= 0) setPage(page - 1) }}
             className="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-4 py-2 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
           >
             Previous
           </button>
           <button
-            onClick={() => {
-              if (reviews.length == 10) setPage(page + 1);
-            }}
+            onClick={() => { if (reviews.length >= 10) setPage(page + 1) }}
             className="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-4 py-2 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
           >
             Next
