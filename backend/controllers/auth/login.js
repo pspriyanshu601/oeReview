@@ -13,11 +13,12 @@ const loginController = async (req, res) => {
         message: "Invalid Data",
       });
     }
-    const { email, password } = req.body;
+    var { email, password } = req.body;
+    email=email.toLowerCase();
 
     //cheking if user does not exist in the database
     const user = await pool.query("SELECT * FROM users WHERE email=$1", [
-      req.body.email,
+      email,
     ]);
     if (user.rows.length == 0) {
       return res.status(200).json({
