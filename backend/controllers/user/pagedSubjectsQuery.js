@@ -25,26 +25,30 @@ const pagedSubjectsQueryController = async (req, res) => {
       });
     }
     const pageQuery = `
-      WITH WeightedSubjects AS (
-        SELECT 
-          s.*,
-          CAST((5 + s.${query}_stars) AS FLOAT) / CAST((10 + s.comments * 5) AS FLOAT) AS weighted_value,
-          ROUND(CAST(s.${query}_stars AS NUMERIC) / CAST((s.comments) AS NUMERIC), 2) AS average_${query}_rating
-        FROM 
-          subjects s
-      )
+    WITH WeightedSubjects AS (
       SELECT 
-        ws.subject_name,
-        ws.course_code,
-        ws.average_${query}_rating,
-        d.department_name,
-        ws.comments
+          s.*,
+          CASE
+              WHEN 10 + s.comments * 5 = 0 THEN NULL  -- Handle division by zero case
+              ELSE CAST((5 + s.${query}_stars) AS FLOAT) / CAST((10 + s.comments * 5) AS FLOAT)
+          END AS weighted_value,
+          ROUND(CAST(s.${query}_stars AS NUMERIC) / NULLIF(CAST(s.comments AS NUMERIC), 0), 2) AS average_${query}_rating
       FROM 
-        WeightedSubjects ws
-      JOIN 
-        departments d ON ws.department_id = d.department_id
-      ORDER BY 
-        ws.weighted_value DESC;
+          subjects s
+  )
+  SELECT 
+      ws.subject_name,
+      ws.course_code,
+      ws.average_${query}_rating,
+      d.department_name,
+      ws.comments
+  FROM 
+      WeightedSubjects ws
+  JOIN 
+      departments d ON ws.department_id = d.department_id
+  ORDER BY 
+      ws.weighted_value DESC;
+  
       `;
 
     const reviews = await pool.query(pageQuery);
