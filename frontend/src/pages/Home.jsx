@@ -64,7 +64,7 @@ export const Home = () => {
 
   if (loading || loadingClick) return <Loading />;
 
-  // console.log(reviews)
+  console.log(reviews);
   // console.log(sortValue)
 
   return (
@@ -110,7 +110,9 @@ export const Home = () => {
                 {review.department_name}
               </div>
               <div className="flex items-center justify-center">
-                {review.average_rating}
+                {sortValue == "overall"
+                  ? review.average_rating
+                  : review["average_" + sortValue + "_rating"]}
               </div>
               <div className="flex items-center justify-center">
                 {review.comments}
