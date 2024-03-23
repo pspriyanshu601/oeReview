@@ -4,15 +4,14 @@ export const usernameAtom = atom({
   key: "usernameAtom",
   default: null,
 });
+export const sortAtom = atom({
+  key: "sortAtom",
+  default: "overall",
+});
 
 export const reviewsAtom = atom({
   key: "reviewsAtom",
   default: [],
-});
-
-export const sortAtom = atom({
-  key: "sortAtom",
-  default: "overall",
 });
 
 export const alreadyAddedReviewAtom = atom({
@@ -20,12 +19,12 @@ export const alreadyAddedReviewAtom = atom({
   default: false,
 });
 
-export const selectedCourseAtom = atom({
-  key: "selectedCourseAtom",
-  default: false,
-});
-
 export const addingReviewAtom = atom({
   key: "addingReviewAtom",
   default: false,
+});
+
+export const reviewIndexAtom = atom({
+  key: "reviewIndexAtom",
+  default: 0,
 });

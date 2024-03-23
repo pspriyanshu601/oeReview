@@ -32,6 +32,7 @@ export default function AddSubjects() {
 
     const run = async () => {
       try {
+        setLoadingClick(true);
         const link = import.meta.env.VITE_REVIEWLINK + "/user/hasAddedSubjects";
         const token = localStorage.getItem("token");
         const response = await axios.get(link, {
@@ -43,7 +44,10 @@ export default function AddSubjects() {
         if (response.data.hasAddedSubjects) {
           navigate("/home/addReview", { replace: true });
         }
+
+        setLoadingClick(false);
       } catch (error) {
+        setLoadingClick(false);
         console.log(error);
         if (error.response.data.message) {
           toast.error(error.response.data.message);
