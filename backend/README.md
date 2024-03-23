@@ -1,5 +1,5 @@
 
-The API is hosted at [https://oe-review-backend.vercel.app/](https://oe-review-backend.vercel.app/)
+The API is hosted at [https://oe-review-backend-new.vercel.app/](https://oe-review-backend-new.vercel.app/)
 
 
 # OE Review API Documantation
@@ -80,6 +80,8 @@ Example Response
 
 **GET** `https://oe-review-backend.vercel.app/user/allVerifiedReviews/courseCode/:courseCode`
 
+*Expected Course_code : First three characters [A-Z] next three [100-599]*
+
 Example Response
 
 ```
@@ -141,7 +143,7 @@ Example Response
 
 **GET** `https://oe-review-backend.vercel.app/user/weightedSubjects/filter/:filter/page/:page`
 
-`Allowed Filters:  {"attendance","grades","quality"}`
+*Allowed Filters:  {"attendance","grades","quality"}*
 
 Example Response
 
@@ -173,6 +175,8 @@ Example Response
 
 **GET** `https://oe-review-backend.vercel.app/user/allSubjects/departmentId/:departmentId`
 
+*Expected department ID from 1 to 17 and INTEGER*
+
 
 Example Response
 
@@ -200,6 +204,8 @@ Example Response
 ## Post a review
 
 **POST** `https://oe-review-backend.vercel.app/submitReview/courseCode/:courseCode`
+
+*Expected Course_code : First three characters [A-Z] next three [100-599]*
 
 Example request 
 
