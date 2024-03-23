@@ -19,6 +19,7 @@ const coursesMap = {
     "GP": 15,
     "CH": 16,
     "CY": 17,
+    "MM":18,
 };
 
 // Define an async function to handle the insertion
