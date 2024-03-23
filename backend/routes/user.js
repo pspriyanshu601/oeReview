@@ -14,16 +14,40 @@ import userSubjectsController from "../controllers/user/userSubjects.js";
 
 const userRouter = express.Router();
 
-userRouter.get("/username", verifyMiddleware,usernameController);
-userRouter.get("/allDepartments",verifyMiddleware,allDepartmentsController);
-userRouter.get("/allSubjects",verifyMiddleware,allSubjectsController);
-userRouter.get("/allVerifiedReviews/courseCode/:courseCode",verifyMiddleware,subjectReviewsController);
-userRouter.get("/weightedSubjects/page/:page", verifyMiddleware,pagedSubjectsController);
-userRouter.get("/weightedSubjects/filter/:filter/page/:page",verifyMiddleware,pagedSubjectsQueryController)
-userRouter.get("/allSubjects/departmentId/:departmentId",verifyMiddleware,departmentSubjectsController);
-userRouter.post("/submitReview/courseCode/:courseCode",verifyMiddleware,addReviewController);
-userRouter.get("/hasAddedSubjects",verifyMiddleware,hasAddedSubjectsController);
-userRouter.post("/userSubjects",verifyMiddleware,addUserSubjectsController);
-userRouter.get("/userSubjects",verifyMiddleware,userSubjectsController);
+userRouter.get("/username", verifyMiddleware, usernameController);
+userRouter.get("/allDepartments", verifyMiddleware, allDepartmentsController);
+userRouter.get("/allSubjects", verifyMiddleware, allSubjectsController);
+userRouter.get(
+  "/allVerifiedReviews/courseCode/:courseCode",
+  verifyMiddleware,
+  subjectReviewsController
+);
+userRouter.get(
+  "/weightedSubjects/page/:page",
+  verifyMiddleware,
+  pagedSubjectsController
+);
+userRouter.get(
+  "/weightedSubjects/filter/:filter/page/:page",
+  verifyMiddleware,
+  pagedSubjectsQueryController
+);
+userRouter.get(
+  "/allSubjects/departmentId/:departmentId",
+  verifyMiddleware,
+  departmentSubjectsController
+);
+userRouter.get(
+  "/hasAddedSubjects",
+  verifyMiddleware,
+  hasAddedSubjectsController
+);
+userRouter.get("/userSubjects", verifyMiddleware, userSubjectsController);
+userRouter.post("/userSubjects", verifyMiddleware, addUserSubjectsController);
+userRouter.post(
+  "/submitReview/courseCode/:courseCode",
+  verifyMiddleware,
+  addReviewController
+);
 
 export default userRouter;

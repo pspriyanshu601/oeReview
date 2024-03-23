@@ -20,6 +20,11 @@ export const alreadyAddedReviewAtom = atom({
   default: false,
 });
 
+export const selectedCourseAtom = atom({
+  key: "selectedCourseAtom",
+  default: false,
+});
+
 export const addingReviewAtom = atom({
   key: "addingReviewAtom",
   default: false,

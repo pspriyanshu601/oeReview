@@ -29,6 +29,29 @@ export default function AddSubjects() {
   useEffect(() => {
     if (username == null) navigate("/", { replace: true });
     if (alreadyAddedReview) navigate("/home", { replace: true });
+
+    const run = async () => {
+      try {
+        const link = import.meta.env.VITE_REVIEWLINK + "/user/hasAddedSubjects";
+        const token = localStorage.getItem("token");
+        const response = await axios.get(link, {
+          headers: {
+            Authorization: token,
+          },
+        });
+
+        if (response.data.hasAddedSubjects) {
+          navigate("/home/addReview", { replace: true });
+        }
+      } catch (error) {
+        console.log(error);
+        if (error.response.data.message) {
+          toast.error(error.response.data.message);
+        } else toast.error("Something went wrong");
+      }
+    };
+
+    run();
   }, [alreadyAddedReview, navigate, username, setAlreadyAddedReview]);
 
   useEffect(() => {
@@ -154,12 +177,36 @@ export default function AddSubjects() {
               ))}
             </ul>
             <button
-              onClick={() => {
+              onClick={async () => {
                 if (selectedCourses.length === 0) {
                   toast.error("Please select at least one course");
+                } else if (selectedCourses.length > 3) {
+                  toast.error("You can only add 3 courses");
                 } else {
-                  toast.success("Courses added successfully");
-                  navigate("/home/addReview");
+                  try {
+                    const link =
+                      import.meta.env.VITE_REVIEWLINK + "/user/userSubjects";
+                    const token = localStorage.getItem("token");
+                    const body = {
+                      noOfSubjects: selectedCourses.length,
+                    };
+                    for (let i = 0; i < selectedCourses.length; i++) {
+                      body[`subject${i + 1}Id`] = selectedCourses[i].subject_id;
+                    }
+                    const response = await axios.post(link, body, {
+                      headers: {
+                        Authorization: token,
+                      },
+                    });
+                    toast.success(response.data.message);
+                    setAlreadyAddedReview(true);
+                    navigate("/home/addReviews", { replace: true });
+                  } catch (error) {
+                    console.log(error);
+                    if (error.response.data.message) {
+                      toast.error(error.response.data.message);
+                    } else toast.error("Something went wrong");
+                  }
                 }
               }}
               className="text-white w-full mt-2 bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-md text-sm px-4 py-2 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
