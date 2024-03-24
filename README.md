@@ -30,4 +30,4 @@ This project is licensed under the [MIT License](LICENSE).
 
 ---
 
-Feel free to customize this README according to your preferences and additional information you may want to include. Happy coding!
+Feel free to customize this README according to your preferences and additional information you may want to include. Happy coding :)
