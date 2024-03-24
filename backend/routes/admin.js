@@ -10,11 +10,7 @@ const adminRouter = express.Router();
 
 adminRouter.post("/addSubject", adminVerifyMiddleware, addSubject);
 adminRouter.post("/verifyReview", adminVerifyMiddleware, verifyReview);
-adminRouter.get(
-  "/unverifiedReviews/:page",
-  adminVerifyMiddleware,
-  unverifiedReviews
-);
+adminRouter.get("/unverifiedReviews", adminVerifyMiddleware, unverifiedReviews);
 adminRouter.delete(
   "/deleteAllUsersSubjects",
   adminVerifyMiddleware,
