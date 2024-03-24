@@ -4,7 +4,7 @@ import useUsername from "../hooks/useUsername";
 import Loading from "./Loading";
 import axios from "axios";
 import toast from "react-hot-toast";
-import { useRecoilState } from "recoil";
+import { useRecoilState, useRecoilValue } from "recoil";
 import { reviewsAtom, sortAtom } from "../store";
 
 export default function Home() {
@@ -16,11 +16,7 @@ export default function Home() {
 
   const [reviews, setReviews] = useRecoilState(reviewsAtom);
 
-  const [sortValue, setSortValue] = useRecoilState(sortAtom);
-
-  // const handleChange = (e) => {
-  //   setSortValue(e.target.value);
-  // };
+  const sortValue = useRecoilValue(sortAtom);
 
   useEffect(() => {
     if (username == null) navigate("/", { replace: true });

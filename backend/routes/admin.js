@@ -36,7 +36,7 @@ adminRouter.delete(
   adminVerifyMiddleware,
   deleteAllUserSubjectController
 );
-adminRouter.patch("/clearSubjects", adminVerifyMiddleware, async (req, res) => {
+adminRouter.post("/clearSubjects", adminVerifyMiddleware, async (req, res) => {
   try {
     await pool.query(
       "UPDATE subjects SET stars = 0, attendance_stars = 0, grades_stars = 0, quality_stars = 0, comments = 0"
@@ -52,6 +52,13 @@ adminRouter.patch("/clearSubjects", adminVerifyMiddleware, async (req, res) => {
       message: "Internal Server Error",
     });
   }
+});
+
+adminRouter.post("/ok", adminVerifyMiddleware, async (req, res) => {
+  return res.status(200).json({
+    success: true,
+    message: "OK",
+  });
 });
 
 adminRouter.delete(
