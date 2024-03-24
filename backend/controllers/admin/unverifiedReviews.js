@@ -29,6 +29,7 @@ const unverifiedReviews = async (req, res) => {
     return res.status(200).json({
       success: true,
       reviews: reviews.rows,
+      message: "Reviews fetched successfully",
     });
   } catch (error) {
     console.log(error);

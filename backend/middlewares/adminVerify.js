@@ -6,9 +6,10 @@ const adminVerifyMiddleware = async (req, res, next) => {
     var data;
     const token = req.headers.authorization;
     try {
+      console.log(token);
       data = jwt.verify(token, process.env.JWT_SECRET);
     } catch (error) {
-      return res.status(500).json({
+      return res.status(401).json({
         success: false,
         message: "Unauthorized User",
       });
@@ -20,7 +21,7 @@ const adminVerifyMiddleware = async (req, res, next) => {
     if (user.rows.length == 0) {
       return res.status(401).json({
         success: false,
-        message: "Unauthorized User",
+        message: "You are not an admin",
       });
     }
     req.body.userId = data.id;
