@@ -44,6 +44,10 @@ const verifyReview = async (req, res) => {
       })
     } else {
       await pool.query("DELETE FROM reviews WHERE review_id = $1", [reviewId]);
+      return res.status(200).json({
+        success:true,
+        message:'Review deleted successfully'
+      });
     }
   } catch (error) {
     console.log(error);
