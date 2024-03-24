@@ -7,7 +7,8 @@ import { ForgotPass } from "./pages/ForgotPass";
 import Loading from "./pages/Loading";
 import Navbar from "./components/Navbar";
 import AddSubjects from "./pages/AddSubjects";
-import { Home } from "./pages/Home";
+import Home from "./pages/Home";
+import Admin from "./pages/Admin";
 import AddReview from "./pages/AddReview";
 
 function HomeRoutes() {
@@ -17,7 +18,8 @@ function HomeRoutes() {
       <Routes>
         <Route path="/" element={<Home />} />
         <Route path="/addSubjects" element={<AddSubjects />} />
-        <Route path="/AddReview" element={<AddReview />} />
+        <Route path="/addReview" element={<AddReview />} />
+        <Route path="/admin" element={<Admin />} />
       </Routes>
     </>
   );

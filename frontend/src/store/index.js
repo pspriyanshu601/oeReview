@@ -28,3 +28,10 @@ export const reviewIndexAtom = atom({
   key: "reviewIndexAtom",
   default: 0,
 });
+
+///////// admin
+
+export const adminUserAtom = atom({
+  key: "adminUserAtom",
+  default: null,
+});

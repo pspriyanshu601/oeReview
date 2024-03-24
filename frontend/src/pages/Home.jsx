@@ -7,7 +7,7 @@ import toast from "react-hot-toast";
 import { useRecoilState } from "recoil";
 import { reviewsAtom, sortAtom } from "../store";
 
-export const Home = () => {
+export default function Home() {
   const navigate = useNavigate();
 
   const [username, loading] = useUsername();
@@ -138,4 +138,4 @@ export const Home = () => {
       </div>
     </>
   );
-};
+}
