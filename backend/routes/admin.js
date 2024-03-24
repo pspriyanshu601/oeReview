@@ -4,6 +4,7 @@ import verifyReview from "../controllers/admin/verifyReview.js";
 import unverifiedReviews from "../controllers/admin/unverifiedReviews.js";
 import adminVerifyMiddleware from "../middlewares/adminVerify.js";
 import deleteAllUserSubjectController from "../controllers/admin/deleteAllUserSubjects.js";
+import pool from "../database/db.js";
 
 const adminRouter = express.Router();
 
@@ -33,7 +34,7 @@ adminRouter.get("/username", adminVerifyMiddleware, async (req, res) => {
   } catch (error) {
     console.log(error);
     return res.status(500).json({
-      status: false,
+      success: false,
       message: "Internal Server Error",
     });
   }
