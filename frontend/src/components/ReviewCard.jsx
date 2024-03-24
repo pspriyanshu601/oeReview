@@ -95,8 +95,10 @@ export default function ReviewCard({
                   setDisableButton(true);
                   const link =
                     import.meta.env.VITE_REVIEWLINK +
-                    "/admin/deleteReview" +
+                    "/admin/deleteReview/" +
                     review.review_id;
+                  console.log(review);
+                  console.log(review.review_id);
                   const token = localStorage.getItem("token");
 
                   await axios.delete(link, {
@@ -113,6 +115,7 @@ export default function ReviewCard({
                   toast.success("Review Deleted");
                   setDisableButton(false);
                 } catch (e) {
+                  setDisableButton(false);
                   console.log(e);
                   toast.error("Error Deleting Review");
                 }

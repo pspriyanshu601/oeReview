@@ -40,7 +40,7 @@ export default function Navbar() {
             Review
           </span>
         </a>
-        <div className="flex gap-4">
+        <div className="flex gap-1">
           {loading === false && admin !== null && (
             // <button
             //   type="button"
