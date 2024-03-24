@@ -23,6 +23,7 @@ const adminVerifyMiddleware = async (req, res, next) => {
         message: "Unauthorized User",
       });
     }
+    req.body.userId = data.id;
     next();
   } catch (error) {
     return res.status(500).json({
