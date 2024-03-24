@@ -10,6 +10,7 @@ export default function ReviewCard({
   setDisplayReview,
   showVerify = true,
   colorDelete = false,
+  deleteReview = false,
 }) {
   const [disableButton, setDisableButton] = useState(false);
   return (
@@ -89,6 +90,34 @@ export default function ReviewCard({
             }  dark:border-gray-600 dark:hover:text-white dark:hover:bg-gray-700`}
             onClick={async () => {
               if (disableButton) return;
+              if (deleteReview) {
+                try {
+                  setDisableButton(true);
+                  const link =
+                    import.meta.env.VITE_REVIEWLINK +
+                    "/admin/deleteReview" +
+                    review.review_id;
+                  const token = localStorage.getItem("token");
+
+                  await axios.delete(link, {
+                    headers: {
+                      Authorization: token,
+                    },
+                  });
+
+                  const newDisplayReview = displayReview.filter(
+                    (review) => review.review_id !== review.review_id
+                  );
+                  setDisplayReview(newDisplayReview);
+
+                  toast.success("Review Deleted");
+                  setDisableButton(false);
+                } catch (e) {
+                  console.log(e);
+                  toast.error("Error Deleting Review");
+                }
+                return;
+              }
               try {
                 setDisableButton(true);
                 const link =

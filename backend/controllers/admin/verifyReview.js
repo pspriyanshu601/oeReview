@@ -16,11 +16,11 @@ const verifyReview = async (req, res) => {
       });
     }
     const { reviewId, verified } = req.body;
+    const reviewToBeVerified = await pool.query(
+      "SELECT * FROM reviews WHERE review_id=$1",
+      [reviewId]
+    );
     if (verified) {
-      const reviewToBeVerified = await pool.query(
-        "SELECT * FROM reviews WHERE review_id=$1",
-        [reviewId]
-      );
       await pool.query(
         "UPDATE reviews SET isadminverified = true WHERE review_id = $1",
         [reviewId]
@@ -44,6 +44,7 @@ const verifyReview = async (req, res) => {
       });
     } else {
       await pool.query("DELETE FROM reviews WHERE review_id = $1", [reviewId]);
+
       return res.status(200).json({
         success: true,
         message: "Review Deleted Successfully",

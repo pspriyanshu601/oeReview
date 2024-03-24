@@ -66,6 +66,7 @@ export default function DeleteReview() {
                 setDisplayReview={setReviews}
                 showVerify={false}
                 colorDelete={true}
+                deleteReview={true}
               />
             ))}
           </div>

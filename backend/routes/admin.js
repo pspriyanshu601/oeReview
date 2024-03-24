@@ -36,6 +36,63 @@ adminRouter.delete(
   adminVerifyMiddleware,
   deleteAllUserSubjectController
 );
+adminRouter.patch("/clearSubjects", adminVerifyMiddleware, async (req, res) => {
+  try {
+    await pool.query(
+      "UPDATE subjects SET stars = 0, attendance_stars = 0, grades_stars = 0, quality_stars = 0, comments = 0"
+    );
+    return res.status(200).json({
+      success: true,
+      message: "Subjects Cleared Successfully",
+    });
+  } catch (error) {
+    console.log(error);
+    return res.status(500).json({
+      success: false,
+      message: "Internal Server Error",
+    });
+  }
+});
+
+adminRouter.delete(
+  "/deleteReview/:reviewId",
+  adminVerifyMiddleware,
+  async (req, res) => {
+    try {
+      const { reviewId } = req.params;
+      await pool.query("DELETE FROM reviews WHERE review_id = $1", [reviewId]);
+      const reviewToBeVerified = await pool.query(
+        "SELECT * FROM reviews WHERE review_id=$1",
+        [reviewId]
+      );
+
+      const decreaseInfo = reviewToBeVerified.rows[0];
+      const decreaseStarAndComments = `
+      UPDATE subjects
+      SET
+      stars = stars - ${decreaseInfo.stars},
+      attendance_stars = attendance_stars - ${decreaseInfo.attendance_stars},
+      grades_stars = grades_stars - ${decreaseInfo.grades_stars},
+      quality_stars = quality_stars - ${decreaseInfo.quality_stars},
+      comments = comments - 1
+      WHERE
+      subject_id = ${decreaseInfo.subject_id};
+      `;
+      await pool.query(decreaseStarAndComments);
+
+      return res.status(200).json({
+        success: true,
+        message: "Review Deleted Successfully",
+      });
+    } catch (error) {
+      console.log(error);
+      return res.status(500).json({
+        success: false,
+        message: "Internal Server Error",
+      });
+    }
+  }
+);
 adminRouter.get("/username", adminVerifyMiddleware, async (req, res) => {
   try {
     const username = await pool.query(
