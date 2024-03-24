@@ -35,16 +35,16 @@ export default function Admin() {
 
   if (loading || loadingClick) return <Loading />;
   return (
-    <div className="min-h-screen bg-blue-200 pt-[90px] p-2 flex flex-col justify-start">
+    <div className="min-h-screen bg-gray-800-200 pt-[90px] p-2 flex flex-col justify-start">
       <h1 className="text-2xl text-center text-black mb-4">Pending Reviews</h1>
       {displayReview.length !== 0 && (
-        <div className="w-full flex max-md:flex-col p-4 items-center">
+        <div className="w-full flex max-md:flex-col md:flex-wrap md:justify-center md:gap-4  p-4 items-center">
           {displayReview.map((review, index) => (
             <div
               key={index}
-              className="w-full mb-4 bg-white border border-gray-200 rounded-lg shadow dark:bg-gray-800 dark:border-gray-700"
+              className="max-md:w-full mb-8 bg-white border border-gray-200 rounded-lg shadow dark:bg-gray-800 dark:border-gray-700"
             >
-              <div className="flex flex-col px-6 pt-6 pb-10">
+              <div className="flex flex-col px-6 pt-6 pb-10 ">
                 <h5 className="mb-1 text-xl font-medium text-gray-900 dark:text-white">
                   {review.subject_name}
                 </h5>
