@@ -35,3 +35,8 @@ export const adminUserAtom = atom({
   key: "adminUserAtom",
   default: null,
 });
+
+export const adminWorkAtom = atom({
+  key: "adminWorkAtom",
+  default: null,
+});

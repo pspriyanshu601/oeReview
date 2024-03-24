@@ -18,9 +18,9 @@ export default function Home() {
 
   const [sortValue, setSortValue] = useRecoilState(sortAtom);
 
-  const handleChange = (e) => {
-    setSortValue(e.target.value);
-  };
+  // const handleChange = (e) => {
+  //   setSortValue(e.target.value);
+  // };
 
   useEffect(() => {
     if (username == null) navigate("/", { replace: true });
@@ -67,22 +67,6 @@ export default function Home() {
   return (
     <>
       <div className="h-screen pt-[68px] bg-gray-50 dark:bg-gray-800">
-        <div className="h-16 flex items-center justify-between bg-gray-900 text-white px-5">
-          <div className="flex items-center">
-            <p className="text-white text-2xl">Most reviewed OE</p>
-          </div>
-          <select
-            value={sortValue}
-            onChange={handleChange}
-            className="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
-          >
-            <option value="overall">Overall</option>
-            <option value="attendance">Attendance</option>
-            <option value="quality">Quality</option>
-            <option value="grades">Grades</option>
-          </select>
-        </div>
-
         <div className="grid grid-cols-5 p-2 text-xs text-gray-700 uppercase font-bold bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
           <div className="flex items-center justify-center">Name</div>
           <div className="flex items-center justify-center">Code</div>
