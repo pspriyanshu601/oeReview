@@ -4,7 +4,7 @@ import { useSetRecoilState } from "recoil";
 import { reviewIndexAtom } from "../store";
 import toast from "react-hot-toast";
 import axios from "axios";
-import { Navigate, useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 
 export default function Review({ courseName, last, courseCode }) {
   const [remark, setRemark] = useState("");

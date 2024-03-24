@@ -29,7 +29,11 @@ export default function AddReview() {
             Authorization: token,
           },
         });
-        setSubjects(response.data.userSubjects);
+        if (response.data.userUnreviewedSubjects.length === 0) {
+          navigate("/home", { replace: true });
+          return;
+        }
+        setSubjects(response.data.userUnreviewedSubjects);
         setLoadingClick(false);
       } catch (error) {
         setLoadingClick(false);
@@ -40,7 +44,7 @@ export default function AddReview() {
       }
     };
     run();
-  }, [setAddingReview]);
+  }, [navigate, setAddingReview]);
 
   useEffect(() => {
     if (username == null && !loading && !loadingClick) {
