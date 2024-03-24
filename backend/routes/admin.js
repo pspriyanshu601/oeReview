@@ -15,7 +15,7 @@ adminRouter.get("/unverifiedReviews", adminVerifyMiddleware, unverifiedReviews);
 adminRouter.get("/allReviews", adminVerifyMiddleware, async (req, res) => {
   try {
     const reviews = await pool.query(
-      "SELECT * FROM reviews ORDER BY review_id DESC"
+      "SELECT reviews.*, users.username, subjects.subject_name, subjects.course_code FROM reviews INNER JOIN users ON reviews.user_id = users.id INNER JOIN subjects ON reviews.subject_id = subjects.subject_id ORDER BY reviews.review_id DESC"
     );
     return res.status(200).json({
       success: true,
