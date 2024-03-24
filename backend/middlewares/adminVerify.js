@@ -6,7 +6,6 @@ const adminVerifyMiddleware = async (req, res, next) => {
     var data;
     const token = req.headers.authorization;
     try {
-      console.log(token);
       data = jwt.verify(token, process.env.JWT_SECRET);
     } catch (error) {
       return res.status(401).json({
@@ -27,6 +26,7 @@ const adminVerifyMiddleware = async (req, res, next) => {
     req.body.userId = data.id;
     next();
   } catch (error) {
+    console.log(error);
     return res.status(500).json({
       success: false,
       message: "internal server error",

@@ -9,10 +9,10 @@ const unverifiedReviews = async (req, res) => {
     const limit = 10;
     const startIndex = (page - 1) * limit;
 
-    // if page == 0 return all
+    // if page == 0 return all also send the username of the user who posted the review
     if (page == 0) {
       const reviews = await pool.query(
-        "SELECT * FROM reviews WHERE isadminverified = false ORDER BY review_id DESC"
+        "SELECT reviews.*, users.username FROM reviews INNER JOIN users ON reviews.user_id = users.id WHERE reviews.isadminverified = false ORDER BY reviews.review_id DESC"
       );
 
       return res.status(200).json({
@@ -22,7 +22,7 @@ const unverifiedReviews = async (req, res) => {
     }
 
     const reviews = await pool.query(
-      "SELECT * FROM reviews WHERE isadminverified = false ORDER BY review_id DESC LIMIT $1 OFFSET $2",
+      "SELECT reviews.*, users.username FROM reviews INNER JOIN users ON reviews.user_id = users.id WHERE reviews.isadminverified = false ORDER BY reviews.review_id DESC LIMIT $1 OFFSET $2",
       [limit, startIndex]
     );
 
