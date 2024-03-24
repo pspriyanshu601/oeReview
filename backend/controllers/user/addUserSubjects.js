@@ -27,6 +27,13 @@ const addUserSubjectsController = async (req, res) => {
       }
       subjectIdsArray.push(req.body[`subject${i}Id`]);
     }
+    const hasDuplicates = subjectIdsArray.length !== new Set(subjectIdsArray).size;
+    if(hasDuplicates){
+      return res.status(400).json({
+        success:false,
+        message:'Duplicate subjects not allowed'
+      });
+    }
 
     const subjectIdsObject = {};
     for (let i = 0; i < noOfSubjects; i++) {
