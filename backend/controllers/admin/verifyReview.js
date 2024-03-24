@@ -25,7 +25,7 @@ const verifyReview = async (req, res) => {
         "UPDATE reviews SET isadminverified = true WHERE review_id = $1",
         [reviewId]
       );
-      const increaseInfo=reviewToBeVerified.rows[0];
+      const increaseInfo = reviewToBeVerified.rows[0];
       const increaseStarAndComments = `
       UPDATE subjects
       SET 
@@ -39,11 +39,15 @@ const verifyReview = async (req, res) => {
       `;
       await pool.query(increaseStarAndComments);
       return res.status(200).json({
-        success:true,
-        message:'Review Verified Successfully'
-      })
+        success: true,
+        message: "Review Verified Successfully",
+      });
     } else {
       await pool.query("DELETE FROM reviews WHERE review_id = $1", [reviewId]);
+      return res.status(200).json({
+        success: true,
+        message: "Review Deleted Successfully",
+      });
     }
   } catch (error) {
     console.log(error);

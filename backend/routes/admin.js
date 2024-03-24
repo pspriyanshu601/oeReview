@@ -5,12 +5,32 @@ import unverifiedReviews from "../controllers/admin/unverifiedReviews.js";
 import adminVerifyMiddleware from "../middlewares/adminVerify.js";
 import deleteAllUserSubjectController from "../controllers/admin/deleteAllUserSubjects.js";
 import pool from "../database/db.js";
+import resetReview from "../controllers/admin/resetReview.js";
 
 const adminRouter = express.Router();
 
 adminRouter.post("/addSubject", adminVerifyMiddleware, addSubject);
 adminRouter.post("/verifyReview", adminVerifyMiddleware, verifyReview);
 adminRouter.get("/unverifiedReviews", adminVerifyMiddleware, unverifiedReviews);
+adminRouter.get("/allReviews", adminVerifyMiddleware, async (req, res) => {
+  try {
+    const reviews = await pool.query(
+      "SELECT * FROM reviews ORDER BY review_id DESC"
+    );
+    return res.status(200).json({
+      success: true,
+      message: "Reviews fetched successfully",
+      reviews: reviews.rows,
+    });
+  } catch (error) {
+    console.log(error);
+    return res.status(500).json({
+      success: false,
+      message: "Internal Server Error",
+    });
+  }
+});
+adminRouter.patch("/resetReview", adminVerifyMiddleware, resetReview);
 adminRouter.delete(
   "/deleteAllUsersSubjects",
   adminVerifyMiddleware,
