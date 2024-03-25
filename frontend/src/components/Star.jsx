@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { FaStar } from "react-icons/fa";
+// eslint-disable-next-line react/prop-types
 export default function Star({ rating, setRating }) {
   const [hover, setHover] = useState(0);
   return (

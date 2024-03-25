@@ -1,6 +1,7 @@
 import axios from "axios";
 import { useState } from "react";
 import toast from "react-hot-toast";
+import Loading from "../pages/Loading";
 
 /* eslint-disable react/prop-types */
 export default function ReviewCard({
@@ -12,7 +13,10 @@ export default function ReviewCard({
   colorDelete = false,
   deleteReview = false,
 }) {
+  // warning: dont use loadingAtom here
   const [disableButton, setDisableButton] = useState(false);
+  const [loading, setLoading] = useState(false);
+  if (loading) return <Loading />;
   return (
     <div
       key={index}
@@ -51,6 +55,7 @@ export default function ReviewCard({
               onClick={async () => {
                 if (disableButton) return;
                 try {
+                  setLoading(true);
                   setDisableButton(true);
                   const link =
                     import.meta.env.VITE_REVIEWLINK + "/admin/verifyReview";
@@ -66,16 +71,18 @@ export default function ReviewCard({
                   });
 
                   const newDisplayReview = displayReview.filter(
-                    (review) => review.review_id !== data.reviewId
+                    (localReview) => localReview.review_id !== review.review_id
                   );
                   setDisplayReview(newDisplayReview);
 
                   toast.success("Review Verified");
                   setDisableButton(false);
+                  setLoading(false);
                 } catch (error) {
                   console.log(error);
                   setDisableButton(false);
                   toast.error("Error Verifying Review");
+                  setLoading(false);
                 }
               }}
             >
@@ -93,6 +100,7 @@ export default function ReviewCard({
               if (deleteReview) {
                 try {
                   setDisableButton(true);
+                  setLoading(true);
                   const link =
                     import.meta.env.VITE_REVIEWLINK +
                     "/admin/deleteReview/" +
@@ -108,45 +116,51 @@ export default function ReviewCard({
                   });
 
                   const newDisplayReview = displayReview.filter(
-                    (review) => review.review_id !== review.review_id
+                    (localReview) => localReview.review_id !== review.review_id
                   );
                   setDisplayReview(newDisplayReview);
+                  setLoading(false);
 
                   toast.success("Review Deleted");
                   setDisableButton(false);
                 } catch (e) {
                   setDisableButton(false);
+                  setLoading(false);
                   console.log(e);
                   toast.error("Error Deleting Review");
                 }
                 return;
-              }
-              try {
-                setDisableButton(true);
-                const link =
-                  import.meta.env.VITE_REVIEWLINK + "/admin/verifyReview";
-                const token = localStorage.getItem("token");
-                const data = {
-                  reviewId: review.review_id,
-                  verified: false,
-                };
-                await axios.post(link, data, {
-                  headers: {
-                    Authorization: token,
-                  },
-                });
+              } else {
+                try {
+                  setDisableButton(true);
+                  setLoading(true);
+                  const link =
+                    import.meta.env.VITE_REVIEWLINK + "/admin/verifyReview";
+                  const token = localStorage.getItem("token");
+                  const data = {
+                    reviewId: review.review_id,
+                    verified: false,
+                  };
+                  await axios.post(link, data, {
+                    headers: {
+                      Authorization: token,
+                    },
+                  });
 
-                const newDisplayReview = displayReview.filter(
-                  (review) => review.review_id !== data.reviewId
-                );
-                setDisplayReview(newDisplayReview);
+                  const newDisplayReview = displayReview.filter(
+                    (localReview) => localReview.review_id !== review.review_id
+                  );
+                  setDisplayReview(newDisplayReview);
+                  setLoading(false);
 
-                toast.success("Review Deleted");
-                setDisableButton(false);
-              } catch (error) {
-                console.log(error);
-                toast.error("Error Deleting Review");
-                setDisableButton(false);
+                  toast.success("Review Deleted");
+                  setDisableButton(false);
+                } catch (error) {
+                  console.log(error);
+                  toast.error("Error Deleting Review");
+                  setDisableButton(false);
+                  setLoading(false);
+                }
               }
             }}
           >
