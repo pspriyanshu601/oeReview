@@ -1,31 +1,22 @@
-import pool from "../../database/db.js"
+import pool from "../../database/db.js";
 import pageChecker from "../../validators/page.js";
 
-function getElements(data, page) {
-    const pageSize = 10; // Number of elements per page
-    if (page == 0) return data;
-    const startIndex = (page - 1) * pageSize; // Calculate start index
-    const endIndex = startIndex + pageSize; // Calculate end index
-    return data.slice(startIndex, endIndex); // Return elements for the given page
-  }
-
-const departmentPagedSubjectsController=async (req,res)=>{
-    try {
-        const query = req.params.filter;
-    if (query !== "attendance" && query !== "quality" && query !== "grades" && query !== "overall") {
+const departmentPagedSubjectsController = async (req, res) => {
+  try {
+    const query = req.params.filter;
+    if (
+      query !== "attendance" &&
+      query !== "quality" &&
+      query !== "grades" &&
+      query !== "overall"
+    ) {
       return res.status(400).json({
         success: false,
         message: "Invalid filter Param",
       });
     }
-    if (!(await pageChecker(parseInt(req.params.page)))) {
-      return res.status(400).json({
-        success: false,
-        message: "This page does not exist",
-      });
-    }
-    if(query==="overall"){
-        const overallQuery=`
+    if (query === "overall") {
+      const overallQuery = `
         WITH WeightedSubjects AS (
             SELECT 
                 s.*,
@@ -51,13 +42,15 @@ const departmentPagedSubjectsController=async (req,res)=>{
             d.department_id=$1
         ORDER BY 
             ws.weighted_value DESC;     
-        `
-        const subjects=await pool.query(overallQuery,[parseInt(req.params.departmentId)]);
-        return res.status(200).json({
-            success: true,
-            message: "Fetched subjects successfully",
-            reviews: getElements(subjects.rows, req.params.page),
-          });
+        `;
+      const subjects = await pool.query(overallQuery, [
+        parseInt(req.params.departmentId),
+      ]);
+      return res.status(200).json({
+        success: true,
+        message: "Fetched subjects successfully",
+        reviews: subjects.rows,
+      });
     }
     const pageQuery = `
     WITH WeightedSubjects AS (
@@ -89,20 +82,19 @@ const departmentPagedSubjectsController=async (req,res)=>{
         ws.weighted_value DESC; 
       `;
 
-    const reviews = await pool.query(pageQuery,[req.params.departmentId]);
+    const reviews = await pool.query(pageQuery, [req.params.departmentId]);
     return res.status(200).json({
       success: true,
       message: "Fetched subjects successfully",
-      reviews: getElements(reviews.rows, req.params.page),
+      reviews: reviews.rows,
     });
-        
-    } catch (error) {
-        console.log(error);
-        return res.status(500).json({
-            success:false,
-            message:"Internal Server Error"
-        })
-    }
-}
+  } catch (error) {
+    console.log(error);
+    return res.status(500).json({
+      success: false,
+      message: "Internal Server Error",
+    });
+  }
+};
 
-export default departmentPagedSubjectsController
+export default departmentPagedSubjectsController;
