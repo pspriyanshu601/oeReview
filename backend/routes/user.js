@@ -11,6 +11,7 @@ import pagedSubjectsQueryController from "../controllers/user/pagedSubjectsQuery
 import hasAddedSubjectsController from "../controllers/user/hasAddedSubjects.js";
 import addUserSubjectsController from "../controllers/user/addUserSubjects.js";
 import userSubjectsController from "../controllers/user/userSubjects.js";
+import departmentPagedSubjectsController from "../controllers/user/departmentPagedSubjects.js";
 
 const userRouter = express.Router();
 
@@ -36,6 +37,11 @@ userRouter.get(
   "/allSubjects/departmentId/:departmentId",
   verifyMiddleware,
   departmentSubjectsController
+);
+userRouter.get(
+  "/allSubjects/departmentId/:departmentId/filter/:filter/page/:page",
+  verifyMiddleware,
+  departmentPagedSubjectsController
 );
 userRouter.get(
   "/hasAddedSubjects",
