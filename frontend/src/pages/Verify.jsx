@@ -2,59 +2,52 @@ import { useEffect, useState } from "react";
 import toast from "react-hot-toast";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
-import useUsername from "../hooks/useUsername";
 import Loading from "./Loading";
+import { useRecoilState, useRecoilValue } from "recoil";
+import { loadingAtom, usernameAtom } from "../store";
+import useAuth from "../hooks/useAuth";
 
 export const Verify = () => {
+  useAuth();
   const navigate = useNavigate();
   const [email, setEmail] = useState("");
   const [otp, setOtp] = useState("");
+  const [loading, setLoading] = useRecoilState(loadingAtom);
+  const username = useRecoilValue(usernameAtom);
 
-  const handleEmailChange = (e) => {
-    setEmail(e.target.value);
-  };
-
-  const handleOtpChange = (e) => {
-    setOtp(e.target.value);
-  };
-
-  const [name, loading] = useUsername();
-  const [loadingClick, setLoadingClick] = useState(false);
-
+  // send user to home if already logged in
   useEffect(() => {
-    if (name != null) navigate("/home", { replace: true });
-  }, [navigate, name]);
-
-  const link = import.meta.env.VITE_REVIEWLINK + "/auth/verifyEmail";
+    if (!loading && username != null) {
+      navigate("/home", { replace: true });
+    }
+  }, [loading, username, navigate]);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    setLoadingClick(true);
-
+    setLoading(true);
     try {
+      const link = import.meta.env.VITE_REVIEWLINK + "/auth/verifyEmail";
       const response = await axios.post(link, {
         email,
         otp,
       });
-
-      if (response.data.token) {
+      if (response.data.success == true) {
         localStorage.setItem("token", response.data.token);
+        toast.success(response.data.message);
       }
-
-      if (response.data.success == true) toast.success(response.data.message);
-      else toast.error(response.data.message);
-
-      if (response.data.path)
+      if (response.data.path) {
         navigate("/" + response.data.path, { replace: true });
-      setLoadingClick(false);
+      }
+      setLoading(false);
     } catch (error) {
       console.log(error);
-      toast.error(error.response.data.message);
-      setLoadingClick(false);
+      if (error.response.data.message) toast.error(error.response.data.message);
+      else toast.error("An error occurred");
+      setLoading(false);
     }
   };
 
-  if (loading || loadingClick) return <Loading />;
+  if (loading) return <Loading />;
 
   return (
     <>
@@ -75,7 +68,7 @@ export const Verify = () => {
                   </label>
                   <input
                     value={email}
-                    onChange={handleEmailChange}
+                    onChange={(e) => setEmail(e.target.value)}
                     type="email"
                     name="email"
                     id="email"
@@ -93,7 +86,7 @@ export const Verify = () => {
                   </label>
                   <input
                     value={otp}
-                    onChange={handleOtpChange}
+                    onChange={(e) => setOtp(e.target.value)}
                     type="text"
                     name="password"
                     id="password"

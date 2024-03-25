@@ -2,56 +2,53 @@ import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
 import { InputField } from "../components/InputField";
-import useUsername from "../hooks/useUsername";
 import toast from "react-hot-toast";
 import Loading from "./Loading";
+import useAuth from "../hooks/useAuth";
+import { useRecoilState, useRecoilValue } from "recoil";
+import { loadingAtom, usernameAtom } from "../store";
 
 export const Login = () => {
+  useAuth();
   const navigate = useNavigate();
-
+  const username = useRecoilValue(usernameAtom);
+  const [loading, setLoading] = useRecoilState(loadingAtom);
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
 
-  const handlePasswordChange = (e) => {
-    setPassword(e.target.value);
-  };
-
-  const handleEmailChange = (e) => {
-    setEmail(e.target.value);
-  };
-
-  const [username, loading] = useUsername();
-  const [loadingClick, setLoadingClick] = useState(false);
-
+  // send user to home if already logged in
   useEffect(() => {
-    if (username != null) navigate("/home", { replace: true });
-  }, [navigate, username]);
-
-  const link = import.meta.env.VITE_REVIEWLINK + "/auth/login";
+    if (!loading && username != null) {
+      navigate("/home", { replace: true });
+    }
+  }, [loading, navigate, username]);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    setLoadingClick(true);
+    setLoading(true);
     try {
+      const link = import.meta.env.VITE_REVIEWLINK + "/auth/login";
       const response = await axios.post(link, {
         email,
         password,
       });
-      localStorage.setItem("token", response.data.token);
-      toast.success(response.data.message);
-      setLoadingClick(false);
+      if (response.data.success) {
+        localStorage.setItem("token", response.data.token);
+        toast.success(response.data.message);
+      }
       if (response.data.path) {
         navigate("/" + response.data.path, { replace: true });
       }
+      setLoading(false);
     } catch (error) {
       console.log(error);
       if (error.response.data.message) toast.error(error.response.data.message);
       else toast.error("An error occurred");
-      setLoadingClick(false);
+      setLoading(false);
     }
   };
 
-  if (loading || loadingClick) return <Loading />;
+  if (loading) return <Loading />;
 
   return (
     <div className="bg-gray-50 dark:bg-gray-900 h-screen">
@@ -65,14 +62,14 @@ export const Login = () => {
               <InputField
                 label={`Email`}
                 value={email}
-                onchange={handleEmailChange}
+                onchange={(e) => setEmail(e.target.value)}
                 placeholder={"xxxxx@iitism.ac.in"}
                 type={"email"}
               />
               <InputField
                 label={`Password`}
                 value={password}
-                onchange={handlePasswordChange}
+                onchange={(e) => setPassword(e.target.value)}
                 placeholder={"••••••••"}
                 type={"password"}
               />

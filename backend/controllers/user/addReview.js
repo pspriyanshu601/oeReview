@@ -4,10 +4,10 @@ import courseCodeChecker from "../../validators/courseCodeChecker.js";
 
 const addReviewController = async (req, res) => {
   try {
-    if(!courseCodeChecker(req.params.courseCode)){
+    if (!courseCodeChecker(req.params.courseCode)) {
       return res.status(400).json({
-        success:false,
-        message:'Invalid Data'
+        success: false,
+        message: "Invalid Data",
       });
     }
     if (!validateReviewBody(req.body)) {
@@ -47,10 +47,12 @@ const addReviewController = async (req, res) => {
     }
 
     //check if user has already reviewed and is admin verified
+
     const alreadyAddedVerified = await pool.query(
       "SELECT * FROM reviews WHERE user_id=$1 AND subject_id=$2 AND isadminverified=$3",
       [parseInt(user_id), parseInt(subject_id), true]
     );
+
     if (alreadyAddedVerified.rows.length > 0) {
       return res.status(400).json({
         success: false,
@@ -61,9 +63,9 @@ const addReviewController = async (req, res) => {
     const addReview = `INSERT INTO reviews (details, stars, subject_id, user_id, attendance_stars, grades_stars, quality_stars)
     VALUES ($1, $2, $3, $4, $5, $6, $7);
     `;
-    
+
     //finally adds the review
-   const lol= await pool.query(addReview, [
+    const lol = await pool.query(addReview, [
       details,
       stars,
       subject_id,

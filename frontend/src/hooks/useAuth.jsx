@@ -1,16 +1,16 @@
 import axios from "axios";
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
 import { useNavigate } from "react-router-dom";
-import { useRecoilState } from "recoil";
-import { usernameAtom } from "../store";
+import { useSetRecoilState } from "recoil";
+import { loadingAtom, usernameAtom } from "../store";
 
-export default function useUsername() {
+export default function useAuth() {
   const navigate = useNavigate();
-  const [username, setUsername] = useRecoilState(usernameAtom);
-  const [loading, setLoading] = useState(true);
-
+  const setLoading = useSetRecoilState(loadingAtom);
+  const setUsername = useSetRecoilState(usernameAtom);
   useEffect(() => {
     async function responses() {
+      setLoading(true);
       try {
         const token = localStorage.getItem("token");
         const link = import.meta.env.VITE_REVIEWLINK + "/user/username";
@@ -20,16 +20,14 @@ export default function useUsername() {
             Authorization: token,
           },
         });
-
         setUsername(response.data.name);
         setLoading(false);
       } catch (error) {
         console.log(error);
+        setUsername(null);
         setLoading(false);
       }
     }
     responses();
-  }, [navigate, setUsername]);
-
-  return [username, loading];
+  }, [navigate, setUsername, setLoading]);
 }

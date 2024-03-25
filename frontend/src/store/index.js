@@ -1,9 +1,5 @@
 import { atom } from "recoil";
 
-export const usernameAtom = atom({
-  key: "usernameAtom",
-  default: null,
-});
 export const sortAtom = atom({
   key: "sortAtom",
   default: "overall",
@@ -24,20 +20,32 @@ export const addingReviewAtom = atom({
   default: false,
 });
 
+export const courseCodeAtom = atom({
+  key: "courseCodeAtom",
+  default: "",
+});
+
+export const departmentIdAtom = atom({
+  key: "departmentIdAtom",
+  default: null,
+});
+
+// core logic state
+
+export const usernameAtom = atom({
+  key: "usernameAtom",
+  default: null,
+});
+
+export const loadingAtom = atom({
+  key: "loadingAtom",
+  default: false,
+});
+
 export const reviewIndexAtom = atom({
   key: "reviewIndexAtom",
   default: 0,
 });
-
-export const courseCodeAtom = atom({
-  key: "courseCodeAtom",
-  default: ""
-})
-
-export const departmentIdAtom = atom({
-  key: "departmentIdAtom",
-  default: null
-})
 
 ///////// admin
 
