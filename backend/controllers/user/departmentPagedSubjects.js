@@ -49,7 +49,7 @@ const departmentPagedSubjectsController = async (req, res) => {
       return res.status(200).json({
         success: true,
         message: "Fetched subjects successfully",
-        reviews: subjects.rows,
+        subjects: subjects.rows,
       });
     }
     const pageQuery = `
@@ -86,7 +86,7 @@ const departmentPagedSubjectsController = async (req, res) => {
     return res.status(200).json({
       success: true,
       message: "Fetched subjects successfully",
-      reviews: reviews.rows,
+      subjects: reviews.rows,
     });
   } catch (error) {
     console.log(error);
