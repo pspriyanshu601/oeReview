@@ -2,24 +2,24 @@ import { useNavigate } from "react-router-dom";
 import Logo from "../assets/images/oeLogo.png";
 import { useRecoilState, useRecoilValue } from "recoil";
 import {
-  addingReviewAtom,
   adminWorkAtom,
   alreadyAddedReviewAtom,
+  loadingAtom,
   sortAtom,
+  usernameAtom,
 } from "../store";
-import useAdminUsername from "../hooks/useAdminUsername";
 import { useState } from "react";
+import useAdminAuth from "../hooks/useAdminAuth";
 
 export default function Navbar() {
+  useAdminAuth();
   const navigate = useNavigate();
   const alreadyAddedReview = useRecoilValue(alreadyAddedReviewAtom);
-  const [addingReview, setAddingReview] = useRecoilState(addingReviewAtom);
-  const [admin, loading] = useAdminUsername();
-  const [sortValue, setSortValue] = useRecoilState(sortAtom);
-
+  const admin = useRecoilValue(usernameAtom);
+  const loading = useRecoilValue(loadingAtom);
   const [isOpen, setIsOpen] = useState(false);
+  const [sortValue, setSortValue] = useRecoilState(sortAtom);
   const [adminOpen, setAdminOpen] = useState(false);
-
   const [adminWork, setAdminWork] = useRecoilState(adminWorkAtom);
   return (
     <nav
@@ -41,16 +41,8 @@ export default function Navbar() {
           </span>
         </a>
         <div className="flex gap-1">
+          {/* admin */}
           {loading === false && admin !== null && (
-            // <button
-            //   type="button"
-            //   className="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-4 py-2 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
-            //   onClick={() => navigate("/home/admin")}
-            // >
-            //   Admin
-            // </button>
-
-            // same for admin
             <div className="relative inline-block text-left">
               <div>
                 <button
@@ -120,6 +112,7 @@ export default function Navbar() {
             </div>
           )}
 
+          {/* filter */}
           <div className="relative inline-block text-left">
             <div>
               <button
@@ -185,13 +178,13 @@ export default function Navbar() {
             )}
           </div>
 
-          {alreadyAddedReview === false && addingReview === false && (
+          {/* add review */}
+          {alreadyAddedReview === false && (
             <div className="flex items-center space-x-3 rtl:space-x-reverse mx-2">
               <button
                 type="button"
                 className="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-4 py-2 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
                 onClick={() => {
-                  setAddingReview(true);
                   navigate("/home/addSubjects");
                 }}
               >
@@ -203,22 +196,4 @@ export default function Navbar() {
       </div>
     </nav>
   );
-}
-
-{
-  /* <div className="h-16 flex items-center justify-between bg-gray-900 text-white px-5">
-  <div className="flex items-center">
-    <p className="text-white text-2xl">Most reviewed OE</p>
-  </div>
-  <select
-    value={sortValue}
-    onChange={handleChange}
-    className="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
-  >
-    <option value="overall">Overall</option>
-    <option value="attendance">Attendance</option>
-    <option value="quality">Quality</option>
-    <option value="grades">Grades</option>
-  </select>
-</div>; */
 }

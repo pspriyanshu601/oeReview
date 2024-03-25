@@ -26,8 +26,11 @@ export const DeptSubjects = () => {
 
   useEffect(() => {
     if (!loading && username === null) navigate("/", { replace: true });
-    if (departmentId === null) navigate("/home/allDepartments");
   }, [username, loading, navigate, departmentId]);
+
+  useEffect(() => {
+    if (!loading && departmentId === null) navigate("/home", { replace: true });
+  }, [departmentId, loading, navigate]);
 
   useEffect(() => {
     const token = localStorage.getItem("token");
