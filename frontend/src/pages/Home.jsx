@@ -4,8 +4,8 @@ import useUsername from "../hooks/useUsername";
 import Loading from "./Loading";
 import axios from "axios";
 import toast from "react-hot-toast";
-import { useRecoilState, useRecoilValue } from "recoil";
-import { reviewsAtom, sortAtom } from "../store";
+import { useRecoilState, useRecoilValue, useSetRecoilState } from "recoil";
+import { courseCodeAtom, reviewsAtom, sortAtom } from "../store";
 
 export default function Home() {
   const navigate = useNavigate();
@@ -13,6 +13,7 @@ export default function Home() {
   const [username, loading] = useUsername();
   const [loadingClick, setLoadingClick] = useState(false);
   const [page, setPage] = useState(1);
+  const setCourseCode = useSetRecoilState(courseCodeAtom);
 
   const [reviews, setReviews] = useRecoilState(reviewsAtom);
 
@@ -63,6 +64,12 @@ export default function Home() {
   return (
     <>
       <div className="h-screen pt-[68px] bg-gray-50 dark:bg-gray-800">
+        <div className="h-16 flex items-center justify-between bg-gray-900 text-white px-5">
+          <div className="flex items-center font-medium">
+            <p className="text-white text-2xl">Most reviewed OE</p>
+          </div>
+        </div>
+
         <div className="grid grid-cols-5 p-2 text-xs text-gray-700 uppercase font-bold bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
           <div className="flex items-center justify-center">Name</div>
           <div className="flex items-center justify-center">Code</div>
@@ -75,7 +82,11 @@ export default function Home() {
           reviews.map((review, index) => (
             <div
               key={index}
-              className="grid grid-cols-5 p-3 text-xs text-gray-700 bg-gray-50 dark:bg-gray-800 dark:text-gray-400 relative"
+              className="grid grid-cols-5 p-3 text-xs text-gray-700 bg-gray-50 dark:bg-gray-800 dark:text-gray-400 relative hover:bg-gray-900 hover:cursor-pointer"
+              onClick={() => {
+                setCourseCode(review.course_code);
+                navigate('/home/allReviews')
+              }}
             >
               <div className="flex items-center justify-left text-white">
                 {review.subject_name}

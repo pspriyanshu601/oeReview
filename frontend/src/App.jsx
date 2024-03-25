@@ -10,6 +10,7 @@ import AddSubjects from "./pages/AddSubjects";
 import Home from "./pages/Home";
 import Admin from "./pages/Admin";
 import AddReview from "./pages/AddReview";
+import { AllReviews } from "./pages/AllReviews";
 
 function HomeRoutes() {
   return (
@@ -19,6 +20,7 @@ function HomeRoutes() {
         <Route path="/" element={<Home />} />
         <Route path="/addSubjects" element={<AddSubjects />} />
         <Route path="/addReview" element={<AddReview />} />
+        <Route path="/allReviews" element={<AllReviews />} />
         <Route path="/admin" element={<Admin />} />
       </Routes>
     </>

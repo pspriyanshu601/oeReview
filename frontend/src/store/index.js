@@ -29,6 +29,11 @@ export const reviewIndexAtom = atom({
   default: 0,
 });
 
+export const courseCodeAtom = atom({
+  key: "courseCodeAtom",
+  default: ""
+})
+
 ///////// admin
 
 export const adminUserAtom = atom({
