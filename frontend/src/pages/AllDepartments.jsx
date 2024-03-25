@@ -5,19 +5,19 @@ import toast from "react-hot-toast";
 import Loading from "./Loading";
 import { AllDepartmentCard } from "../components/AllDepartmentCard";
 import { useRecoilState, useRecoilValue } from "recoil";
-import { loadingAtom, usernameAtom } from "../store";
 import useAuth from "../hooks/useAuth";
+import { loadingAtom, usernameAtom } from "../store";
 
 export const AllDepartments = () => {
   useAuth();
-  const navigate = useNavigate();
   const username = useRecoilValue(usernameAtom);
   const [loading, setLoading] = useRecoilState(loadingAtom);
+  const navigate = useNavigate();
   const [allDepts, setAllDepts] = useState([]);
 
   // send user to login if not logged in
   useEffect(() => {
-    if (!loading && username == null) {
+    if (!loading && username === null) {
       navigate("/", { replace: true });
     }
   }, [loading, navigate, username]);
@@ -45,7 +45,7 @@ export const AllDepartments = () => {
       }
     };
     depts();
-  }, [setAllDepts, setLoading]);
+  }, [setLoading]);
 
   if (loading) return <Loading />;
   return (

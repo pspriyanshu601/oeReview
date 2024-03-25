@@ -1,65 +1,74 @@
-import { useRecoilValue } from "recoil"
-import { departmentIdAtom, sortAtom } from "../store"
-import { useEffect, useState } from "react"
-import useUsername from "../hooks/useUsername"
-import { useNavigate } from "react-router-dom"
-import toast from "react-hot-toast"
-import axios from "axios"
-import Loading from "./Loading"
+import { useRecoilState, useRecoilValue } from "recoil";
+import {
+  departmentIdAtom,
+  loadingAtom,
+  sortAtom,
+  usernameAtom,
+} from "../store";
+import { useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
+import toast from "react-hot-toast";
+import axios from "axios";
+import Loading from "./Loading";
+import useAuth from "../hooks/useAuth";
 
 export const DeptSubjects = () => {
-    const navigate = useNavigate();
-    const departmentId = useRecoilValue(departmentIdAtom)
+  useAuth();
+  const navigate = useNavigate();
+  const departmentId = useRecoilValue(departmentIdAtom);
 
-    const [loadingClick, setLoadingClick] = useState(false);
-    const [username, loading] = useUsername();
-    const [subjects, setSubjects] = useState([]);
+  const [loading, setLoading] = useRecoilState(loadingAtom);
+  const username = useRecoilValue(usernameAtom);
 
-    const sortValue = useRecoilValue(sortAtom);
+  const [subjects, setSubjects] = useState([]);
 
-    useEffect(() => {
-        if ((username == null) && (loading == false)) navigate('/', { replace: true })
-        if (departmentId == null) navigate('/home/allDepartments')
+  const sortValue = useRecoilValue(sortAtom);
 
-    }, [username, loading, navigate, departmentId])
+  useEffect(() => {
+    if (!loading && username === null) navigate("/", { replace: true });
+    if (departmentId === null) navigate("/home/allDepartments");
+  }, [username, loading, navigate, departmentId]);
 
-    useEffect(() => {
-        const token = localStorage.getItem("token");
+  useEffect(() => {
+    const token = localStorage.getItem("token");
 
-        const getSubjects = async () => {
-            setLoadingClick(true)
+    const getSubjects = async () => {
+      setLoading(true);
 
-            try {
-                const link = import.meta.env.VITE_REVIEWLINK + '/user/allSubjects/departmentId/' + departmentId + '/filter/' + sortValue;
+      try {
+        const link =
+          import.meta.env.VITE_REVIEWLINK +
+          "/user/allSubjects/departmentId/" +
+          departmentId +
+          "/filter/" +
+          sortValue;
 
-                const response = await axios.get(link, {
-                    headers: {
-                        Authorization: token
-                    }
-                })
+        const response = await axios.get(link, {
+          headers: {
+            Authorization: token,
+          },
+        });
 
-                if(response && response.data) {
-                    setSubjects(response.data.subjects)
-                }
-
-                setLoadingClick(false)
-            } catch (error) {
-                console.log(error);
-                setLoadingClick(false);
-                if (error.response.data.message)
-                    toast.error(error.response.data.message);
-                else toast.error("Something went wrong");
-            }
+        if (response && response.data) {
+          setSubjects(response.data.subjects);
         }
 
-        getSubjects()
-    }, [departmentId, sortValue])
+        setLoading(false);
+      } catch (error) {
+        console.log(error);
+        setLoading(false);
+        if (error.response.data.message)
+          toast.error(error.response.data.message);
+        else toast.error("Something went wrong");
+      }
+    };
 
-    if(loading || loadingClick) return <Loading />
+    getSubjects();
+  }, [departmentId, sortValue, setLoading]);
 
-    console.log(subjects);
+  if (loading) return <Loading />;
 
-    return (
-        <div className="mt-[68px]">DeptSubjects</div>
-    )
-}
+  console.log(subjects);
+
+  return <div className="mt-[68px]">DeptSubjects</div>;
+};

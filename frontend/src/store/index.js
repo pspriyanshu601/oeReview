@@ -34,7 +34,7 @@ export const departmentIdAtom = atom({
 
 export const usernameAtom = atom({
   key: "usernameAtom",
-  default: null,
+  default: "dhungelbhargab",
 });
 
 export const loadingAtom = atom({
@@ -46,9 +46,6 @@ export const reviewIndexAtom = atom({
   key: "reviewIndexAtom",
   default: 0,
 });
-
-
-
 
 ///////// admin
 

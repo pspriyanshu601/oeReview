@@ -156,8 +156,8 @@ export default function AddSubjects() {
           </div>
         )}
       </div>
+      {/* display the selected courses */}
       <div className="max-md:w-full max-md:fixed max-md:top-[50vh] md:mt-32 grow flex justify-center">
-        {/* display the selected courses */}
         {selectedCourses.length > 0 && (
           <div className="w-4/5 md:w-3/5 mt-4">
             <ul className="bg-slate-900 rounded-md py-2 text-sm text-gray-700 dark:text-gray-200">
