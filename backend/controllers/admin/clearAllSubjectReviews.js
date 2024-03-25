@@ -2,7 +2,9 @@ import pool from "../../database/db.js";
 
 const clearAllSubjectReviewsController = async (req, res) => {
   try {
+    //delete all verified reviews
     await pool.query("DELETE FROM reviews WHERE isadminverified=$1",[true]);
+    //initialize stars and comments to zero
     await pool.query(
       "UPDATE subjects SET stars = 0, attendance_stars = 0, grades_stars = 0, quality_stars = 0, comments = 0"
     );
