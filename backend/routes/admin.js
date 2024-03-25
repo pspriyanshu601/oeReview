@@ -8,6 +8,7 @@ import resetReview from "../controllers/admin/resetReview.js";
 import getAllReviewsController from "../controllers/admin/getAllReviews.js";
 import clearAllSubjectReviewsController from "../controllers/admin/clearAllSubjectReviews.js";
 import getAdminUsernameController from "../controllers/admin/getAdminUsername.js";
+import deleteVerifiedReviewController from "../controllers/admin/deleteVerifiedReview.js";
 
 const adminRouter = express.Router();
 
@@ -34,7 +35,7 @@ adminRouter.post("/ok", adminVerifyMiddleware, async (req, res) => {
   });
 });
 
-adminRouter.delete("/deleteReview/:reviewId", adminVerifyMiddleware);
+adminRouter.delete("/deleteReview/:reviewId", adminVerifyMiddleware,deleteVerifiedReviewController);
 adminRouter.get("/username", adminVerifyMiddleware, getAdminUsernameController);
 
 export default adminRouter;
