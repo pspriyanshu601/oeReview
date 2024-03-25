@@ -1,25 +1,31 @@
+import pool from "../../database/db.js";
+import reviewIdChecker from "../../validators/reviewId.js";
 
-import pool from "../../database/db.js"
+const deleteVerifiedReviewController = async (req, res) => {
+  try {
+    const { reviewId } = req.params;
+    if (!(await reviewIdChecker(parseInt(reviewId)))) {
+      return res.status(400).json({
+        success: false,
+        message: "Invalid review Id",
+      });
+    }
 
-const deleteVerifiedReviewController=async (req, res) => {
-    try {
-      const { reviewId } = req.params;
-      
-      const reviewToBeVerified = await pool.query(
-        "SELECT * FROM reviews WHERE review_id=$1",
-        [reviewId]
-      );
+    const reviewToBeVerified = await pool.query(
+      "SELECT * FROM reviews WHERE review_id=$1",
+      [reviewId]
+    );
 
-      if(reviewToBeVerified.rows.length==0){
-        return res.status(400).json({
-          success:false,
-          message:'Review Does not exist'
-        });
-      }
-      await pool.query("DELETE FROM reviews WHERE review_id = $1", [reviewId]);
+    if (reviewToBeVerified.rows.length == 0) {
+      return res.status(400).json({
+        success: false,
+        message: "Review Does not exist",
+      });
+    }
+    await pool.query("DELETE FROM reviews WHERE review_id = $1", [reviewId]);
 
-      const decreaseInfo = reviewToBeVerified.rows[0];
-      const decreaseStarAndComments = `
+    const decreaseInfo = reviewToBeVerified.rows[0];
+    const decreaseStarAndComments = `
       UPDATE subjects
       SET
       stars = stars - ${decreaseInfo.stars},
@@ -30,19 +36,19 @@ const deleteVerifiedReviewController=async (req, res) => {
       WHERE
       subject_id = ${decreaseInfo.subject_id};
       `;
-      await pool.query(decreaseStarAndComments);
+    await pool.query(decreaseStarAndComments);
 
-      return res.status(200).json({
-        success: true,
-        message: "Review Deleted Successfully",
-      });
-    } catch (error) {
-      console.log(error);
-      return res.status(500).json({
-        success: false,
-        message: "Internal Server Error",
-      });
-    }
+    return res.status(200).json({
+      success: true,
+      message: "Review Deleted Successfully",
+    });
+  } catch (error) {
+    console.log(error);
+    return res.status(500).json({
+      success: false,
+      message: "Internal Server Error",
+    });
   }
+};
 
-  export default deleteVerifiedReviewController
+export default deleteVerifiedReviewController;
