@@ -201,7 +201,7 @@ export default function AddSubjects() {
                       },
                     });
                     toast.success(response.data.message);
-                    navigate("/home/addReviews", { replace: true });
+                    navigate("/home/addReview", { replace: true });
                     setLoading(false);
                   } catch (error) {
                     console.log(error);
