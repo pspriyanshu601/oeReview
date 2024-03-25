@@ -1,18 +1,19 @@
 import { useNavigate } from "react-router-dom";
-import { useRecoilState } from "recoil";
-import { adminUserAtom } from "../store";
-import { useEffect, useState } from "react";
+import { useSetRecoilState } from "recoil";
+import { loadingAtom, usernameAtom } from "../store";
+import { useEffect } from "react";
 import axios from "axios";
 import toast from "react-hot-toast";
 
-export default function useAdminUsername() {
+export default function useAdminAuth() {
   const navigate = useNavigate();
-  const [admin, setAdmin] = useRecoilState(adminUserAtom);
-  const [loading, setLoading] = useState(true);
+  const setUsername = useSetRecoilState(usernameAtom);
+  const setLoading = useSetRecoilState(loadingAtom);
 
   useEffect(() => {
     async function responses() {
       try {
+        setLoading(true);
         const token = localStorage.getItem("token");
         const link = import.meta.env.VITE_REVIEWLINK + "/admin/username";
 
@@ -22,18 +23,17 @@ export default function useAdminUsername() {
           },
         });
 
-        setAdmin(response.data.name);
+        setUsername(response.data.name);
         setLoading(false);
       } catch (error) {
         console.log(error);
         if (error.response.data.message)
           toast.error(error.response.data.message);
         else toast.error("Something went wrong");
+        setUsername(null);
         setLoading(false);
       }
     }
     responses();
-  }, [navigate, setAdmin]);
-
-  return [admin, loading];
+  }, [navigate, setUsername, setLoading]);
 }
