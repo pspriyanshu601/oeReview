@@ -34,6 +34,11 @@ export const courseCodeAtom = atom({
   default: ""
 })
 
+export const departmentIdAtom = atom({
+  key: "departmentIdAtom",
+  default: null
+})
+
 ///////// admin
 
 export const adminUserAtom = atom({

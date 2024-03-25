@@ -10,7 +10,8 @@ import AddSubjects from "./pages/AddSubjects";
 import Home from "./pages/Home";
 import Admin from "./pages/Admin";
 import AddReview from "./pages/AddReview";
-import { AllReviews } from "./pages/AllReviews";
+import { AllReviews } from "./pages/AllReviews.jsx";
+import { AllDepartments } from "./pages/AllDepartments.jsx";
 
 function HomeRoutes() {
   return (
@@ -21,6 +22,7 @@ function HomeRoutes() {
         <Route path="/addSubjects" element={<AddSubjects />} />
         <Route path="/addReview" element={<AddReview />} />
         <Route path="/allReviews" element={<AllReviews />} />
+        <Route path="/allDepartments" element={<AllDepartments />} />
         <Route path="/admin" element={<Admin />} />
       </Routes>
     </>

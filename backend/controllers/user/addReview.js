@@ -37,7 +37,7 @@ const addReviewController = async (req, res) => {
     //check if user has already reviewed but not verified
     const alreadyAddedNotVerified = await pool.query(
       "SELECT * FROM reviews WHERE user_id=$1 AND subject_id=$2 AND isadminverified=$3",
-      [user_id, subject_id, false]
+      [parseInt(user_id), parseInt(subject_id), false]
     );
     if (alreadyAddedNotVerified.rows.length > 0) {
       return res.status(400).json({
@@ -49,7 +49,7 @@ const addReviewController = async (req, res) => {
     //check if user has already reviewed and is admin verified
     const alreadyAddedVerified = await pool.query(
       "SELECT * FROM reviews WHERE user_id=$1 AND subject_id=$2 AND isadminverified=$3",
-      [user_id, subject_id, true]
+      [parseInt(user_id), parseInt(subject_id), true]
     );
     if (alreadyAddedVerified.rows.length > 0) {
       return res.status(400).json({
