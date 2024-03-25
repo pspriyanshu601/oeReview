@@ -10,7 +10,7 @@ import AddSubjects from "./pages/AddSubjects";
 import Home from "./pages/Home";
 import Admin from "./pages/Admin";
 import AddReview from "./pages/AddReview";
-import { AllReviews } from "./pages/AllReviews";
+import { AllReviews } from "./pages/AllReviews.jsx";
 
 function HomeRoutes() {
   return (
