@@ -39,7 +39,7 @@ userRouter.get(
   departmentSubjectsController
 );
 userRouter.get(
-  "/allSubjects/departmentId/:departmentId/filter/:filter/page/:page",
+  "/allSubjects/departmentId/:departmentId/filter/:filter",
   verifyMiddleware,
   departmentPagedSubjectsController
 );

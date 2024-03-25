@@ -1,69 +1,55 @@
 import { useEffect, useState } from "react";
 import axios from "axios";
-import { Link, useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import toast from "react-hot-toast";
 import { InputField } from "../components/InputField";
-import useUsername from "../hooks/useUsername";
 import Loading from "./Loading";
+import useAuth from "../hooks/useAuth";
+import { useRecoilState, useRecoilValue } from "recoil";
+import { loadingAtom, usernameAtom } from "../store";
 
 export const Register = () => {
+  useAuth();
   const navigate = useNavigate();
-
-  const [name, loading] = useUsername();
-  const [loadingClick, setLoadingClick] = useState(false);
-
-  useEffect(() => {
-    if (name != null) navigate("/home", { replace: true });
-  }, [navigate, name]);
-
-  const [username, setUsername] = useState("");
+  const username = useRecoilValue(usernameAtom);
+  const [loading, setLoading] = useRecoilState(loadingAtom);
+  const [usernameInput, setUsernameInput] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
 
-  const handlePasswordChange = (e) => {
-    setPassword(e.target.value);
-  };
-
-  const handleEmailChange = (e) => {
-    setEmail(e.target.value);
-  };
-
-  const handleUsernameChange = (e) => {
-    setUsername(e.target.value);
-  };
-
-  const link = import.meta.env.VITE_REVIEWLINK + "/auth/register";
+  // send user to home if already logged in
+  useEffect(() => {
+    if (!loading && username != null) {
+      navigate("/home", { replace: true });
+    }
+  }, [loading, navigate, username]);
 
   const handleSubmit = async (e) => {
+    setLoading(true);
     e.preventDefault();
-    setLoadingClick(true);
-
     try {
+      const link = import.meta.env.VITE_REVIEWLINK + "/auth/register";
       const response = await axios.post(link, {
         email: email,
         password: password,
         username: username,
       });
-
-      if (response) {
-        if (response.data.success == true) {
-          toast.success(response.data.message);
-        } else {
-          toast.error(response.data.message);
-        }
-        if (response.data.path) {
-          navigate("/" + response.data.path, { replace: true });
-        }
+      if (response.data.success == true) {
+        toast.success(response.data.message);
       }
-      setLoadingClick(false);
+      if (response.data.path) {
+        navigate("/" + response.data.path, { replace: true });
+      }
+      setLoading(false);
     } catch (error) {
       console.log("error", error);
-      toast.error(error.response.data.message);
-      setLoadingClick(false);
+      if (error.response.data.message) toast.error(error.response.data.message);
+      else toast.error("An error occurred");
+      setLoading(false);
     }
   };
 
-  if (loading || loadingClick) return <Loading />;
+  if (loading) return <Loading />;
 
   return (
     <div className="bg-gray-50 dark:bg-gray-900 h-screen">
@@ -77,21 +63,21 @@ export const Register = () => {
               <InputField
                 label={`Email`}
                 value={email}
-                onchange={handleEmailChange}
+                onchange={(e) => setEmail(e.target.value)}
                 placeholder={"xxxxx@iitism.ac.in"}
                 type={"email"}
               />
               <InputField
                 label={`Username`}
-                value={username}
-                onchange={handleUsernameChange}
+                value={usernameInput}
+                onchange={(e) => setUsernameInput(e.target.value)}
                 placeholder={"Eg:- John Doe"}
                 type={"text"}
               />
               <InputField
                 label={`Password`}
                 value={password}
-                onchange={handlePasswordChange}
+                onchange={(e) => setPassword(e.target.value)}
                 placeholder={"••••••••"}
                 type={"password"}
               />
@@ -104,12 +90,15 @@ export const Register = () => {
               </button>
               <p className="text-sm font-light text-gray-500 dark:text-gray-400">
                 Already have an account?{" "}
-                <Link
-                  to="/"
-                  className="font-medium text-blue-400 hover:underline dark:text-primary-500"
+                <a
+                  className="cursor-pointer font-medium text-blue-400 hover:underline dark:text-primary-500"
+                  onClick={(e) => {
+                    e.preventDefault();
+                    navigate("/login", { replace: true });
+                  }}
                 >
                   Login here
-                </Link>
+                </a>
               </p>
             </form>
           </div>

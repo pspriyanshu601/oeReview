@@ -1,42 +1,49 @@
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import useUsername from "../hooks/useUsername";
 import Loading from "./Loading";
 import axios from "axios";
 import toast from "react-hot-toast";
 import { useRecoilState, useRecoilValue, useSetRecoilState } from "recoil";
-import { courseCodeAtom, reviewsAtom, sortAtom } from "../store";
+import {
+  courseCodeAtom,
+  loadingAtom,
+  reviewsAtom,
+  sortAtom,
+  usernameAtom,
+} from "../store";
+import useAuth from "../hooks/useAuth";
 
 export default function Home() {
+  useAuth();
   const navigate = useNavigate();
-
-  const [username, loading] = useUsername();
-  const [loadingClick, setLoadingClick] = useState(false);
-  const [page, setPage] = useState(1);
-  const setCourseCode = useSetRecoilState(courseCodeAtom);
-
-  const [reviews, setReviews] = useRecoilState(reviewsAtom);
-
+  const username = useRecoilValue(usernameAtom);
+  const [loading, setLoading] = useRecoilState(loadingAtom);
   const sortValue = useRecoilValue(sortAtom);
+  const [reviews, setReviews] = useRecoilState(reviewsAtom);
+  const setCourseCode = useSetRecoilState(courseCodeAtom);
+  const [page, setPage] = useState(1);
 
+  // send user to login if not logged in
   useEffect(() => {
     if (username == null) navigate("/", { replace: true });
   }, [navigate, username]);
 
-  var link =
-    import.meta.env.VITE_REVIEWLINK + "/user/weightedSubjects/page/" + page;
-  if (sortValue != "overall")
-    link =
-      import.meta.env.VITE_REVIEWLINK +
-      "/user/weightedSubjects/filter/" +
-      sortValue +
-      "/page/" +
-      page;
-
+  // load the reviews based on the sort value
   useEffect(() => {
-    setLoadingClick(true);
     async function responses() {
+      setLoading(true);
       try {
+        var link =
+          import.meta.env.VITE_REVIEWLINK +
+          "/user/weightedSubjects/page/" +
+          page;
+        if (sortValue != "overall")
+          link =
+            import.meta.env.VITE_REVIEWLINK +
+            "/user/weightedSubjects/filter/" +
+            sortValue +
+            "/page/" +
+            page;
         const token = localStorage.getItem("token");
         const response = await axios.get(link, {
           headers: {
@@ -47,19 +54,19 @@ export default function Home() {
         if (response && response.data.reviews) {
           setReviews(response.data.reviews);
         }
-        setLoadingClick(false);
+        setLoading(false);
       } catch (error) {
         console.log(error);
-        setLoadingClick(false);
         if (error.response.data.message)
           toast.error(error.response.data.message);
         else toast.error("Something went wrong");
+        setLoading(false);
       }
     }
     responses();
-  }, [page, link, setReviews]);
+  }, [page, setLoading, setReviews, sortValue]);
 
-  if (loading || loadingClick) return <Loading />;
+  if (loading) return <Loading />;
 
   return (
     <>
@@ -85,7 +92,7 @@ export default function Home() {
               className="grid grid-cols-5 p-3 text-xs text-gray-700 bg-gray-50 dark:bg-gray-800 dark:text-gray-400 relative hover:bg-gray-900 hover:cursor-pointer"
               onClick={() => {
                 setCourseCode(review.course_code);
-                navigate('/home/allReviews')
+                navigate("/home/allReviews");
               }}
             >
               <div className="flex items-center justify-left text-white">

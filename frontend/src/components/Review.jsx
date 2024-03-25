@@ -1,10 +1,12 @@
+/* eslint-disable react/prop-types */
 import { useState } from "react";
 import Star from "./Star";
-import { useSetRecoilState } from "recoil";
-import { reviewIndexAtom } from "../store";
+import { useRecoilState, useSetRecoilState } from "recoil";
+import { loadingAtom, reviewIndexAtom } from "../store";
 import toast from "react-hot-toast";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
+import Loading from "../pages/Loading";
 
 export default function Review({ courseName, last, courseCode }) {
   const [remark, setRemark] = useState("");
@@ -14,16 +16,13 @@ export default function Review({ courseName, last, courseCode }) {
   const [ratingMarks, setRatingMarks] = useState(0);
   const setReviewIndex = useSetRecoilState(reviewIndexAtom);
   const navigate = useNavigate();
+  const [loading, setLoading] = useRecoilState(loadingAtom);
 
-  // console.log(courseName);
-  // console.log(last);
-  // console.log(courseCode);
+  if (loading) return <Loading />;
 
-  console.log(remark, rating, ratingQuality, ratingAttendance, ratingMarks);
   return (
     <div className="max-md:w-full w-1/2 h-full flex flex-col items-center">
       <div className="max-md:mb-4">
-        {/* display courseName in large and beautiful way */}
         <h1 className="text-2xl font-bold text-center text-gray-900 dark:text-white">
           {courseName}
         </h1>
@@ -90,6 +89,7 @@ export default function Review({ courseName, last, courseCode }) {
           className="w-full mt-2 bg-blue-500 hover:bg-blue-600 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-4 py-2 text-center text-white dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
           onClick={async () => {
             try {
+              setLoading(true);
               const link =
                 import.meta.env.VITE_REVIEWLINK +
                 "/user/submitReview/courseCode/" +
@@ -109,10 +109,10 @@ export default function Review({ courseName, last, courseCode }) {
                 },
               });
 
-              if (response && response.data.message) {
-                toast.success(response.data.message);
-              }
+              toast.success(response.data.message);
+              setLoading(false);
             } catch (e) {
+              setLoading(false);
               console.log(e);
               if (e.response.data.message) toast.error(e.response.data.message);
               else toast.error("Something went wrong");
@@ -126,7 +126,7 @@ export default function Review({ courseName, last, courseCode }) {
               setReviewIndex((prev) => prev + 1);
             }
             if (last) {
-              navigate("/", { replace: true });
+              navigate("/home", { replace: true });
             }
           }}
         >

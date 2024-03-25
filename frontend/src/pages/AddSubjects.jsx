@@ -1,38 +1,39 @@
 import { useEffect, useRef, useState } from "react";
-import useUsername from "../hooks/useUsername";
 import { useNavigate } from "react-router-dom";
 import Loading from "./Loading";
-import { useRecoilValue, useSetRecoilState } from "recoil";
-import { alreadyAddedReviewAtom } from "../store";
+import { useRecoilState, useRecoilValue } from "recoil";
+import { loadingAtom, usernameAtom } from "../store";
 import SearchLogo from "../components/SearchLogo";
 import axios from "axios";
 import toast from "react-hot-toast";
 import useDebounce from "../hooks/useDebounce";
 import useOutsideClick from "../hooks/useOutsideClick";
+import useAuth from "../hooks/useAuth";
 
 export default function AddSubjects() {
+  useAuth();
   const navigate = useNavigate();
-
-  const [loadingClick, setLoadingClick] = useState(false);
-  const [username, loading] = useUsername();
-  const alreadyAddedReview = useRecoilValue(alreadyAddedReviewAtom);
+  const username = useRecoilValue(usernameAtom);
+  const [loading, setLoading] = useRecoilState(loadingAtom);
   const [courses, setCourses] = useState([]);
   const [searchTerm, setSearchTerm] = useState("");
   const [searchResults, setSearchResults] = useState([]);
-  const setAlreadyAddedReview = useSetRecoilState(alreadyAddedReviewAtom);
   const [selectedCourses, setSelectedCourses] = useState([]);
-
+  const searchRef = useRef(null);
   const debouncedValue = useDebounce(searchTerm, 500);
 
-  const searchRef = useRef(null);
-
+  // send user to login if not logged in
   useEffect(() => {
-    if (username == null) navigate("/", { replace: true });
-    if (alreadyAddedReview) navigate("/home", { replace: true });
+    if (!loading && username == null) {
+      navigate("/", { replace: true });
+    }
+  }, [navigate, username, loading]);
 
+  // check if user has already added subjects
+  useEffect(() => {
     const run = async () => {
       try {
-        setLoadingClick(true);
+        setLoading(true);
         const link = import.meta.env.VITE_REVIEWLINK + "/user/hasAddedSubjects";
         const token = localStorage.getItem("token");
         const response = await axios.get(link, {
@@ -44,10 +45,9 @@ export default function AddSubjects() {
         if (response.data.hasAddedSubjects) {
           navigate("/home/addReview", { replace: true });
         }
-
-        setLoadingClick(false);
+        setLoading(false);
       } catch (error) {
-        setLoadingClick(false);
+        setLoading(false);
         console.log(error);
         if (error.response.data.message) {
           toast.error(error.response.data.message);
@@ -56,54 +56,51 @@ export default function AddSubjects() {
     };
 
     run();
-  }, [alreadyAddedReview, navigate, username, setAlreadyAddedReview]);
+  }, [navigate, setLoading]);
 
+  // load all courses
   useEffect(() => {
-    const link = import.meta.env.VITE_REVIEWLINK + "/user/allSubjects";
-
     const loadCourses = async () => {
-      setLoadingClick(true);
+      setLoading(true);
       try {
+        const link = import.meta.env.VITE_REVIEWLINK + "/user/allSubjects";
         const token = localStorage.getItem("token");
         const response = await axios.get(link, {
           headers: {
             Authorization: token,
           },
         });
-
-        if (response && response.data) {
-          setCourses(response.data.departments);
-        }
-        setLoadingClick(false);
+        setCourses(response.data.departments);
+        setLoading(false);
       } catch (error) {
         console.log(error);
-        setLoadingClick(false);
+        setLoading(false);
         if (error.response.data.message)
           toast.error(error.response.data.message);
         else toast.error("Something went wrong");
       }
     };
     loadCourses();
-  }, []);
+  }, [setCourses, setLoading]);
 
+  // filter the courses based on the search term
   useEffect(() => {
     if (debouncedValue === "") {
       setSearchResults([]);
       return;
     }
-
     const results = courses.filter((course) =>
       course.subject_name.toLowerCase().includes(debouncedValue.toLowerCase())
     );
-
     setSearchResults(results.slice(0, 8));
   }, [debouncedValue, courses]);
 
+  // close the search dropdown when clicked outside
   useOutsideClick(searchRef, () => {
     setSearchTerm("");
   });
 
-  if (loading || loadingClick) return <Loading />;
+  if (loading) return <Loading />;
 
   return (
     <div className="h-screen pt-[90px] bg-gray-800 p-2 flex max-md:flex-col">
@@ -188,6 +185,7 @@ export default function AddSubjects() {
                   toast.error("You can only add 3 courses");
                 } else {
                   try {
+                    setLoading(true);
                     const link =
                       import.meta.env.VITE_REVIEWLINK + "/user/userSubjects";
                     const token = localStorage.getItem("token");
@@ -203,10 +201,11 @@ export default function AddSubjects() {
                       },
                     });
                     toast.success(response.data.message);
-                    setAlreadyAddedReview(true);
                     navigate("/home/addReviews", { replace: true });
+                    setLoading(false);
                   } catch (error) {
                     console.log(error);
+                    setLoading(false);
                     if (error.response.data.message) {
                       toast.error(error.response.data.message);
                     } else toast.error("Something went wrong");
