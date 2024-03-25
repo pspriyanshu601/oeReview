@@ -8,7 +8,7 @@ import resetReview from "../controllers/admin/resetReview.js";
 import getAllReviewsController from "../controllers/admin/getAllReviews.js";
 import clearAllSubjectReviewsController from "../controllers/admin/clearAllSubjectReviews.js";
 import getAdminUsernameController from "../controllers/admin/getAdminUsername.js";
-import deleteVerifiedReviewController from "../controllers/admin/deleteVerifiedReview.js";
+import deleteReviewController from "../controllers/admin/deleteReview.js";
 
 const adminRouter = express.Router();
 
@@ -27,15 +27,11 @@ adminRouter.post(
   adminVerifyMiddleware,
   clearAllSubjectReviewsController
 );
-
-adminRouter.post("/ok", adminVerifyMiddleware, async (req, res) => {
-  return res.status(200).json({
-    success: true,
-    message: "OK",
-  });
-});
-
-adminRouter.delete("/deleteReview/:reviewId", adminVerifyMiddleware,deleteVerifiedReviewController);
+adminRouter.delete(
+  "/deleteReview/:reviewId",
+  adminVerifyMiddleware,
+  deleteReviewController
+);
 adminRouter.get("/username", adminVerifyMiddleware, getAdminUsernameController);
 
 export default adminRouter;

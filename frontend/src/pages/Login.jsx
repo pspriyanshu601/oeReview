@@ -1,7 +1,6 @@
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
-// import toast from "react-hot-toast";
 import { InputField } from "../components/InputField";
 import useUsername from "../hooks/useUsername";
 import toast from "react-hot-toast";
@@ -38,23 +37,16 @@ export const Login = () => {
         email,
         password,
       });
-
-      //
-
-      if (response.data.success == true) {
-        localStorage.setItem("token", response.data.token);
-        toast.success(response.data.message);
-      } else {
-        toast.error(response.data.message);
-      }
-
+      localStorage.setItem("token", response.data.token);
+      toast.success(response.data.message);
       setLoadingClick(false);
       if (response.data.path) {
         navigate("/" + response.data.path, { replace: true });
       }
     } catch (error) {
       console.log(error);
-      toast.error(error.response.data.message);
+      if (error.response.data.message) toast.error(error.response.data.message);
+      else toast.error("An error occurred");
       setLoadingClick(false);
     }
   };
