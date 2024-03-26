@@ -25,6 +25,8 @@ export const DeptSubjects = () => {
 
   const sortValue = useRecoilValue(sortAtom);
 
+  console.log(sortValue)
+
   useEffect(() => {
     if (!loading && username === null) navigate("/", { replace: true });
   }, [username, loading, navigate, departmentId]);

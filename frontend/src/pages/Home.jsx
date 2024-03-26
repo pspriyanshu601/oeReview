@@ -92,7 +92,7 @@ export default function Home() {
               className="grid grid-cols-5 p-3 text-xs text-gray-700 bg-gray-50 dark:bg-gray-800 dark:text-gray-400 relative hover:bg-gray-900 hover:cursor-pointer"
               onClick={() => {
                 setCourseCode(review.course_code);
-                navigate("/home/allReviews");
+                  navigate("/home/allReviews");
               }}
             >
               <div className="flex items-center justify-left text-white">
@@ -101,7 +101,7 @@ export default function Home() {
               <div className="flex items-center justify-center">
                 {review.course_code}
               </div>
-              <div className="flex items-center justify-center">
+              <div className="flex items-center justify-center text-center">
                 {review.department_name}
               </div>
               <div className="flex items-center justify-center">
