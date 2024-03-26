@@ -1,20 +1,51 @@
-import { useEffect, useState } from "react";
-import { InputField } from "../components/InputField";
+import { useNavigate } from "react-router-dom";
 import axios from "axios";
 import toast from "react-hot-toast";
-import { useNavigate } from "react-router-dom";
 import Loading from "./Loading";
 import useAuth from "../hooks/useAuth";
-import { loadingAtom, usernameAtom } from "../store";
 import { useRecoilState, useRecoilValue } from "recoil";
+import { loadingAtom, usernameAtom } from "../store";
+import { useEffect } from "react";
+import Avatar from "@mui/material/Avatar";
+import Button from "@mui/material/Button";
+import CssBaseline from "@mui/material/CssBaseline";
+import TextField from "@mui/material/TextField";
+import Link from "@mui/material/Link";
+import Box from "@mui/material/Box";
+import LockOutlinedIcon from "@mui/icons-material/LockOutlined";
+import Typography from "@mui/material/Typography";
+import Container from "@mui/material/Container";
+import { createTheme, ThemeProvider } from "@mui/material/styles";
 
-export const ForgotPass = () => {
+function Copyright(props) {
+  return (
+    <Typography
+      variant="body2"
+      color="text.secondary"
+      align="center"
+      {...props}
+    >
+      {"Copyright © "}
+      <Link color="inherit" href="https://github.com/pspriyanshu601/oeReview">
+        oeReview
+      </Link>{" "}
+      {new Date().getFullYear()}
+      {"."}
+    </Typography>
+  );
+}
+
+const defaultTheme = createTheme({
+  palette: {
+    mode: "dark",
+  },
+});
+
+export default function ForgotPass() {
   useAuth();
   const navigate = useNavigate();
   const username = useRecoilValue(usernameAtom);
   const [loading, setLoading] = useRecoilState(loadingAtom);
-  const [email, setEmail] = useState("");
-  const [newPassword, setNewPassword] = useState("");
 
   // send user to home if already logged in
   useEffect(() => {
@@ -23,64 +54,89 @@ export const ForgotPass = () => {
     }
   }, [loading, navigate, username]);
 
-  const handleSubmit = async (e) => {
-    e.preventDefault();
+  const handleSubmit = async (event) => {
+    event.preventDefault();
+    const data = new FormData(event.currentTarget);
+
     try {
       setLoading(true);
       const link = import.meta.env.VITE_REVIEWLINK + "/auth/forgotPassword";
       const response = await axios.post(link, {
-        email,
-        newPassword,
+        email: data.get("email"),
+        newPassword: data.get("password"),
       });
 
-      if (response.data.success == true) {
-        toast.success(response.data.message);
-      }
+      toast.success(response.data.message);
+      console.log(response.data);
       if (response.data.path) navigate("/" + response.data.path);
+
       setLoading(false);
     } catch (error) {
       console.log(error);
       if (error.response.data.message) toast.error(error.response.data.message);
       else toast.error("An error occurred");
+      if (error.response.data.path) navigate("/" + error.response.data.path);
       setLoading(false);
     }
   };
 
   if (loading) return <Loading />;
   return (
-    <div className="bg-gray-50 dark:bg-gray-900 h-screen">
-      <div className="flex flex-col items-center justify-center px-6 py-8 mx-auto md:h-screen lg:py-0">
-        <div className="w-full bg-white rounded-lg shadow dark:border md:mt-0 sm:max-w-md xl:p-0 dark:bg-gray-800 dark:border-gray-700">
-          <div className="p-6 space-y-4 md:space-y-6 sm:p-8">
-            <h1 className="text-xl font-bold leading-tight tracking-tight text-gray-900 md:text-2xl dark:text-white">
-              Forgot Password
-            </h1>
-            <form onSubmit={handleSubmit} className="space-y-4 md:space-y-6">
-              <InputField
-                label={`Email`}
-                value={email}
-                onchange={(e) => setEmail(e.target.value)}
-                placeholder={"xxxxx@iitism.ac.in"}
-                type={"email"}
-              />
-              <InputField
-                label={`New Password`}
-                value={newPassword}
-                onchange={(e) => setNewPassword(e.target.value)}
-                placeholder={"••••••••"}
-                type={"password"}
-              />
-
-              <button
-                type="submit"
-                className="w-full text-white bg-primary-600 bg-blue-500 hover:bg-blue-700 focus:ring-4 focus:outline-none focus:ring-primary-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-primary-600 dark:hover:bg-primary-700 dark:focus:ring-primary-800"
-              >
-                Submit
-              </button>
-            </form>
-          </div>
-        </div>
-      </div>
-    </div>
+    <ThemeProvider theme={defaultTheme}>
+      <Container component="main" maxWidth="xs">
+        <CssBaseline />
+        <Box
+          sx={{
+            marginTop: 8,
+            display: "flex",
+            flexDirection: "column",
+            alignItems: "center",
+          }}
+        >
+          <Avatar sx={{ m: 1, bgcolor: "secondary.main" }}>
+            <LockOutlinedIcon />
+          </Avatar>
+          <Typography component="h1" variant="h5">
+            Reset Password
+          </Typography>
+          <Box
+            component="form"
+            onSubmit={handleSubmit}
+            noValidate
+            sx={{ mt: 1 }}
+          >
+            <TextField
+              margin="normal"
+              required
+              fullWidth
+              id="email"
+              label="Email Address"
+              name="email"
+              autoComplete="email"
+              autoFocus
+            />
+            <TextField
+              margin="normal"
+              required
+              fullWidth
+              name="password"
+              label="Password"
+              type="password"
+              id="password"
+              autoComplete="current-password"
+            />
+            <Button
+              type="submit"
+              fullWidth
+              variant="contained"
+              sx={{ mt: 3, mb: 2 }}
+            >
+              Reset Password
+            </Button>
+          </Box>
+        </Box>
+        <Copyright sx={{ mt: 8, mb: 4 }} />
+      </Container>
+    </ThemeProvider>
   );
-};
+}

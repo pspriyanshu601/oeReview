@@ -81,6 +81,8 @@ export default function Register() {
       console.log("error", error);
       if (error.response.data.message) toast.error(error.response.data.message);
       else toast.error("An error occurred");
+      if (error.response.data.path)
+        navigate("/" + error.response.data.path, { replace: true });
       setLoading(false);
     }
   };
@@ -174,7 +176,6 @@ export default function Register() {
             <Grid container justifyContent="flex-end">
               <Grid item>
                 <Link
-                  href="#"
                   variant="body2"
                   onClick={(e) => {
                     e.preventDefault();

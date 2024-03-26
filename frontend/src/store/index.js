@@ -34,7 +34,7 @@ export const departmentIdAtom = atom({
 
 export const usernameAtom = atom({
   key: "usernameAtom",
-  default: "dhungelbhargab",
+  default: "notallowed",
 });
 
 export const loadingAtom = atom({

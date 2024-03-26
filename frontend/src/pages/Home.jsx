@@ -53,8 +53,10 @@ export default function Home() {
         setLoading(false);
       }
     }
-    responses();
-  }, [page, setLoading, setReviews, sortValue]);
+    if (username != null && username != "notallowed") {
+      responses();
+    }
+  }, [page, setLoading, setReviews, sortValue, username]);
 
   if (loading) return <Loading />;
 
