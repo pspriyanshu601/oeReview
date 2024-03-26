@@ -23,7 +23,7 @@ export const HomeCard = ({ review }) => {
     return (
         <div className="w-64 p-4">
             <div
-                className="bg-gray-900 text-white p-6 flex flex-col justify-between h-60 shadow-whiteBottom rounded-lg transform transition-transform hover:scale-105 cursor-pointer"
+                className="bg-gray-900 text-white p-6 flex flex-col justify-between h-64 shadow-whiteBottom rounded-lg transform transition-transform hover:scale-105 cursor-pointer"
                 onClick={() => {
                     setCourseCode(review.course_code)
                     navigate('/home/allReviews')
