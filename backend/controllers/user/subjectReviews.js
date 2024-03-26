@@ -13,12 +13,24 @@ const subjectReviewsController = async (req, res) => {
     const { courseCode } = req.params;
 
     const subjectReviewsQuery = `
-      SELECT r.details, r.stars, r.review_date ,r.attendance_stars,r.grades_stars,r.quality_stars
-      FROM reviews AS r 
-      JOIN users AS u ON r.user_id = u.id 
-      JOIN subjects AS s ON r.subject_id = s.subject_id 
-      WHERE s.course_code = $1 AND r.isadminverified = $2;
+    SELECT 
+    r.details, 
+    r.stars, 
+    r.review_date,
+    r.attendance_stars,
+    r.grades_stars,
+    r.quality_stars,
+    s.subject_name
+    FROM 
+    reviews AS r 
+    JOIN 
+    users AS u ON r.user_id = u.id 
+    JOIN 
+    subjects AS s ON r.subject_id = s.subject_id 
+    WHERE 
+    s.course_code = $1 AND r.isadminverified = $2;
     `;
+    const subjectName=await pool.query("SELECT * FROM subjects WHERE course_code=$1",[courseCode]);
 
     const subjectReviews = await pool.query(subjectReviewsQuery, [
       courseCode,
@@ -60,6 +72,7 @@ const subjectReviewsController = async (req, res) => {
     return res.status(200).json({
       success: true,
       message: "Fetched reviews successfully",
+      subjectName:subjectName.rows[0].subject_name,
       subjectReviews: subjectReviews.rows, // Assuming the result is an array of rows
       stars,
       attendanceStars,
