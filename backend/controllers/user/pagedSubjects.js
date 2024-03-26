@@ -31,6 +31,7 @@ const pagedSubjectsController = async (req, res) => {
   )
   SELECT 
       ws.subject_name,
+      ws.subject_id,
       ws.course_code,
       ws.average_rating,
       d.department_name,
