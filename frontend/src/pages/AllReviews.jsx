@@ -81,12 +81,51 @@ export default function AllReviews() {
 
   if (loading) return <Loading />;
   return (
-    <div className="min-h-screen bg-gray-800 pt-[90px] p-2 flex flex-col justify-start">
-      <StarStat
-        arrOneToFive={stars}
-        rating={avgStars}
-        totalRatings={reviews.length}
-      />
+    <div className="min-h-screen bg-black pt-[90px] p-2 flex flex-col justify-start">
+      {reviews.length === 0 ? (
+        <div className="flex flex-col items-center justify-center h-full">
+          <h1 className="text-white text-2xl text-center mb-4">
+            No Reviews Yet
+          </h1>
+        </div>
+      ) : (
+        <div className="flex flex-col items-center">
+          <div className="flex flex-col items-center justify-center">
+            <h1 className="text-white text-2xl text-center mb-4">
+              {reviews[0].subject_name}
+            </h1>
+          </div>
+
+          <StarStat
+            arrOneToFive={stars}
+            rating={avgStars}
+            totalRatings={reviews.length}
+          />
+
+          <div className="mt-6">
+            {reviews.map((review, index) => (
+              <div
+                className="flex flex-col px-4 mt-4 pb-10 bg-gray-400 rounded-md p-2"
+                key={index}
+              >
+                <div className="flex items-center mt-4 text-gray-200">
+                  <span className="text-sm font-medium">
+                    {reviews[index].details}
+                  </span>
+                </div>
+                <div className="flex items-center mt-4 text-gray-100">
+                  <span className="text-sm font-medium">
+                    Overall {reviews[index].stars} | Attendance{" "}
+                    {reviews[index].attendance_stars} | Grades{" "}
+                    {reviews[index].grades_stars} | Quality{" "}
+                    {reviews[index].quality_stars}
+                  </span>
+                </div>
+              </div>
+            ))}
+          </div>
+        </div>
+      )}
     </div>
   );
 }
