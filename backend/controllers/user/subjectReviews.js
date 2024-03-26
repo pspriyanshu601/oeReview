@@ -16,7 +16,12 @@ const subjectReviewsController = async (req, res) => {
     SELECT 
     r.details, 
     r.stars, 
-    r.review_date,
+    CASE 
+        WHEN AGE(NOW(), r.review_date) < INTERVAL '1 day' THEN CONCAT(EXTRACT(HOUR FROM AGE(NOW(), r.review_date)), ' hours ago')
+        WHEN AGE(NOW(), r.review_date) < INTERVAL '30 days' THEN CONCAT(EXTRACT(DAY FROM AGE(NOW(), r.review_date)), ' days ago')
+        WHEN AGE(NOW(), r.review_date) < INTERVAL '1 year' THEN CONCAT(EXTRACT(MONTH FROM AGE(NOW(), r.review_date)), ' months ago')
+        ELSE CONCAT(EXTRACT(YEAR FROM AGE(NOW(), r.review_date)), ' years ago')
+    END AS time_elapsed,
     r.attendance_stars,
     r.grades_stars,
     r.quality_stars,
@@ -29,6 +34,7 @@ const subjectReviewsController = async (req, res) => {
     subjects AS s ON r.subject_id = s.subject_id 
     WHERE 
     s.course_code = $1 AND r.isadminverified = $2;
+
     `;
     const subjectName=await pool.query("SELECT * FROM subjects WHERE course_code=$1",[courseCode]);
 
