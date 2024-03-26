@@ -1,14 +1,12 @@
 /* eslint-disable react/prop-types */
 
 function OneRow({ rating, value }) {
-  console.log(rating);
-  console.log(value);
   return (
     <div className="flex items-center mt-4">
       <a className="text-sm font-medium text-blue-600 dark:text-blue-500 hover:underline">
         {rating} star
       </a>
-      <div className="w-2/4 h-5 mx-4 bg-gray-200 rounded dark:bg-gray-700">
+      <div className="w-full h-5 mx-4 bg-gray-200 rounded dark:bg-gray-700">
         <div
           className="h-5 bg-yellow-300 rounded"
           style={{ width: `${value}%` }}
@@ -47,12 +45,12 @@ function OneStar({ full }) {
 
 export default function StarStat({ rating, arrOneToFive, totalRatings }) {
   const roundedRating = Math.round(rating);
-
-  console.log(roundedRating);
-  console.log(arrOneToFive);
+  const percentArrOneToFive = arrOneToFive.map((value) =>
+    Math.round((value / totalRatings) * 100)
+  );
 
   return (
-    <div className="bg-green-400">
+    <div className="w-full p-4">
       <div className="flex items-center mb-2">
         {[...Array(5)].map((_, i) => (
           <OneStar key={i} full={i < roundedRating} />
@@ -70,8 +68,8 @@ export default function StarStat({ rating, arrOneToFive, totalRatings }) {
       <p className="text-sm font-medium text-gray-500 dark:text-gray-400">
         {totalRatings} ratings
       </p>
-      {arrOneToFive.map((rating) => (
-        <OneRow key={rating} rating={rating} value={rating * 20} />
+      {percentArrOneToFive.map((rating, index) => (
+        <OneRow key={index} rating={index + 1} value={rating} />
       ))}
     </div>
   );

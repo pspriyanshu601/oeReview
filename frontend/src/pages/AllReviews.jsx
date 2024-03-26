@@ -14,11 +14,16 @@ export default function AllReviews() {
   const [loading, setLoading] = useRecoilState(loadingAtom);
   const courseCode = useRecoilValue(courseCodeAtom);
   const [reviews, setReviews] = useState([]);
-  // const [stars, setStars] = useState([]);
-  // const [atten]
-
+  const [stars, setStars] = useState([0, 0, 0, 0, 0]);
+  const [attendanceStars, setAttendanceStars] = useState([0, 0, 0, 0, 0]);
+  const [gradesStars, setGradesStars] = useState([0, 0, 0, 0, 0]);
+  const [qualityStars, setQualityStars] = useState([0, 0, 0, 0, 0]);
+  const [avgStars, setAvgStars] = useState(0);
+  const [avgAttendanceStars, setAvgAttendanceStars] = useState(0);
+  const [avgGradesStars, setAvgGradesStars] = useState(0);
+  const [avgQualityStars, setAvgQualityStars] = useState(0);
   const naivigate = useNavigate();
-  console.log(courseCode);
+  // get username from local storage
 
   // send user back to home page if they are not logged in
   useEffect(() => {
@@ -49,8 +54,15 @@ export default function AllReviews() {
             Authorization: token,
           },
         });
-        // console.log(response.data);
         setReviews(response.data.subjectReviews);
+        setStars(response.data.stars);
+        setAttendanceStars(response.data.attendanceStars);
+        setGradesStars(response.data.gradesStars);
+        setQualityStars(response.data.qualityStars);
+        setAvgStars(response.data.avgStars);
+        setAvgAttendanceStars(response.data.avgAttendanceStars);
+        setAvgGradesStars(response.data.avgGradesStars);
+        setAvgQualityStars(response.data.avgQualityStars);
         setLoading(false);
       } catch (e) {
         console.log(e);
@@ -61,18 +73,19 @@ export default function AllReviews() {
         }
         setLoading(false);
       }
-      // console.log(response.data);
     };
     getReviews();
   }, [courseCode, setLoading]);
+
+  console.log(reviews);
 
   if (loading) return <Loading />;
   return (
     <div className="min-h-screen bg-gray-800 pt-[90px] p-2 flex flex-col justify-start">
       <StarStat
-        arrOneToFive={[1, 2, 3, 4, 5]}
-        rating={4.2}
-        totalRatings={112}
+        arrOneToFive={stars}
+        rating={avgStars}
+        totalRatings={reviews.length}
       />
     </div>
   );
