@@ -22,7 +22,7 @@ export const addingReviewAtom = atom({
 
 export const courseCodeAtom = atom({
   key: "courseCodeAtom",
-  default: "",
+  default: null,
 });
 
 export const departmentIdAtom = atom({
