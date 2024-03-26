@@ -2,14 +2,8 @@ import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import Loading from "./Loading";
 import axios from "axios";
-import toast from "react-hot-toast";
 import { useRecoilState, useRecoilValue } from "recoil";
-import {
-  loadingAtom,
-  reviewsAtom,
-  sortAtom,
-  usernameAtom,
-} from "../store";
+import { loadingAtom, reviewsAtom, sortAtom, usernameAtom } from "../store";
 import useAuth from "../hooks/useAuth";
 import { HomeCard } from "../components/HomeCard";
 
@@ -55,10 +49,7 @@ export default function Home() {
         }
         setLoading(false);
       } catch (error) {
-        console.log(error);
-        if (error.response.data.message)
-          toast.error(error.response.data.message);
-        else toast.error("Something went wrong");
+        console.log("error at home", error);
         setLoading(false);
       }
     }
@@ -66,9 +57,6 @@ export default function Home() {
   }, [page, setLoading, setReviews, sortValue]);
 
   if (loading) return <Loading />;
-
-  console.log(sortValue)
-  console.log(reviews)
 
   return (
     <>
@@ -111,9 +99,7 @@ export default function Home() {
 
         <div className="flex flex-wrap justify-center p-6">
           {reviews.map((review) => {
-            return (
-              <HomeCard key={review.course_code} review={review} />
-            )
+            return <HomeCard key={review.course_code} review={review} />;
           })}
         </div>
 
