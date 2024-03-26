@@ -72,7 +72,7 @@ export const DeptSubjects = () => {
 
   if (loading) return <Loading />;
 
-  console.log(subjects);
+  // console.log(subjects);
 
   return (
     <div className="min-h-screen min-w-screen pt-[68px] bg-gray-50 dark:bg-gray-800 p-6 flex flex-wrap">
