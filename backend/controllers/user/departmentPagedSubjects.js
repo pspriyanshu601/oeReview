@@ -31,6 +31,7 @@ const departmentPagedSubjectsController = async (req, res) => {
         SELECT 
             ws.subject_name,
             ws.course_code,
+            ws.subject_id,
             ws.average_rating,
             d.department_name,
             ws.comments
@@ -69,6 +70,7 @@ const departmentPagedSubjectsController = async (req, res) => {
     )
     SELECT 
         ws.subject_name,
+        ws.subject_id,
         ws.course_code,
         ws.average_attendance_rating,
         d.department_name,
