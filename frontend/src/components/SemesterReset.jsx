@@ -3,7 +3,7 @@ import { useState } from "react";
 import toast from "react-hot-toast";
 import Loading from "../pages/Loading";
 export default function SemesterReset() {
-  // dont use loading atom here
+  // warning :: dont use loading atom here
 
   const [loading, setLoading] = useState(false);
 

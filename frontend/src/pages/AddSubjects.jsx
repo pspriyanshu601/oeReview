@@ -95,7 +95,6 @@ export default function AddSubjects() {
     setSearchResults(results.slice(0, 8));
   }, [debouncedValue, courses]);
 
-  // close the search dropdown when clicked outside
   useOutsideClick(searchRef, () => {
     setSearchTerm("");
   });
