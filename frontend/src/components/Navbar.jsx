@@ -42,6 +42,22 @@ export default function Navbar() {
           </span>
         </a>
         <div className="flex gap-1">
+
+          {/* Go back button */}
+          {loading === false && admin !== null && location.pathname == '/home/admin' && (
+            <div>
+              <button
+                type="button"
+                className="mx-3 text-white bg-gray-700 hover:bg-black focus:ring-4 focus:outline-none focus:ring-gray-800 font-medium rounded-lg text-sm px-4 py-2 text-center dark:bg-gray-800 dark:hover:bg-black dark:focus:ring-blue-800 hover:shadow-whiteBottom"
+                onClick={() => {
+                  navigate('/home')
+                }}
+              >
+                Back
+              </button>
+            </div>
+          )}
+
           {/* admin */}
           {loading === false && admin !== null && (
             <div className="relative inline-block text-left">
