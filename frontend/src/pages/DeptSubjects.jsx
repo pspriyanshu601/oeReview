@@ -11,6 +11,7 @@ import toast from "react-hot-toast";
 import axios from "axios";
 import Loading from "./Loading";
 import useAuth from "../hooks/useAuth";
+import { DeptSubjectsCard } from "../components/DeptSubjectsCard";
 
 export const DeptSubjects = () => {
   useAuth();
@@ -73,5 +74,15 @@ export const DeptSubjects = () => {
 
   console.log(subjects);
 
-  return <div className="mt-[68px]">DeptSubjects</div>;
+  return (
+    <div className="min-h-screen min-w-screen pt-[68px] bg-gray-50 dark:bg-gray-800 p-6 flex flex-wrap">
+      <div className="flex flex-wrap justify-center">
+        {subjects.map((subject) => {
+          return (
+            <DeptSubjectsCard key={subject.course_code} subject={subject} />
+          )
+        })}
+      </div>
+    </div>
+  )
 };

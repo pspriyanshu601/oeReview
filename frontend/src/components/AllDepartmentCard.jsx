@@ -9,7 +9,7 @@ export const AllDepartmentCard = ({ department }) => {
 
     return (
         <div className="w-64 p-4">
-            <div className="bg-gray-900 text-white p-6 flex flex-col justify-between h-full">
+            <div className="bg-gray-900 text-white p-6 flex flex-col justify-between h-full shadow-whiteBottom">
                 <div>
                     <img src={department.department_image} className="w-16 h-16 mx-auto mb-8" style={{ fill: 'white' }} />
                     <p className="text-center font-bold mb-10">{department.department_name}</p>
