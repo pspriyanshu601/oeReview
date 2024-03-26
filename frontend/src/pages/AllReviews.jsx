@@ -108,10 +108,10 @@ export default function AllReviews() {
                 className="flex flex-col font-medium text-sm mt-4 bg-gray-800 rounded-md px-6 py-4"
                 key={index}
               >
-                <div className="mt-2 text-gray-400">
+                <div className="mt-2 text-gray-300">
                   {reviews[index].details}
                 </div>
-                <div className="mt-2 text-gray-400 text-sm font-medium">
+                <div className="mt-2 text-gray-300 text-sm font-medium">
                   Overall {reviews[index].stars} | Attendance{" "}
                   {reviews[index].attendance_stars} | Grades{" "}
                   {reviews[index].grades_stars} | Quality{" "}
