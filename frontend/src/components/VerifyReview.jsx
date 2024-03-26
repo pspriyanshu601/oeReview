@@ -1,25 +1,15 @@
-import { useEffect, useState } from "react";
-import useAdminUsername from "../hooks/useAdminUsername";
-import Loading from "../pages/Loading";
 import axios from "axios";
+import { useEffect, useState } from "react";
+import Loading from "../pages/Loading";
 import ReviewCard from "./ReviewCard";
-import { useNavigate } from "react-router-dom";
 
 export default function VerifyReview() {
-  const [loadingClick, setLoadingClick] = useState(false);
-  const [username, loading] = useAdminUsername();
-  const [displayReview, setDisplayReview] = useState(0);
-  const navigate = useNavigate();
-
+  // warning :: loadingAtom is not used here
+  const [displayReview, setDisplayReview] = useState([]);
+  const [loading, setLoading] = useState(false);
   useEffect(() => {
-    if (!loading && !loadingClick && username === null) {
-      navigate("/home");
-    }
-  }, [loading, loadingClick, navigate, username]);
-
-  useEffect(() => {
-    const run = async () => {
-      setLoadingClick(true);
+    const getUnverifiedReviews = async () => {
+      setLoading(true);
       try {
         const link =
           import.meta.env.VITE_REVIEWLINK + "/admin/unverifiedReviews";
@@ -30,17 +20,18 @@ export default function VerifyReview() {
             Authorization: token,
           },
         });
+
         setDisplayReview(response.data.reviews);
-        setLoadingClick(false);
+        setLoading(false);
       } catch (error) {
-        setLoadingClick(false);
+        setLoading(false);
         console.log(error);
       }
     };
-    run();
+    getUnverifiedReviews();
   }, []);
 
-  if (loading || loadingClick) return <Loading />;
+  if (loading) return <Loading />;
   return (
     <>
       {displayReview.length === 0 ? (

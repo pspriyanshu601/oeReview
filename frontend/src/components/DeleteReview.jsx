@@ -1,26 +1,17 @@
 import { useEffect, useState } from "react";
-import useAdminUsername from "../hooks/useAdminUsername";
 import Loading from "../pages/Loading";
 import axios from "axios";
 import ReviewCard from "../components/ReviewCard";
-import { useNavigate } from "react-router-dom";
 
 export default function DeleteReview() {
-  const [username, loading] = useAdminUsername();
-  const [loadingClick, setLoadingClick] = useState(false);
+  // warning: dont use loadingAtom here
+  const [loading, setLoading] = useState(false);
   const [reviews, setReviews] = useState([]);
-  const navigate = useNavigate();
-
-  useEffect(() => {
-    if (!loading && !loadingClick && username === null) {
-      navigate("/home");
-    }
-  }, [loading, loadingClick, username, navigate]);
 
   useEffect(() => {
     const run = async () => {
       try {
-        setLoadingClick(true);
+        setLoading(true);
         const link = import.meta.env.VITE_REVIEWLINK + "/admin/allReviews";
         const token = localStorage.getItem("token");
 
@@ -33,9 +24,9 @@ export default function DeleteReview() {
         setReviews(response.data.reviews);
         console.log(response.data);
 
-        setLoadingClick(false);
+        setLoading(false);
       } catch (error) {
-        setLoadingClick(false);
+        setLoading(false);
         console.log(error);
       }
     };
@@ -45,7 +36,7 @@ export default function DeleteReview() {
 
   console.log(reviews);
 
-  if (loading || loadingClick) return <Loading />;
+  if (loading) return <Loading />;
   return (
     <>
       {reviews.length === 0 ? (

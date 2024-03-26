@@ -7,7 +7,6 @@ const hasAddedSubjectsController = async (req, res) => {
       "SELECT * FROM users WHERE id=$1",
       [userId]
     );
-    console.log(hasAddedSubjects.rows[0].no_of_subjects);
     if (hasAddedSubjects.rows[0].no_of_subjects === 0) {
       return res.status(200).json({
         success: true,

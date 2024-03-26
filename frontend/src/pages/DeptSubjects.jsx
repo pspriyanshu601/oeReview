@@ -11,6 +11,7 @@ import toast from "react-hot-toast";
 import axios from "axios";
 import Loading from "./Loading";
 import useAuth from "../hooks/useAuth";
+import { DeptSubjectsCard } from "../components/DeptSubjectsCard";
 
 export const DeptSubjects = () => {
   useAuth();
@@ -26,8 +27,11 @@ export const DeptSubjects = () => {
 
   useEffect(() => {
     if (!loading && username === null) navigate("/", { replace: true });
-    if (departmentId === null) navigate("/home/allDepartments");
   }, [username, loading, navigate, departmentId]);
+
+  useEffect(() => {
+    if (!loading && departmentId === null) navigate("/home", { replace: true });
+  }, [departmentId, loading, navigate]);
 
   useEffect(() => {
     const token = localStorage.getItem("token");
@@ -70,5 +74,15 @@ export const DeptSubjects = () => {
 
   console.log(subjects);
 
-  return <div className="mt-[68px]">DeptSubjects</div>;
+  return (
+    <div className="min-h-screen min-w-screen pt-[68px] bg-gray-50 dark:bg-gray-800 p-6 flex flex-wrap">
+      <div className="flex flex-wrap justify-center">
+        {subjects.map((subject) => {
+          return (
+            <DeptSubjectsCard key={subject.course_code} subject={subject} />
+          )
+        })}
+      </div>
+    </div>
+  )
 };
