@@ -14,14 +14,14 @@ const loginController = async (req, res) => {
       });
     }
     var { email, password } = req.body;
-    email=email.toLowerCase();
+    email = email.toLowerCase();
 
     //cheking if user does not exist in the database
     const user = await pool.query("SELECT * FROM users WHERE email=$1", [
       email,
     ]);
     if (user.rows.length == 0) {
-      return res.status(200).json({
+      return res.status(400).json({
         success: false,
         message: "No User Found",
         path: "register",
@@ -68,7 +68,7 @@ const loginController = async (req, res) => {
     if (findUser.rows.length > 0) {
       await sendOTP(email);
       return res.status(200).json({
-        success: false,
+        success: true,
         message: "OTP sent via Email",
         path: "verifyEmail",
       });
