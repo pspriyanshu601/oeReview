@@ -3,15 +3,15 @@ import { useNavigate } from "react-router-dom";
 import Loading from "./Loading";
 import axios from "axios";
 import toast from "react-hot-toast";
-import { useRecoilState, useRecoilValue, useSetRecoilState } from "recoil";
+import { useRecoilState, useRecoilValue } from "recoil";
 import {
-  courseCodeAtom,
   loadingAtom,
   reviewsAtom,
   sortAtom,
   usernameAtom,
 } from "../store";
 import useAuth from "../hooks/useAuth";
+import { HomeCard } from "../components/HomeCard";
 
 export default function Home() {
   useAuth();
@@ -20,7 +20,6 @@ export default function Home() {
   const [loading, setLoading] = useRecoilState(loadingAtom);
   const sortValue = useRecoilValue(sortAtom);
   const [reviews, setReviews] = useRecoilState(reviewsAtom);
-  const setCourseCode = useSetRecoilState(courseCodeAtom);
   const [page, setPage] = useState(1);
 
   // send user to login if not logged in
@@ -68,24 +67,19 @@ export default function Home() {
 
   if (loading) return <Loading />;
 
+  console.log(sortValue)
+  console.log(reviews)
+
   return (
     <>
-      <div className="h-screen pt-[68px] bg-gray-50 dark:bg-gray-800">
+      <div className="min-h-screen min-w-screen pt-[68px] bg-gray-50 dark:bg-gray-800">
         <div className="h-16 flex items-center justify-between bg-gray-900 text-white px-5">
           <div className="flex items-center font-medium">
             <p className="text-white text-2xl">Most reviewed OE</p>
           </div>
         </div>
 
-        <div className="grid grid-cols-5 p-2 text-xs text-gray-700 uppercase font-bold bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
-          <div className="flex items-center justify-center">Name</div>
-          <div className="flex items-center justify-center">Code</div>
-          <div className="flex items-center justify-center">Department</div>
-          <div className="flex items-center justify-center">Rating</div>
-          <div className="flex items-center justify-center">Total Ratings</div>
-        </div>
-
-        {reviews &&
+        {/* {reviews &&
           reviews.map((review, index) => (
             <div
               key={index}
@@ -113,7 +107,15 @@ export default function Home() {
                 {review.comments}
               </div>
             </div>
-          ))}
+          ))} */}
+
+        <div className="flex flex-wrap justify-center p-6">
+          {reviews.map((review) => {
+            return (
+              <HomeCard key={review.course_code} review={review} />
+            )
+          })}
+        </div>
 
         <div className="flex justify-between px-5 py-3 bg-gray-800 text-white">
           <button
