@@ -10,7 +10,7 @@ import AddSubjects from "./pages/AddSubjects";
 import Home from "./pages/Home";
 import Admin from "./pages/Admin";
 import AddReview from "./pages/AddReview";
-import { AllReviews } from "./pages/AllReviews.jsx";
+import AllReviews from "./pages/AllReviews.jsx";
 import { AllDepartments } from "./pages/AllDepartments.jsx";
 import { DeptSubjects } from "./pages/DeptSubjects.jsx";
 
