@@ -21,18 +21,15 @@ const pagedSubjectsController = async (req, res) => {
     WITH WeightedSubjects AS (
       SELECT 
           s.*,
-          CAST((5 + s.stars) AS FLOAT) / NULLIF(10 + s.comments * 5, 0) AS weighted_value,
-          CASE 
-              WHEN s.comments = 0 THEN 0  -- Handle division by zero case
-              ELSE ROUND(CAST(s.stars AS NUMERIC) / CAST(s.comments AS NUMERIC), 2) 
-          END AS average_rating
+          CAST((5 + s.stars) AS FLOAT) / (10 + s.comments * 5) AS weighted_value,
+          ROUND(CAST(s.stars AS NUMERIC) / NULLIF(s.comments, 0), 2) AS average_rating
       FROM 
           subjects s
   )
   SELECT 
       ws.subject_name,
-      ws.subject_id,
       ws.course_code,
+      ws.subject_id,
       ws.average_rating,
       d.department_name,
       ws.comments
@@ -40,8 +37,10 @@ const pagedSubjectsController = async (req, res) => {
       WeightedSubjects ws
   JOIN 
       departments d ON ws.department_id = d.department_id
+  WHERE 
+      ws.comments > 0  
   ORDER BY 
-      ws.weighted_value DESC;          
+      ws.weighted_value DESC;        
         `;
     const reviews = await pool.query(pageQuery);
     return res.status(200).json({
