@@ -34,7 +34,6 @@ const userDataController = async (req, res) => {
     const userDataResult = await pool.query(userDataQuery, [userId]);
     const subjectIdsData = userDataResult.rows[0].subject_ids;
 
-
     let subjectIdsObj;
     try {
       // Use the subjectIdsData object directly
@@ -42,7 +41,7 @@ const userDataController = async (req, res) => {
     } catch (error) {
       // Handle JSON parsing error
       console.error("Error parsing subject_ids JSON:", error);
-      return res.status(500).json({
+      return res.status(400).json({
         success: false,
         message: "Error parsing subject_ids JSON",
       });
@@ -56,25 +55,27 @@ const userDataController = async (req, res) => {
       SELECT subject_id, subject_name, course_code,d.department_name
       FROM subjects
       JOIN departments AS d ON d.department_id=subjects.department_id
-      WHERE subject_id IN (${subjectIdsArray.join(',')})
+      WHERE subject_id IN (${subjectIdsArray.join(",")})
       ;
     `;
 
-
     const userSubjectsData = await pool.query(subjectsQuery);
 
-    const userData=await pool.query("SELECT u.email,u.username,u.isadmin,u.no_of_subjects FROM users AS u WHERE id=$1;",[userId]);
-    
+    const userData = await pool.query(
+      "SELECT u.email,u.username,u.isadmin,u.no_of_subjects FROM users AS u WHERE id=$1;",
+      [userId]
+    );
+
     return res.status(200).json({
-        success:true,
-        message:'Fetched user data successfully',
-        userData:userData.rows[0],
-        userSubjects:userSubjectsData.rows,
-        userReviews:userReviewsData.rows,
-    })
+      success: true,
+      message: "Fetched user data successfully",
+      userData: userData.rows[0],
+      userSubjects: userSubjectsData.rows,
+      userReviews: userReviewsData.rows,
+    });
   } catch (error) {
     console.log(error);
-    return res.status(400).json({
+    return res.status(500).json({
       success: false,
       message: "Internal Server Error",
     });

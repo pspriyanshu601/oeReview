@@ -4,10 +4,10 @@ const deleteUserReviewController = async (req, res) => {
   try {
     const reviewToBeDeleted = await pool.query(
       "SELECT * FROM reviews WHERE review_id=$1 AND user_id=$2",
-      [req.params.reviewId,req.body.userId]
+      [req.params.reviewId, req.body.userId]
     );
     if (reviewToBeDeleted.rows.length === 0) {
-      return res.status(200).json({
+      return res.status(400).json({
         success: false,
         message: "Review does not exist",
       });
@@ -37,7 +37,7 @@ const deleteUserReviewController = async (req, res) => {
     });
   } catch (error) {
     console.log(error);
-    return res.status(400).json({
+    return res.status(500).json({
       success: false,
       message: "Internal Server Error",
     });

@@ -4,26 +4,32 @@ import validateUpdateBody from "../../validators/updateBodyValidation.js";
 
 const upadteUserReviewController = async (req, res) => {
   try {
-    if(!validateUpdateBody(req.body)){
-        return res.status(400).json({
-            success:false,
-            message:'Please fill all fields'
-        });
+    if (!validateUpdateBody(req.body)) {
+      return res.status(400).json({
+        success: false,
+        message: "Please fill all fields",
+      });
     }
     const { reviewId } = req.params;
-    const { details, stars, attendance_stars, grades_stars, quality_stars,userId } =
-      req.body;
+    const {
+      details,
+      stars,
+      attendance_stars,
+      grades_stars,
+      quality_stars,
+      userId,
+    } = req.body;
 
-    //first delete old review 
+    //first delete old review
     const reviewToBeDeleted = await pool.query(
       "SELECT * FROM reviews WHERE review_id=$1 AND user_id=$2",
-      [reviewId,userId]
+      [reviewId, userId]
     );
-    if(reviewToBeDeleted.rows.length==0){
-        return res.status(400).json({
-            success:false,
-            message:'Review does not exist'
-        })
+    if (reviewToBeDeleted.rows.length == 0) {
+      return res.status(400).json({
+        success: false,
+        message: "Review does not exist",
+      });
     }
     await pool.query("DELETE FROM reviews WHERE review_id=$1", [reviewId]);
     const decreaseInfo = reviewToBeDeleted.rows[0];
@@ -60,10 +66,9 @@ const upadteUserReviewController = async (req, res) => {
       success: true,
       message: "The review will be updated after admin verification",
     });
-
   } catch (error) {
     console.log(error);
-    return res.status(400).json({
+    return res.status(500).json({
       success: false,
       message: "Internal Server Error",
     });
