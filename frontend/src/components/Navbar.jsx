@@ -231,7 +231,7 @@ import Tooltip from "@mui/material/Tooltip";
 import MenuItem from "@mui/material/MenuItem";
 import { createTheme, ThemeProvider } from "@mui/material";
 import { useState } from "react";
-import { useRecoilValue } from "recoil";
+import { useRecoilValue, useSetRecoilState } from "recoil";
 import { usernameAtom } from "../store";
 import { useNavigate } from "react-router-dom";
 
@@ -255,6 +255,8 @@ function ResponsiveAppBar() {
 
   const [anchorElNav, setAnchorElNav] = useState(null);
   const [anchorElUser, setAnchorElUser] = useState(null);
+
+  const setUsername = useSetRecoilState(usernameAtom);
 
   const handleOpenNavMenu = (event) => {
     console.log(event);
@@ -282,6 +284,7 @@ function ResponsiveAppBar() {
       navigate("/home/addSubjects");
     } else if (setting == "Logout") {
       localStorage.removeItem("token");
+      setUsername(null);
       navigate("/");
     } else if (setting == "Profile") {
       // navigate("/home/profile");

@@ -15,9 +15,9 @@ import {
   usernameAtom,
 } from "../store";
 import useAuth from "../hooks/useAuth";
-import { HomeCard } from "../components/HomeCard";
+import HomeCard from "../components/HomeCard";
 
-const len = 3;
+const len = 10;
 
 export default function Home() {
   useAuth();
@@ -118,13 +118,13 @@ export default function Home() {
     if (allReviews.length == 0) return;
     const st = (page - 1) * len;
     const en = st + len;
-    if (sortValue === "overall") {
+    if (sortValue === 0) {
       setReviews(allReviews.slice(st, en));
-    } else if (sortValue === "attendance") {
+    } else if (sortValue === 3) {
       setReviews(attendanceReviews.slice(st, en));
-    } else if (sortValue === "quality") {
+    } else if (sortValue === 1) {
       setReviews(qualityReviews.slice(st, en));
-    } else if (sortValue === "grades") {
+    } else if (sortValue === 2) {
       setReviews(gradesReviews.slice(st, en));
     }
   }, [
@@ -137,20 +137,16 @@ export default function Home() {
     sortValue,
   ]);
 
-  useEffect(() => {
-    console.log("reviews", reviews);
-  }, [reviews]);
-
   if (loading) return <Loading />;
 
   return (
     <>
-      <div className="min-h-screen min-w-screen pt-[68px] bg-gray-50 dark:bg-gray-800">
-        <div className="h-16 flex items-center justify-between bg-gray-900 text-white px-5">
+      <div className="min-h-screen min-w-screen pt-[68px] bg-gray-50 dark:bg-gray-400">
+        {/* <div className="h-16 flex items-center justify-between bg-gray-900 text-white px-5">
           <div className="flex items-center font-medium">
             <p className="text-white text-2xl">Most reviewed OE</p>
           </div>
-        </div>
+        </div> */}
 
         {/* {reviews &&
           reviews.map((review, index) => (
@@ -182,13 +178,15 @@ export default function Home() {
             </div>
           ))} */}
 
-        <div className="flex flex-wrap justify-center p-6">
-          {reviews.map((review) => {
-            return <HomeCard key={review.course_code} review={review} />;
+        <div className="flex flex-wrap gap-4 justify-center p-6 mb-12">
+          {reviews.map((review, index) => {
+            const rank = index + 1 + (page - 1) * len;
+
+            return <HomeCard key={index} review={review} rank={rank} />;
           })}
         </div>
 
-        <div className="flex justify-between px-5 py-3 bg-gray-800 text-white">
+        {/* <div className="flex justify-between px-5 py-3 bg-gray-800 text-white">
           <button
             onClick={() => {
               if (page > 1) setPage(page - 1);
@@ -199,13 +197,13 @@ export default function Home() {
           </button>
           <button
             onClick={() => {
-              if (reviews.length == 3) setPage(page + 1);
+              if (reviews.length == len) setPage(page + 1);
             }}
             className="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-4 py-2 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
           >
             Next
           </button>
-        </div>
+        </div> */}
       </div>
     </>
   );
