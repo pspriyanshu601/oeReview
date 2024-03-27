@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
 import toast from "react-hot-toast";
@@ -6,14 +6,14 @@ import Loading from "./Loading";
 import { AllDepartmentCard } from "../components/AllDepartmentCard";
 import { useRecoilState, useRecoilValue } from "recoil";
 import useAuth from "../hooks/useAuth";
-import { loadingAtom, usernameAtom } from "../store";
+import { departmentsAtom, loadingAtom, usernameAtom } from "../store";
 
 export const AllDepartments = () => {
   useAuth();
+  const navigate = useNavigate();
   const username = useRecoilValue(usernameAtom);
   const [loading, setLoading] = useRecoilState(loadingAtom);
-  const navigate = useNavigate();
-  const [allDepts, setAllDepts] = useState([]);
+  const [allDepts, setAllDepts] = useRecoilState(departmentsAtom);
 
   // send user to login if not logged in
   useEffect(() => {
@@ -25,6 +25,7 @@ export const AllDepartments = () => {
   // load all departments
   useEffect(() => {
     const depts = async () => {
+      if (allDepts.length > 0) return;
       setLoading(true);
       try {
         const link = import.meta.env.VITE_REVIEWLINK + "/user/allDepartments";
@@ -44,8 +45,8 @@ export const AllDepartments = () => {
         setLoading(false);
       }
     };
-    depts();
-  }, [setLoading]);
+    if (username != null && username != "notallowed") depts();
+  }, [setAllDepts, setLoading, username, allDepts]);
 
   if (loading) return <Loading />;
   return (

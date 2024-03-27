@@ -32,6 +32,13 @@ export const reviewsQualityAtom = atom({
   default: [],
 });
 
+// departments
+
+export const departmentsAtom = atom({
+  key: "departmentsAtom",
+  default: [],
+});
+
 export const alreadyAddedReviewAtom = atom({
   key: "alreadyAddedReviewAtom",
   default: false,
