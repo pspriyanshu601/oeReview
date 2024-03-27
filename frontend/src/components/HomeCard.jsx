@@ -57,9 +57,8 @@ import Typography from "@mui/material/Typography";
 import { Box, CardActionArea, Rating } from "@mui/material";
 import { ThemeProvider, createTheme } from "@mui/material";
 import { useRecoilValue, useSetRecoilState } from "recoil";
-import { courseCodeAtom, sortAtom, widthAtom } from "../store";
+import { courseCodeAtom, sortAtom } from "../store";
 import { useNavigate } from "react-router-dom";
-import { useTheme } from "@mui/material/styles";
 
 const defaultTheme = createTheme({
   palette: {

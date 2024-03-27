@@ -5,6 +5,7 @@ import axios from "axios";
 import { useRecoilState, useRecoilValue } from "recoil";
 import {
   departmentsAtom,
+  deptSubjectsAtom,
   loadingAtom,
   reviewsAtom,
   reviewsAttendanceAtom,
@@ -41,6 +42,7 @@ export default function Home() {
   const [gradesReviews, setGradesReviews] = useRecoilState(reviewsGradesAtom);
 
   const [page, setPage] = useState(1);
+  const [deptSubjects, setDeptSubjects] = useRecoilState(deptSubjectsAtom);
 
   // send user to login if not logged in
   useEffect(() => {
@@ -95,6 +97,16 @@ export default function Home() {
           });
           setAllDepts(response.data.departments);
         }
+        if (Object.keys(deptSubjects).length == 0) {
+          const link = import.meta.env.VITE_REVIEWLINK + "/user/allSubjects";
+          const token = localStorage.getItem("token");
+          const response = await axios.get(link, {
+            headers: {
+              Authorization: token,
+            },
+          });
+          setDeptSubjects(response.data.subjects);
+        }
         setLoading(false);
       } catch (error) {
         console.log("error at home", error);
@@ -107,9 +119,11 @@ export default function Home() {
   }, [
     allDepts.length,
     allReviews.length,
+    deptSubjects,
     setAllDepts,
     setAllReviews,
     setAttendanceReviews,
+    setDeptSubjects,
     setGradesReviews,
     setLoading,
     setQualityReviews,

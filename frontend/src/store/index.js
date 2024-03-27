@@ -39,6 +39,11 @@ export const departmentsAtom = atom({
   default: [],
 });
 
+export const deptSubjectsAtom = atom({
+  key: "deptSubjectsAtom",
+  default: {},
+});
+
 export const alreadyAddedReviewAtom = atom({
   key: "alreadyAddedReviewAtom",
   default: false,
