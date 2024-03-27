@@ -8,7 +8,7 @@ const departmentSubjectsController = async (req, res) => {
     if(! await departmentIdChecker(parseInt(req.params.departmentId))){
       return res.status(400).json({
         success:false,
-        message:'Department dosent exist'
+        message:'Invalid Department Id'
       })
     }
     const {departmentId}=req.params;

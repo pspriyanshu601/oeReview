@@ -1,9 +1,16 @@
 import pool from "../../database/db.js";
+import departmentIdChecker from "../../validators/departmentIdCheck.js";
 import pageChecker from "../../validators/page.js";
 
 const departmentPagedSubjectsController = async (req, res) => {
   try {
     const query = req.params.filter;
+    if (!(await departmentIdChecker(parseInt(req.params.departmentId)))) {
+      return res.status(400).json({
+        success: false,
+        message: "Invalid Department Id",
+      });
+    }
     if (
       query !== "attendance" &&
       query !== "quality" &&

@@ -2,15 +2,16 @@ import z from "zod";
 
 const validateVerifyEmailBody = (body) => {
     const registerSchema = z.object({
-        email: z.string().email(),
-        otp: z.string().length(6), // Set the length of OTP to 6 characters
-    });
+        email: z.string().email({ message: "Invalid email format" }),
+        otp: z.string().refine(value => value.length === 6, { message: "OTP must be exactly 6 characters long" })
+      });
+      
 
     try {
         registerSchema.parse(body);
         return true;
     } catch (err) {
-        return false;
+        return err.errors.map((error) => error.message);
     }
 };
 

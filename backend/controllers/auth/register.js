@@ -13,12 +13,13 @@ function extractDomain(email) {
 const registerController = async (req, res) => {
   try {
     //checking correct input
-    if (!validateRegisterBody(req.body))
+    const errorMessage = validateRegisterBody(req.body);
+    if (errorMessage.length > 0) {
       return res.status(400).send({
         success: false,
-        message: "Invalid Data",
+        message: errorMessage[0],
       });
-
+    }
     var { email, password, username } = req.body;
     email = email.toLowerCase();
 
@@ -38,7 +39,7 @@ const registerController = async (req, res) => {
     );
 
     if (alreadyRegistered.rows.length > 0) {
-      return res.status(200).json({
+      return res.status(400).json({
         success: false,
         message: "Already Registered",
         path: "login",
@@ -54,7 +55,7 @@ const registerController = async (req, res) => {
     if (unVerifiedUser.rows.length > 0) {
       await sendOTP(email);
 
-      return res.json({
+      return res.status(200).json({
         success: false,
         message: "OTP Sent Via Email",
         path: "verifyEmail",
@@ -70,7 +71,7 @@ const registerController = async (req, res) => {
 
     await sendOTP(email);
 
-    return res.json({
+    return res.status(200).json({
       success: true,
       message: "OTP Sent Via Email",
       path: "verifyEmail",
