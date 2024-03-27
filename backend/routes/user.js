@@ -12,6 +12,7 @@ import hasAddedSubjectsController from "../controllers/user/hasAddedSubjects.js"
 import addUserSubjectsController from "../controllers/user/addUserSubjects.js";
 import userSubjectsController from "../controllers/user/userSubjects.js";
 import departmentPagedSubjectsController from "../controllers/user/departmentPagedSubjects.js";
+import userDataController from "../controllers/user/userData.js";
 
 const userRouter = express.Router();
 
@@ -55,5 +56,7 @@ userRouter.post(
   verifyMiddleware,
   addReviewController
 );
+
+userRouter.get("/userData",verifyMiddleware,userDataController);
 
 export default userRouter;
