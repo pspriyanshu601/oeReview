@@ -211,7 +211,7 @@ export default function Verify() {
             <LockOutlinedIcon />
           </Avatar>
           <Typography component="h1" variant="h5">
-            Opt Verification
+            Otp Verification
           </Typography>
           <Box
             component="form"

@@ -231,7 +231,6 @@ import Tooltip from "@mui/material/Tooltip";
 import MenuItem from "@mui/material/MenuItem";
 import { createTheme, ThemeProvider } from "@mui/material";
 import { useState } from "react";
-import useAuth from "../hooks/useAuth";
 import { useRecoilValue } from "recoil";
 import { usernameAtom } from "../store";
 import { useNavigate } from "react-router-dom";
@@ -251,7 +250,6 @@ const defaultTheme = createTheme({
 });
 
 function ResponsiveAppBar() {
-  useAuth();
   const username = useRecoilValue(usernameAtom);
   const navigate = useNavigate();
 

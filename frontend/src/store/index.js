@@ -5,8 +5,30 @@ export const sortAtom = atom({
   default: "overall",
 });
 
+// store all reviews
+
 export const reviewsAtom = atom({
   key: "reviewsAtom",
+  default: [],
+});
+
+export const reviewsOverallAtom = atom({
+  key: "reviewsOverallAtom",
+  default: [],
+});
+
+export const reviewsGradesAtom = atom({
+  key: "reviewsGradesAtom",
+  default: [],
+});
+
+export const reviewsAttendanceAtom = atom({
+  key: "reviewsAttendanceAtom",
+  default: [],
+});
+
+export const reviewsQualityAtom = atom({
+  key: "reviewsQualityAtom",
   default: [],
 });
 
@@ -51,7 +73,7 @@ export const reviewIndexAtom = atom({
 
 export const adminUserAtom = atom({
   key: "adminUserAtom",
-  default: null,
+  default: "notallowed",
 });
 
 export const adminWorkAtom = atom({

@@ -3,9 +3,20 @@ import { useNavigate } from "react-router-dom";
 import Loading from "./Loading";
 import axios from "axios";
 import { useRecoilState, useRecoilValue } from "recoil";
-import { loadingAtom, reviewsAtom, sortAtom, usernameAtom } from "../store";
+import {
+  loadingAtom,
+  reviewsAtom,
+  reviewsAttendanceAtom,
+  reviewsGradesAtom,
+  reviewsOverallAtom,
+  reviewsQualityAtom,
+  sortAtom,
+  usernameAtom,
+} from "../store";
 import useAuth from "../hooks/useAuth";
 import { HomeCard } from "../components/HomeCard";
+
+const len = 3;
 
 export default function Home() {
   useAuth();
@@ -13,7 +24,18 @@ export default function Home() {
   const username = useRecoilValue(usernameAtom);
   const [loading, setLoading] = useRecoilState(loadingAtom);
   const sortValue = useRecoilValue(sortAtom);
+
+  // reviews
+
   const [reviews, setReviews] = useRecoilState(reviewsAtom);
+  const [allReviews, setAllReviews] = useRecoilState(reviewsOverallAtom);
+  const [attendanceReviews, setAttendanceReviews] = useRecoilState(
+    reviewsAttendanceAtom
+  );
+  const [qualityReviews, setQualityReviews] =
+    useRecoilState(reviewsQualityAtom);
+  const [gradesReviews, setGradesReviews] = useRecoilState(reviewsGradesAtom);
+
   const [page, setPage] = useState(1);
 
   // send user to login if not logged in
@@ -21,42 +43,102 @@ export default function Home() {
     if (username == null) navigate("/", { replace: true });
   }, [navigate, username]);
 
-  // load the reviews based on the sort value
   useEffect(() => {
-    async function responses() {
-      setLoading(true);
+    const responses = async () => {
       try {
-        var link =
-          import.meta.env.VITE_REVIEWLINK +
-          "/user/weightedSubjects/page/" +
-          page;
-        if (sortValue != "overall")
-          link =
-            import.meta.env.VITE_REVIEWLINK +
-            "/user/weightedSubjects/filter/" +
-            sortValue +
-            "/page/" +
-            page;
-        const token = localStorage.getItem("token");
-        const response = await axios.get(link, {
-          headers: {
-            Authorization: token,
-          },
-        });
+        if (allReviews.length > 0) return;
+        else {
+          setLoading(true);
+          const token = localStorage.getItem("token");
+          const linkOverall =
+            import.meta.env.VITE_REVIEWLINK + "/user/weightedSubjects/page/0";
+          const responseOverall = await axios.get(linkOverall, {
+            headers: { Authorization: token },
+          });
+          setAllReviews(responseOverall.data.reviews);
 
-        if (response && response.data.reviews) {
-          setReviews(response.data.reviews);
+          const linkAttendance =
+            import.meta.env.VITE_REVIEWLINK +
+            "/user/weightedSubjects/filter/attendance/page/0";
+          const responseAttendance = await axios.get(linkAttendance, {
+            headers: { Authorization: token },
+          });
+          setAttendanceReviews(responseAttendance.data.reviews);
+
+          const linkQuality =
+            import.meta.env.VITE_REVIEWLINK +
+            "/user/weightedSubjects/filter/quality/page/0";
+          const responseQuality = await axios.get(linkQuality, {
+            headers: { Authorization: token },
+          });
+          setQualityReviews(responseQuality.data.reviews);
+
+          const linkGrades =
+            import.meta.env.VITE_REVIEWLINK +
+            "/user/weightedSubjects/filter/grades/page/0";
+          const responseGrades = await axios.get(linkGrades, {
+            headers: { Authorization: token },
+          });
+          setGradesReviews(responseGrades.data.reviews);
+
+          setLoading(false);
         }
-        setLoading(false);
       } catch (error) {
         console.log("error at home", error);
         setLoading(false);
       }
-    }
+    };
     if (username != null && username != "notallowed") {
       responses();
     }
-  }, [page, setLoading, setReviews, sortValue, username]);
+  }, [
+    allReviews.length,
+    setAllReviews,
+    setAttendanceReviews,
+    setGradesReviews,
+    setLoading,
+    setQualityReviews,
+    username,
+  ]);
+
+  // useEffect(() => {
+  //   if (allReviews == null) return;
+  //   const st = (page - 1) * len;
+  //   const en = st + len;
+  //   setReviews(allReviews.slice(st, en));
+  // }, [allReviews, page, setReviews]);
+
+  // useEffect(() => {
+  //   if(rev)
+  // }, []);
+  // // console.log("reviews", reviews);
+
+  useEffect(() => {
+    if (allReviews.length == 0) return;
+    const st = (page - 1) * len;
+    const en = st + len;
+    if (sortValue === "overall") {
+      setReviews(allReviews.slice(st, en));
+    } else if (sortValue === "attendance") {
+      setReviews(attendanceReviews.slice(st, en));
+    } else if (sortValue === "quality") {
+      setReviews(qualityReviews.slice(st, en));
+    } else if (sortValue === "grades") {
+      setReviews(gradesReviews.slice(st, en));
+    }
+  }, [
+    allReviews,
+    attendanceReviews,
+    gradesReviews,
+    page,
+    qualityReviews,
+    setReviews,
+    sortValue,
+  ]);
+
+  useEffect(() => {
+    console.log("reviews", reviews);
+  }, [reviews]);
 
   if (loading) return <Loading />;
 
@@ -116,7 +198,7 @@ export default function Home() {
           </button>
           <button
             onClick={() => {
-              if (reviews.length == 10) setPage(page + 1);
+              if (reviews.length == 3) setPage(page + 1);
             }}
             className="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-4 py-2 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
           >

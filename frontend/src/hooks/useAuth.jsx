@@ -1,13 +1,11 @@
 import axios from "axios";
 import { useEffect } from "react";
-import { useNavigate } from "react-router-dom";
-import { useSetRecoilState } from "recoil";
+import { useRecoilState, useSetRecoilState } from "recoil";
 import { loadingAtom, usernameAtom } from "../store";
 
 export default function useAuth() {
-  const navigate = useNavigate();
   const setLoading = useSetRecoilState(loadingAtom);
-  const setUsername = useSetRecoilState(usernameAtom);
+  const [username, setUsername] = useRecoilState(usernameAtom);
   useEffect(() => {
     async function responses() {
       setLoading(true);
@@ -28,6 +26,6 @@ export default function useAuth() {
         setLoading(false);
       }
     }
-    responses();
-  }, [navigate, setUsername, setLoading]);
+    if (username == null || username == "notallowed") responses();
+  }, [setLoading, setUsername, username]);
 }

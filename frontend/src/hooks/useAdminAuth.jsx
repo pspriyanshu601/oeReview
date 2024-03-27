@@ -1,12 +1,12 @@
 import { useNavigate } from "react-router-dom";
-import { useSetRecoilState } from "recoil";
-import { loadingAtom, usernameAtom } from "../store";
+import { useRecoilState, useSetRecoilState } from "recoil";
+import { adminUserAtom, loadingAtom } from "../store";
 import { useEffect } from "react";
 import axios from "axios";
 
 export default function useAdminAuth() {
   const navigate = useNavigate();
-  const setUsername = useSetRecoilState(usernameAtom);
+  const [username, setUsername] = useRecoilState(adminUserAtom);
   const setLoading = useSetRecoilState(loadingAtom);
 
   useEffect(() => {
@@ -30,6 +30,6 @@ export default function useAdminAuth() {
         setLoading(false);
       }
     }
-    responses();
-  }, [navigate, setUsername, setLoading]);
+    if (username == null || username == "notallowed") responses();
+  }, [navigate, setUsername, setLoading, username]);
 }
