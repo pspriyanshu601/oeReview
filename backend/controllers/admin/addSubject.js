@@ -22,7 +22,7 @@ const addSubject = async (req, res) => {
     // console.log(subjectExist.rows.length);
 
     if (subjectExist.rows.length !== 0) {
-      return res.status(200).json({
+      return res.status(400).json({
         success: false,
         message: "Subject already exist",
       });
@@ -36,7 +36,7 @@ const addSubject = async (req, res) => {
     );
 
     if (exist.rows.length === 0) {
-      return res.status(200).json({
+      return res.status(400).json({
         success: false,
         message: "Department does not exist",
       });
