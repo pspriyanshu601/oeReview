@@ -13,6 +13,7 @@ import addUserSubjectsController from "../controllers/user/addUserSubjects.js";
 import userSubjectsController from "../controllers/user/userSubjects.js";
 import departmentPagedSubjectsController from "../controllers/user/departmentPagedSubjects.js";
 import userDataController from "../controllers/user/userData.js";
+import deleteUserReviewController from "../controllers/user/deleteUserReview.js";
 
 const userRouter = express.Router();
 
@@ -58,5 +59,7 @@ userRouter.post(
 );
 
 userRouter.get("/userData",verifyMiddleware,userDataController);
+
+userRouter.delete("/deleteReview/reviewId/:reviewId",verifyMiddleware,deleteUserReviewController);
 
 export default userRouter;

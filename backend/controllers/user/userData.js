@@ -5,6 +5,7 @@ const userDataController = async (req, res) => {
     const userId = req.body.userId;
     const userReviewsQuery = `
         SELECT 
+        r.review_id,
         r.details,
         r.stars,
         r.attendance_stars,
