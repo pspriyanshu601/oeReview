@@ -77,8 +77,6 @@ export default function AllReviews() {
     getReviews();
   }, [courseCode, setLoading]);
 
-  console.log(reviews);
-
   if (loading) return <Loading />;
   return (
     <div className="min-h-screen bg-black pt-[90px] p-2 flex flex-col justify-start">

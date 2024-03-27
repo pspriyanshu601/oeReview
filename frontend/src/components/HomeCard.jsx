@@ -54,7 +54,7 @@ import Card from "@mui/material/Card";
 import CardContent from "@mui/material/CardContent";
 import CardMedia from "@mui/material/CardMedia";
 import Typography from "@mui/material/Typography";
-import { CardActionArea, Rating } from "@mui/material";
+import { Box, CardActionArea, Rating } from "@mui/material";
 import { ThemeProvider, createTheme } from "@mui/material";
 import { useRecoilValue, useSetRecoilState } from "recoil";
 import { courseCodeAtom, sortAtom } from "../store";
@@ -71,8 +71,7 @@ const defaultTheme = createTheme({
   },
 });
 
-export default function ActionAreaCard({ review, rank }) {
-  console.log(review);
+export default function HomeCard({ review, rank }) {
   const navigate = useNavigate();
   const setCourseCode = useSetRecoilState(courseCodeAtom);
   const sortval = useRecoilValue(sortAtom);
@@ -126,8 +125,7 @@ export default function ActionAreaCard({ review, rank }) {
             >
               Department of {review.department_name}
             </Typography>
-            <Typography
-              variant="body2"
+            <Box
               color="secondary.main"
               sx={{
                 display: "flex",
@@ -149,7 +147,7 @@ export default function ActionAreaCard({ review, rank }) {
                 &nbsp;&nbsp;&nbsp;
                 {review.comments} {review.comments > 1 ? "Reviews" : "Review"}
               </Typography>
-            </Typography>
+            </Box>
           </CardContent>
         </CardActionArea>
       </Card>
