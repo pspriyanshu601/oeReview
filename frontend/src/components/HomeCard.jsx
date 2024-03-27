@@ -97,9 +97,9 @@ export default function HomeCard({ review, rank }) {
             component="img"
             image={review.department_image}
             alt={review.subject_name}
-            sx={{ height: 70, width: 70, margin: "auto", marginTop: 4 }}
+            sx={{ height: 60, width: 60, margin: "auto", marginTop: 4 }}
           />
-          <CardContent sx={{ width: 400 }}>
+          <CardContent sx={{ width: 300 }}>
             <Typography
               gutterBottom
               variant="h6"
