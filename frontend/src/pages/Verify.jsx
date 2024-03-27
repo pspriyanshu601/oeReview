@@ -155,7 +155,7 @@ const defaultTheme = createTheme({
 });
 
 export default function Verify() {
-  useAuth();
+  useAuth(true);
   const navigate = useNavigate();
   const username = useRecoilValue(usernameAtom);
   const [loading, setLoading] = useRecoilState(loadingAtom);

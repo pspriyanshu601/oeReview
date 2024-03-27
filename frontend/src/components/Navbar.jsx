@@ -235,7 +235,7 @@ import { useRecoilValue, useSetRecoilState } from "recoil";
 import { usernameAtom } from "../store";
 import { useNavigate } from "react-router-dom";
 
-const pages = ["Departments", "Admin"];
+const pages = ["Departments", "Admin", "Home"];
 const settings = ["Profile", "Add Review", "Logout"];
 
 const defaultTheme = createTheme({
@@ -274,6 +274,8 @@ function ResponsiveAppBar() {
       navigate("/home/allDepartments");
     } else if (page == "Admin") {
       navigate("/home/admin");
+    } else if (page == "Home") {
+      navigate("/home");
     }
   };
 
