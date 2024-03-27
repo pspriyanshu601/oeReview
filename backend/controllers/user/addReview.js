@@ -7,13 +7,14 @@ const addReviewController = async (req, res) => {
     if (!courseCodeChecker(req.params.courseCode)) {
       return res.status(400).json({
         success: false,
-        message: "Invalid Data",
+        message: "Invalid Course Code",
       });
     }
-    if (!validateReviewBody(req.body)) {
-      return res.status(400).json({
+    const errorMessage = validateReviewBody(req.body);
+    if (errorMessage.length > 0) {
+      return res.status(400).send({
         success: false,
-        message: "Invalid Data",
+        message: errorMessage[0],
       });
     }
 
@@ -79,6 +80,7 @@ const addReviewController = async (req, res) => {
       message: "The review will be added after admin verification",
     });
   } catch (error) {
+    console.log(error);
     return res.status(500).json({
       success: false,
       message: "Internal Server Error",

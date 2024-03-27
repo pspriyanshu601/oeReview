@@ -13,13 +13,13 @@ function extractDomain(email) {
 const registerController = async (req, res) => {
   try {
     //checking correct input
-    const errorMessage=validateRegisterBody(req.body);
-    if (errorMessage.length>0){
+    const errorMessage = validateRegisterBody(req.body);
+    if (errorMessage.length > 0) {
       return res.status(400).send({
         success: false,
         message: errorMessage[0],
       });
-}
+    }
     var { email, password, username } = req.body;
     email = email.toLowerCase();
 
