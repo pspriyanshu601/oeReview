@@ -3,8 +3,8 @@ import pool from "../../database/db.js";
 const deleteUserReviewController = async (req, res) => {
   try {
     const reviewToBeDeleted = await pool.query(
-      "SELECT * FROM reviews WHERE review_id=$1",
-      [req.params.reviewId]
+      "SELECT * FROM reviews WHERE review_id=$1 AND user_id=$2",
+      [req.params.reviewId,req.body.userId]
     );
     if (reviewToBeDeleted.rows.length === 0) {
       return res.status(200).json({

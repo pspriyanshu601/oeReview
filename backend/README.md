@@ -376,7 +376,45 @@ Example Response
 }
 ```
 
+## User deletes a Review 
 
+**DELETE**`https://oe-review-backend.vercel.app/user/deleteReview/reviewId/:reviewId`
+
+Example Response
+```
+{
+    success: true,
+    message: "Review Deleted successfully",
+}
+OR
+{
+    success: false,
+    message: "Review does not exist",
+}
+```
+
+## User updates a review 
+
+**PATCH**`https://oe-review-backend.vercel.app/user/updateReview/reviewId/:reviewId`
+
+Example Request
+```
+{
+    "details":"bekar subject",
+    "attendance_stars":4,
+    "grades_stars":3,
+    "quality_stars":2,
+    "stars":1
+}
+```
+
+Example Response
+```
+{
+    "success": true,
+    "message": "The review will be updated after admin verification"
+}
+```
 
 ---
 
