@@ -2,7 +2,7 @@ import { atom } from "recoil";
 
 export const sortAtom = atom({
   key: "sortAtom",
-  default: "overall",
+  default: 0,
 });
 
 // store all reviews
