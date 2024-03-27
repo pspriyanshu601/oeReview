@@ -4,6 +4,7 @@ import Loading from "./Loading";
 import axios from "axios";
 import { useRecoilState, useRecoilValue } from "recoil";
 import {
+  departmentsAtom,
   loadingAtom,
   reviewsAtom,
   reviewsAttendanceAtom,
@@ -32,6 +33,7 @@ export default function Home() {
   const [attendanceReviews, setAttendanceReviews] = useRecoilState(
     reviewsAttendanceAtom
   );
+  const [allDepts, setAllDepts] = useRecoilState(departmentsAtom);
   const [qualityReviews, setQualityReviews] =
     useRecoilState(reviewsQualityAtom);
   const [gradesReviews, setGradesReviews] = useRecoilState(reviewsGradesAtom);
@@ -43,12 +45,12 @@ export default function Home() {
     if (username == null) navigate("/", { replace: true });
   }, [navigate, username]);
 
+  // load all departments and reviews
   useEffect(() => {
     const responses = async () => {
       try {
-        if (allReviews.length > 0) return;
-        else {
-          setLoading(true);
+        setLoading(true);
+        if (allReviews.length == 0) {
           const token = localStorage.getItem("token");
           const linkOverall =
             import.meta.env.VITE_REVIEWLINK + "/user/weightedSubjects/page/0";
@@ -80,9 +82,18 @@ export default function Home() {
             headers: { Authorization: token },
           });
           setGradesReviews(responseGrades.data.reviews);
-
-          setLoading(false);
         }
+        if (allDepts.length == 0) {
+          const link = import.meta.env.VITE_REVIEWLINK + "/user/allDepartments";
+          const token = localStorage.getItem("token");
+          const response = await axios.get(link, {
+            headers: {
+              Authorization: token,
+            },
+          });
+          setAllDepts(response.data.departments);
+        }
+        setLoading(false);
       } catch (error) {
         console.log("error at home", error);
         setLoading(false);
@@ -92,7 +103,9 @@ export default function Home() {
       responses();
     }
   }, [
+    allDepts.length,
     allReviews.length,
+    setAllDepts,
     setAllReviews,
     setAttendanceReviews,
     setGradesReviews,
@@ -100,18 +113,6 @@ export default function Home() {
     setQualityReviews,
     username,
   ]);
-
-  // useEffect(() => {
-  //   if (allReviews == null) return;
-  //   const st = (page - 1) * len;
-  //   const en = st + len;
-  //   setReviews(allReviews.slice(st, en));
-  // }, [allReviews, page, setReviews]);
-
-  // useEffect(() => {
-  //   if(rev)
-  // }, []);
-  // // console.log("reviews", reviews);
 
   useEffect(() => {
     if (allReviews.length == 0) return;

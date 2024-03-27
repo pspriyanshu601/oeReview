@@ -1,52 +1,13 @@
-import { useEffect } from "react";
-import { useNavigate } from "react-router-dom";
-import axios from "axios";
-import toast from "react-hot-toast";
 import Loading from "./Loading";
 import { AllDepartmentCard } from "../components/AllDepartmentCard";
-import { useRecoilState, useRecoilValue } from "recoil";
+import { useRecoilValue } from "recoil";
 import useAuth from "../hooks/useAuth";
-import { departmentsAtom, loadingAtom, usernameAtom } from "../store";
+import { departmentsAtom, loadingAtom } from "../store";
 
 export const AllDepartments = () => {
   useAuth();
-  const navigate = useNavigate();
-  const username = useRecoilValue(usernameAtom);
-  const [loading, setLoading] = useRecoilState(loadingAtom);
-  const [allDepts, setAllDepts] = useRecoilState(departmentsAtom);
-
-  // send user to login if not logged in
-  useEffect(() => {
-    if (!loading && username === null) {
-      navigate("/", { replace: true });
-    }
-  }, [loading, navigate, username]);
-
-  // load all departments
-  useEffect(() => {
-    const depts = async () => {
-      if (allDepts.length > 0) return;
-      setLoading(true);
-      try {
-        const link = import.meta.env.VITE_REVIEWLINK + "/user/allDepartments";
-        const token = localStorage.getItem("token");
-        const response = await axios.get(link, {
-          headers: {
-            Authorization: token,
-          },
-        });
-        setAllDepts(response.data.departments);
-        setLoading(false);
-      } catch (error) {
-        console.log(error);
-        if (error.response.data.message)
-          toast.error(error.response.data.message);
-        else toast.error("Something went wrong");
-        setLoading(false);
-      }
-    };
-    if (username != null && username != "notallowed") depts();
-  }, [setAllDepts, setLoading, username, allDepts]);
+  const loading = useRecoilValue(loadingAtom);
+  const allDepts = useRecoilValue(departmentsAtom);
 
   if (loading) return <Loading />;
   return (
