@@ -52,12 +52,11 @@ const userDataController = async (req, res) => {
 
     // Fetch the subject details for the user's subjects
     const subjectsQuery = `
-      SELECT subject_id, subject_name, course_code,d.department_name
-      FROM subjects
-      JOIN departments AS d ON d.department_id=subjects.department_id
-      WHERE subject_id IN (${subjectIdsArray.join(",")})
-      ;
-    `;
+    SELECT subject_id, subject_name, course_code, d.department_name
+    FROM subjects
+    JOIN departments AS d ON d.department_id = subjects.department_id
+    WHERE subject_id IN (${subjectIdsArray.length > 0 ? subjectIdsArray.join(",") : "NULL"})
+  `;
 
     const userSubjectsData = await pool.query(subjectsQuery);
 
