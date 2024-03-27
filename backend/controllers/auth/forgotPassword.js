@@ -7,10 +7,11 @@ const saltRounds = 10;
 
 const forgotPasswordController = async (req, res) => {
   try {
-    if (!validateForgotPasswordBody(req.body)) {
-      return res.status(400).json({
+    const errorMessage = validateForgotPasswordBody(req.body);
+    if (errorMessage.length > 0) {
+      return res.status(400).send({
         success: false,
-        message: "Invalid Data",
+        message: errorMessage[0],
       });
     }
     var { email, newPassword } = req.body;

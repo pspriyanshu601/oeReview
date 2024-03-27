@@ -4,10 +4,11 @@ import validateVerifyEmailBody from "../../validators/verifyEmail.js";
 
 const verifyEmailController = async (req, res) => {
   try {
-    if (!validateVerifyEmailBody(req.body)) {
+    const errorMessage = validateVerifyEmailBody(req.body);
+    if (errorMessage.length > 0) {
       return res.status(400).send({
         success: false,
-        message: "Invalid Input",
+        message: errorMessage[0],
       });
     }
     var { email, otp } = req.body;

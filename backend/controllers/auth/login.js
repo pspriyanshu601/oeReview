@@ -7,10 +7,11 @@ import sendOTP from "../../utils/sendOTP.js";
 const loginController = async (req, res) => {
   try {
     //checking correctness of email
-    if (!validateLoginBody(req.body)) {
-      return res.status(400).json({
+    const errorMessage = validateLoginBody(req.body);
+    if (errorMessage.length > 0) {
+      return res.status(400).send({
         success: false,
-        message: "Invalid Data",
+        message: errorMessage[0],
       });
     }
     var { email, password } = req.body;
