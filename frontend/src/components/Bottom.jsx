@@ -10,26 +10,38 @@ import AbcIcon from "@mui/icons-material/Abc";
 import { useRecoilState } from "recoil";
 import { sortAtom } from "../store";
 
+const defaultTheme = createTheme({
+  palette: {
+    primary: {
+      main: "#282c34",
+    },
+    secondary: {
+      main: "#EEEEEE",
+    },
+  },
+});
+
 export default function Bottom() {
   const [value, setValue] = useRecoilState(sortAtom);
   return (
-    <Box position="fixed" bottom="0px" width="100%">
-      <BottomNavigation
-        showLabels
-        value={value}
-        onChange={(event, newValue) => {
-          setValue(newValue);
-        }}
-        sx={{ bgcolor: "white" }}
-      >
-        <BottomNavigationAction label="Overall" icon={<FavoriteIcon />} />
-        <BottomNavigationAction label="Quality" icon={<SchoolIcon />} />
-        <BottomNavigationAction label="Grades" icon={<AbcIcon />} />
-        <BottomNavigationAction
-          label="Attendance"
-          icon={<SelfImprovementIcon />}
-        />
-      </BottomNavigation>
-    </Box>
+    <ThemeProvider theme={defaultTheme}>
+      <Box position="fixed" bottom="0px" width="100%">
+        <BottomNavigation
+          showLabels
+          value={value}
+          onChange={(event, newValue) => {
+            setValue(newValue);
+          }}
+        >
+          <BottomNavigationAction label="Overall" icon={<FavoriteIcon />} />
+          <BottomNavigationAction label="Quality" icon={<SchoolIcon />} />
+          <BottomNavigationAction label="Grades" icon={<AbcIcon />} />
+          <BottomNavigationAction
+            label="Attendance"
+            icon={<SelfImprovementIcon />}
+          />
+        </BottomNavigation>
+      </Box>
+    </ThemeProvider>
   );
 }

@@ -13,20 +13,22 @@ import {
   reviewsQualityAtom,
   sortAtom,
   usernameAtom,
+  widthAtom,
 } from "../store";
 import useAuth from "../hooks/useAuth";
 import HomeCard from "../components/HomeCard";
+import useScreenWidth from "../hooks/useScreenWidth";
 
 const len = 10;
 
 export default function Home() {
   useAuth();
+  const width = useRecoilValue(widthAtom);
+  useScreenWidth();
   const navigate = useNavigate();
   const username = useRecoilValue(usernameAtom);
   const [loading, setLoading] = useRecoilState(loadingAtom);
   const sortValue = useRecoilValue(sortAtom);
-
-  // reviews
 
   const [reviews, setReviews] = useRecoilState(reviewsAtom);
   const [allReviews, setAllReviews] = useRecoilState(reviewsOverallAtom);
@@ -182,7 +184,9 @@ export default function Home() {
           {reviews.map((review, index) => {
             const rank = index + 1 + (page - 1) * len;
 
-            return <HomeCard key={index} review={review} rank={rank} />;
+            return (
+              <HomeCard key={index} review={review} rank={rank} width={width} />
+            );
           })}
         </div>
 

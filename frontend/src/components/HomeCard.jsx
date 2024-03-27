@@ -57,8 +57,9 @@ import Typography from "@mui/material/Typography";
 import { Box, CardActionArea, Rating } from "@mui/material";
 import { ThemeProvider, createTheme } from "@mui/material";
 import { useRecoilValue, useSetRecoilState } from "recoil";
-import { courseCodeAtom, sortAtom } from "../store";
+import { courseCodeAtom, sortAtom, widthAtom } from "../store";
 import { useNavigate } from "react-router-dom";
+import { useTheme } from "@mui/material/styles";
 
 const defaultTheme = createTheme({
   palette: {
@@ -71,7 +72,7 @@ const defaultTheme = createTheme({
   },
 });
 
-export default function HomeCard({ review, rank }) {
+export default function HomeCard({ review, rank, width }) {
   const navigate = useNavigate();
   const setCourseCode = useSetRecoilState(courseCodeAtom);
   const sortval = useRecoilValue(sortAtom);
@@ -86,20 +87,24 @@ export default function HomeCard({ review, rank }) {
   return (
     <ThemeProvider theme={defaultTheme}>
       <Card
-        sx={{ bgcolor: "primary.main" }}
+        sx={{
+          bgcolor: "primary.main",
+          width: (width > 870 && "400px") || "100%",
+          height: "full",
+        }}
         onClick={() => {
           setCourseCode(review.course_code);
           navigate("/home/allReviews");
         }}
       >
-        <CardActionArea sx={{ height: "100%" }}>
+        <CardActionArea>
           <CardMedia
             component="img"
             image={review.department_image}
             alt={review.subject_name}
             sx={{ height: 60, width: 60, margin: "auto", marginTop: 4 }}
           />
-          <CardContent sx={{ width: 300 }}>
+          <CardContent>
             <Typography
               gutterBottom
               variant="h6"

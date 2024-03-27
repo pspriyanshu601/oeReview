@@ -76,6 +76,11 @@ export const reviewIndexAtom = atom({
   default: 0,
 });
 
+export const widthAtom = atom({
+  key: "widthAtom",
+  default: 0,
+});
+
 ///////// admin
 
 export const adminUserAtom = atom({
