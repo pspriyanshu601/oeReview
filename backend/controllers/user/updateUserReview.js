@@ -1,8 +1,15 @@
 import pool from "../../database/db.js";
 import validateReviewBody from "../../validators/addReview.js";
+import validateUpdateBody from "../../validators/updateBodyValidation.js";
 
 const upadteUserReviewController = async (req, res) => {
   try {
+    if(!validateUpdateBody(req.body)){
+        return res.status(400).json({
+            success:false,
+            message:'Please fill all fields'
+        });
+    }
     const { reviewId } = req.params;
     const { details, stars, attendance_stars, grades_stars, quality_stars,userId } =
       req.body;
