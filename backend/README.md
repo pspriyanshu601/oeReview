@@ -316,6 +316,66 @@ Example Response
 }
 ```
 
+## Get user all Data
+
+**GET**`https://oe-review-backend.vercel.app/user/userData`
+
+Example Response
+```
+{
+    "success": true,
+    "message": "Fetched user data successfully",
+    "userData": {
+        "email": "21je0715@iitism.ac.in",
+        "username": "PriyanshuSingh",
+        "isadmin": true,
+        "no_of_subjects": 3
+    },
+    "userSubjects": [
+        {
+            "subject_id": 445,
+            "subject_name": " Stratigraphy",
+            "course_code": "GLD521",
+            "department_name": "Applied Geology"
+        },
+        {
+            "subject_id": 446,
+            "subject_name": " Atmosphere, Ocean and Climate Dynamics",
+            "course_code": "GLO523",
+            "department_name": "Applied Geology"
+        }
+    ],
+    "userReviews": [
+        {
+            "details": "jsjdsfd",
+            "stars": 4,
+            "attendance_stars": 4,
+            "grades_stars": 4,
+            "quality_stars": 4,
+            "review_date": "2024-03-26T18:30:00.000Z",
+            "subject_id": 445,
+            "isadminverified": false,
+            "subject_name": " Stratigraphy",
+            "course_code": "GLD521",
+            "department_name": "Applied Geology"
+        },
+        {
+            "details": "sfddsd",
+            "stars": 4,
+            "attendance_stars": 3,
+            "grades_stars": 4,
+            "quality_stars": 5,
+            "review_date": "2024-03-26T18:30:00.000Z",
+            "subject_id": 446,
+            "isadminverified": false,
+            "subject_name": " Atmosphere, Ocean and Climate Dynamics",
+            "course_code": "GLO523",
+            "department_name": "Applied Geology"
+        }
+    ]
+}
+```
+
 
 
 ---
