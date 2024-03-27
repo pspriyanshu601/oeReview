@@ -141,7 +141,7 @@ export default function Home() {
 
   return (
     <>
-      <div className="min-h-screen min-w-screen pt-[68px] bg-gray-50 dark:bg-gray-400">
+      <div className="min-h-screen pt-[68px] bg-gray-50 dark:bg-gray-400">
         {/* <div className="h-16 flex items-center justify-between bg-gray-900 text-white px-5">
           <div className="flex items-center font-medium">
             <p className="text-white text-2xl">Most reviewed OE</p>
