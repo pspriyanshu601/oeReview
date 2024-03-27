@@ -1,9 +1,9 @@
 import { Toaster } from "react-hot-toast";
 import { Routes, Route } from "react-router-dom";
-import { Register } from "./pages/Register";
-import { Login } from "./pages/Login";
-import { Verify } from "./pages/Verify";
-import { ForgotPass } from "./pages/ForgotPass";
+import Register from "./pages/Register";
+import Login from "./pages/Login";
+import Verify from "./pages/Verify";
+import ForgotPass from "./pages/ForgotPass";
 import Loading from "./pages/Loading";
 import Navbar from "./components/Navbar";
 import AddSubjects from "./pages/AddSubjects";

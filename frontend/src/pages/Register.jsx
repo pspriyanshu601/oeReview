@@ -1,21 +1,54 @@
-import { useEffect, useState } from "react";
-import axios from "axios";
+import Avatar from "@mui/material/Avatar";
+import Button from "@mui/material/Button";
+import CssBaseline from "@mui/material/CssBaseline";
+import TextField from "@mui/material/TextField";
+import FormControlLabel from "@mui/material/FormControlLabel";
+import Checkbox from "@mui/material/Checkbox";
+import Link from "@mui/material/Link";
+import Grid from "@mui/material/Grid";
+import Box from "@mui/material/Box";
+import LockOutlinedIcon from "@mui/icons-material/LockOutlined";
+import Typography from "@mui/material/Typography";
+import Container from "@mui/material/Container";
+import { createTheme, ThemeProvider } from "@mui/material/styles";
 import { useNavigate } from "react-router-dom";
-import toast from "react-hot-toast";
-import { InputField } from "../components/InputField";
-import Loading from "./Loading";
 import useAuth from "../hooks/useAuth";
 import { useRecoilState, useRecoilValue } from "recoil";
 import { loadingAtom, usernameAtom } from "../store";
+import { useEffect } from "react";
+import Loading from "./Loading";
+import axios from "axios";
+import toast from "react-hot-toast";
 
-export const Register = () => {
+function Copyright(props) {
+  return (
+    <Typography
+      variant="body2"
+      color="text.secondary"
+      align="center"
+      {...props}
+    >
+      {"Copyright © "}
+      <Link color="inherit" href="https://github.com/pspriyanshu601/oeReview">
+        OeReview
+      </Link>{" "}
+      {new Date().getFullYear()}
+      {"."}
+    </Typography>
+  );
+}
+
+const defaultTheme = createTheme({
+  palette: {
+    mode: "dark",
+  },
+});
+
+export default function Register() {
   useAuth();
   const navigate = useNavigate();
   const username = useRecoilValue(usernameAtom);
   const [loading, setLoading] = useRecoilState(loadingAtom);
-  const [usernameInput, setUsernameInput] = useState("");
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
 
   // send user to home if already logged in
   useEffect(() => {
@@ -24,19 +57,22 @@ export const Register = () => {
     }
   }, [loading, navigate, username]);
 
-  const handleSubmit = async (e) => {
-    setLoading(true);
-    e.preventDefault();
+  const handleSubmit = async (event) => {
+    event.preventDefault();
+    const data = new FormData(event.currentTarget);
+    const firstName = data.get("firstName");
+    const lastName = data.get("lastName");
+    const usernameInput = firstName + " " + lastName;
+
     try {
+      setLoading(true);
       const link = import.meta.env.VITE_REVIEWLINK + "/auth/register";
       const response = await axios.post(link, {
-        email: email,
-        password: password,
-        username: username,
+        email: data.get("email"),
+        password: data.get("password"),
+        username: usernameInput,
       });
-      if (response.data.success == true) {
-        toast.success(response.data.message);
-      }
+      toast.success(response.data.message);
       if (response.data.path) {
         navigate("/" + response.data.path, { replace: true });
       }
@@ -45,6 +81,8 @@ export const Register = () => {
       console.log("error", error);
       if (error.response.data.message) toast.error(error.response.data.message);
       else toast.error("An error occurred");
+      if (error.response.data.path)
+        navigate("/" + error.response.data.path, { replace: true });
       setLoading(false);
     }
   };
@@ -52,58 +90,106 @@ export const Register = () => {
   if (loading) return <Loading />;
 
   return (
-    <div className="bg-gray-50 dark:bg-gray-900 h-screen">
-      <div className="flex flex-col items-center justify-center px-6 py-8 mx-auto md:h-screen lg:py-0">
-        <div className="w-full bg-white rounded-lg shadow dark:border md:mt-0 sm:max-w-md xl:p-0 dark:bg-gray-800 dark:border-gray-700">
-          <div className="p-6 space-y-4 md:space-y-6 sm:p-8">
-            <h1 className="text-xl font-bold leading-tight tracking-tight text-gray-900 md:text-2xl dark:text-white">
-              Create an account
-            </h1>
-            <form onSubmit={handleSubmit} className="space-y-4 md:space-y-6">
-              <InputField
-                label={`Email`}
-                value={email}
-                onchange={(e) => setEmail(e.target.value)}
-                placeholder={"xxxxx@iitism.ac.in"}
-                type={"email"}
-              />
-              <InputField
-                label={`Username`}
-                value={usernameInput}
-                onchange={(e) => setUsernameInput(e.target.value)}
-                placeholder={"Eg:- John Doe"}
-                type={"text"}
-              />
-              <InputField
-                label={`Password`}
-                value={password}
-                onchange={(e) => setPassword(e.target.value)}
-                placeholder={"••••••••"}
-                type={"password"}
-              />
-
-              <button
-                type="submit"
-                className="w-full text-white bg-primary-600 bg-blue-500 hover:bg-blue-700 focus:ring-4 focus:outline-none focus:ring-primary-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-primary-600 dark:hover:bg-primary-700 dark:focus:ring-primary-800"
-              >
-                Create an account
-              </button>
-              <p className="text-sm font-light text-gray-500 dark:text-gray-400">
-                Already have an account?{" "}
-                <a
-                  className="cursor-pointer font-medium text-blue-400 hover:underline dark:text-primary-500"
+    <ThemeProvider theme={defaultTheme}>
+      <Container component="main" maxWidth="xs">
+        <CssBaseline />
+        <Box
+          sx={{
+            marginTop: 8,
+            display: "flex",
+            flexDirection: "column",
+            alignItems: "center",
+          }}
+        >
+          <Avatar sx={{ m: 1, bgcolor: "secondary.main" }}>
+            <LockOutlinedIcon />
+          </Avatar>
+          <Typography component="h1" variant="h5">
+            Sign up
+          </Typography>
+          <Box
+            component="form"
+            noValidate
+            onSubmit={handleSubmit}
+            sx={{ mt: 3 }}
+          >
+            <Grid container spacing={2}>
+              <Grid item xs={12} sm={6}>
+                <TextField
+                  autoComplete="given-name"
+                  name="firstName"
+                  required
+                  fullWidth
+                  id="firstName"
+                  label="First Name"
+                  autoFocus
+                />
+              </Grid>
+              <Grid item xs={12} sm={6}>
+                <TextField
+                  required
+                  fullWidth
+                  id="lastName"
+                  label="Last Name"
+                  name="lastName"
+                  autoComplete="family-name"
+                />
+              </Grid>
+              <Grid item xs={12}>
+                <TextField
+                  required
+                  fullWidth
+                  id="email"
+                  label="Email Address"
+                  name="email"
+                  autoComplete="email"
+                />
+              </Grid>
+              <Grid item xs={12}>
+                <TextField
+                  required
+                  fullWidth
+                  name="password"
+                  label="Password"
+                  type="password"
+                  id="password"
+                  autoComplete="new-password"
+                />
+              </Grid>
+              <Grid item xs={12}>
+                <FormControlLabel
+                  control={
+                    <Checkbox value="allowExtraEmails" color="primary" />
+                  }
+                  label="Remember me"
+                />
+              </Grid>
+            </Grid>
+            <Button
+              type="submit"
+              fullWidth
+              variant="contained"
+              sx={{ mt: 3, mb: 2 }}
+            >
+              Sign Up
+            </Button>
+            <Grid container justifyContent="flex-end">
+              <Grid item>
+                <Link
+                  variant="body2"
                   onClick={(e) => {
                     e.preventDefault();
                     navigate("/login", { replace: true });
                   }}
                 >
-                  Login here
-                </a>
-              </p>
-            </form>
-          </div>
-        </div>
-      </div>
-    </div>
+                  Already have an account? Sign in
+                </Link>
+              </Grid>
+            </Grid>
+          </Box>
+        </Box>
+        <Copyright sx={{ mt: 5 }} />
+      </Container>
+    </ThemeProvider>
   );
-};
+}

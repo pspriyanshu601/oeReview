@@ -102,24 +102,23 @@ export default function AllReviews() {
             totalRatings={reviews.length}
           />
 
-          <div className="mt-6">
+          <div className="mt-6 p-6">
             {reviews.map((review, index) => (
               <div
-                className="flex flex-col px-4 mt-4 pb-10 bg-gray-400 rounded-md p-2"
+                className="flex flex-col font-medium text-sm mt-4 bg-gray-800 rounded-md px-6 py-4"
                 key={index}
               >
-                <div className="flex items-center mt-4 text-gray-200">
-                  <span className="text-sm font-medium">
-                    {reviews[index].details}
-                  </span>
+                <div className="mt-2 text-gray-300">
+                  {reviews[index].details}
                 </div>
-                <div className="flex items-center mt-4 text-gray-100">
-                  <span className="text-sm font-medium">
-                    Overall {reviews[index].stars} | Attendance{" "}
-                    {reviews[index].attendance_stars} | Grades{" "}
-                    {reviews[index].grades_stars} | Quality{" "}
-                    {reviews[index].quality_stars}
-                  </span>
+                <div className="mt-2 text-gray-300 text-sm font-medium">
+                  Overall {reviews[index].stars} | Attendance{" "}
+                  {reviews[index].attendance_stars} | Grades{" "}
+                  {reviews[index].grades_stars} | Quality{" "}
+                  {reviews[index].quality_stars}
+                </div>
+                <div className="flex justify-end text-gray-500 text-sm font-medium">
+                  {reviews[index].time_elapsed}
                 </div>
               </div>
             ))}

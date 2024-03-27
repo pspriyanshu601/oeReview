@@ -14,13 +14,11 @@ const forgotPasswordController = async (req, res) => {
       });
     }
     var { email, newPassword } = req.body;
-    email=email.toLowerCase();
+    email = email.toLowerCase();
     //cheking if user does not exist in the database
-    var user = await pool.query("SELECT * FROM users WHERE email=$1", [
-      email,
-    ]);
+    var user = await pool.query("SELECT * FROM users WHERE email=$1", [email]);
     if (user.rows.length == 0) {
-      return res.status(200).json({
+      return res.status(400).json({
         success: false,
         message: "Please Register First",
         path: "register",
@@ -35,7 +33,7 @@ const forgotPasswordController = async (req, res) => {
       email,
     ]);
 
-    return res.json({
+    return res.status(200).json({
       success: true,
       message: "OTP Sent Via Email",
       path: "verifyEmail",

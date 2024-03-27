@@ -3,7 +3,6 @@ import { useSetRecoilState } from "recoil";
 import { loadingAtom, usernameAtom } from "../store";
 import { useEffect } from "react";
 import axios from "axios";
-import toast from "react-hot-toast";
 
 export default function useAdminAuth() {
   const navigate = useNavigate();
@@ -27,9 +26,6 @@ export default function useAdminAuth() {
         setLoading(false);
       } catch (error) {
         console.log(error);
-        if (error.response.data.message)
-          toast.error(error.response.data.message);
-        else toast.error("Something went wrong");
         setUsername(null);
         setLoading(false);
       }

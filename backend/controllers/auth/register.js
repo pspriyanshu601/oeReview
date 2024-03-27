@@ -20,12 +20,12 @@ const registerController = async (req, res) => {
       });
 
     var { email, password, username } = req.body;
-    email=email.toLowerCase();
+    email = email.toLowerCase();
 
     //check if institue id is used or not
     const domain = extractDomain(email);
     if (domain != "iitism.ac.in") {
-      return res.status(200).json({
+      return res.status(400).json({
         success: false,
         message: "Please Use Institute Email Id",
       });
