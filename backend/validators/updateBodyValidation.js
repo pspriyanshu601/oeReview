@@ -1,7 +1,7 @@
 import z from "zod";
 
 const registerSchema = z.object({
-  details: z.string().min(1, { message: "Please add review comment" }),
+  details: z.string().min(1, { message: "Remarks should not be empty" }),
   stars: z
     .number()
     .int()

@@ -2,7 +2,7 @@ import z from "zod";
 
 const validateReviewBody = (body) => {
   const registerSchema = z.object({
-    details: z.string(),
+    details: z.string().min(1, { message: "Remarks should not be empty" }),
     stars: z
       .number()
       .int()

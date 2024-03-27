@@ -32,6 +32,7 @@ const pagedSubjectsController = async (req, res) => {
       ws.subject_id,
       ws.average_rating,
       d.department_name,
+      d.department_image,
       ws.comments
   FROM 
       WeightedSubjects ws
