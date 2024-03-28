@@ -7,6 +7,7 @@ import toast from "react-hot-toast";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
 import Loading from "../pages/Loading";
+import { Button, TextField, Typography } from "@mui/material";
 
 export default function Review({ courseName, last, courseCode }) {
   const [remark, setRemark] = useState("");
@@ -21,30 +22,25 @@ export default function Review({ courseName, last, courseCode }) {
   if (loading) return <Loading />;
 
   return (
-    <div className="max-md:w-full w-1/2 h-full flex flex-col items-center">
-      <div className="max-md:mb-4">
-        <h1 className="text-2xl font-bold text-center text-gray-900 dark:text-white">
-          {courseName}
-        </h1>
-      </div>
+    <div className="md:w-1/2 w-full h-full flex flex-col items-center bg-slate-900 rounded-lg mt-12 p-4">
+      <Typography variant="h5" className="text-center mt-4 text-white">
+        {courseName}
+      </Typography>
       <div className="p-4 w-full max-md:mb-4">
-        <label
-          htmlFor="message"
-          className="block mb-2 px-1 text-lg font-medium text-gray-900 dark:text-white"
-        >
-          Remarks
-        </label>
-        <textarea
-          id="message"
-          rows={4}
-          className="block p-2.5 w-full text-sm text-gray-900 bg-gray-50 rounded-lg border border-gray-300 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-          placeholder="Your opinion matters"
+        <TextField
+          id="filled-basic"
+          label="Remarks"
+          fullWidth
+          variant="filled"
+          placeholder="Your Opinion Matters"
+          InputProps={{ style: { color: "white" } }}
+          InputLabelProps={{ style: { color: "white" } }}
           value={remark}
           onChange={(e) => setRemark(e.target.value)}
         />
       </div>
 
-      <div className="flex flex-col w-5/6 max-md:mb-4">
+      <div className="flex flex-col w-full max-md:mb-4">
         <div className="flex justify-between w-full p-4 items-center">
           <label
             htmlFor="rating"
@@ -84,9 +80,14 @@ export default function Review({ courseName, last, courseCode }) {
       </div>
 
       <div>
-        <button
-          type="submit"
-          className="w-full mt-2 bg-blue-500 hover:bg-blue-600 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-4 py-2 text-center text-white dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
+        <Button
+          style={{
+            background: "lightblue",
+            color: "black",
+            borderRadius: "10px",
+            // textTransform: "center",
+            padding: "10px",
+          }}
           onClick={async () => {
             try {
               setLoading(true);
@@ -111,27 +112,27 @@ export default function Review({ courseName, last, courseCode }) {
 
               toast.success(response.data.message);
               setLoading(false);
+              if (!last) {
+                setRemark("");
+                setRating(0);
+                setRatingQuality(0);
+                setRatingAttendance(0);
+                setRatingMarks(0);
+                setReviewIndex((prev) => prev + 1);
+              }
+              if (last) {
+                navigate("/home", { replace: true });
+              }
             } catch (e) {
               setLoading(false);
               console.log(e);
               if (e.response.data.message) toast.error(e.response.data.message);
               else toast.error("Something went wrong");
             }
-            if (!last) {
-              setRemark("");
-              setRating(0);
-              setRatingQuality(0);
-              setRatingAttendance(0);
-              setRatingMarks(0);
-              setReviewIndex((prev) => prev + 1);
-            }
-            if (last) {
-              navigate("/home", { replace: true });
-            }
           }}
         >
           {last ? "Submit" : "Next"}
-        </button>
+        </Button>
       </div>
     </div>
   );

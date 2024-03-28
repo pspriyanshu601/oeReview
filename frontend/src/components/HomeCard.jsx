@@ -88,11 +88,11 @@ export default function HomeCard({ review, rank, width }) {
       <Card
         sx={{
           bgcolor: "primary.main",
-          width: (width > 870 && "400px") || "100%",
+          width: (width > 870 && "360px") || "100%",
           height: "full",
           transition: "width 0.3s ease-out", // Add transition for smooth effect
           ":hover": {
-            ...(width > 870 && { width: "420px" }), // Apply hover effect only if width > 870
+            ...(width > 870 && { width: "370px" }), // Apply hover effect only if width > 870
           },
         }}
         onClick={() => {

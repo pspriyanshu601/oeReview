@@ -60,7 +60,7 @@ export default function AddReview() {
   if (loading) return <Loading />;
 
   return (
-    <div className="h-screen pt-[90px] bg-gray-800 p-2 flex justify-center">
+    <div className="min-h-screen pt-[68px] bg-slate-900 flex justify-center p-4">
       {subjects.length > 0 && (
         <Review
           courseName={subjects[reviewIndex].subject_name}

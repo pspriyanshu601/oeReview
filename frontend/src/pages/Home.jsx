@@ -153,7 +153,7 @@ export default function Home() {
   if (loadingOverall) return <Loading />;
 
   return (
-    <div className="min-h-screen pt-[68px] bg-gray-50 dark:bg-gray-400">
+    <div className="min-h-screen pt-[68px] bg-gray-400">
       <div className="flex flex-wrap gap-4 justify-center p-6 md:p-16">
         {reviews.map((review, index) => {
           const rank = index + 1 + (page - 1) * len;
@@ -163,7 +163,9 @@ export default function Home() {
         })}
       </div>
 
-      <div className={`bw-full pb-16 flex justify-center gap-12`}>
+      <div
+        className={`md:fixed md:bottom-8 md:w-full bw-full pb-16 flex justify-center`}
+      >
         <ThemeProvider theme={defaultTheme}>
           <Pagination
             count={
@@ -177,20 +179,6 @@ export default function Home() {
           />
         </ThemeProvider>
       </div>
-
-      {/* <div className="fixed bottom-0  bg-red-300 w-full pb-16 flex justify-center gap-0">
-        <Pagination
-          count={
-            allReviews.length % len == 0
-              ? parseInt(allReviews.length / len)
-              : parseInt(allReviews.length / len) + 1
-          }
-          page={page}
-          onChange={(e, v) => setPage(v)}
-        />
-      </div> */}
-
-      {/* <Pagination count={10} hidePrevButton hideNextButton /> */}
     </div>
   );
 }
