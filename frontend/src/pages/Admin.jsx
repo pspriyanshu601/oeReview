@@ -1,34 +1,35 @@
-import SemesterReset from "../components/SemesterReset";
-import VerifyReview from "../components/VerifyReview";
-import DeleteReview from "../components/DeleteReview";
-import ClearSubjects from "../components/ClearSubjects";
-import { adminWorkAtom, loadingAtom, usernameAtom } from "../store";
+import { adminUserAtom, adminWorkAtom, loadingAtom } from "../store";
 import { useRecoilValue } from "recoil";
 import useAdminAuth from "../hooks/useAdminAuth";
 import Loading from "./Loading";
-import { useEffect } from "react";
-import { useNavigate } from "react-router-dom";
+import VerifyReview from "../components/VerifyReview";
+import DeleteReview from "../components/DeleteReview";
+import SemesterReset from "../components/SemesterReset";
+import ClearSubjects from "../components/ClearSubjects";
 export default function Admin() {
   useAdminAuth();
-  const username = useRecoilValue(usernameAtom);
+  const username = useRecoilValue(adminUserAtom);
   const loading = useRecoilValue(loadingAtom);
-  const navigate = useNavigate();
   const adminWork = useRecoilValue(adminWorkAtom);
 
-  // send user to login if not admin
-  useEffect(() => {
-    if (!loading && username == null) {
-      navigate("/home", { replace: true });
-    }
-  }, [navigate, username, loading]);
-
   if (loading) return <Loading />;
+  if (!loading && (username == null || username === "notallowed")) {
+    return (
+      <div className="min-h-screen pt-[68px] bg-gray-50 dark:bg-gray-400">
+        <div className="flex justify-center items-center h-full mt-12">
+          <h1>Hi There , looks like you are not an admin !</h1>
+        </div>
+      </div>
+    );
+  }
   return (
-    <div className="min-h-screen bg-gray-800 pt-[90px] p-2 flex flex-col justify-start">
-      {adminWork === "verifyReview" && <VerifyReview />}
-      {adminWork === "deleteReview" && <DeleteReview />}
-      {adminWork === "semesterReset" && <SemesterReset />}
-      {adminWork === "clearSubjects" && <ClearSubjects />}
+    <div className="min-h-screen pt-[68px] bg-gray-50 dark:bg-gray-400">
+      <div className="p-6 mb-12">
+        {adminWork === 0 && <VerifyReview />}
+        {adminWork === 1 && <DeleteReview />}
+        {adminWork === 2 && <SemesterReset />}
+        {adminWork === 3 && <ClearSubjects />}
+      </div>
     </div>
   );
 }

@@ -14,6 +14,7 @@ import AllReviews from "./pages/AllReviews.jsx";
 import { AllDepartments } from "./pages/AllDepartments.jsx";
 import { DeptSubjects } from "./pages/DeptSubjects.jsx";
 import Bottom from "./components/Bottom.jsx";
+import BottomAdmin from "./components/BottomAdmin.jsx";
 
 function HomeRoutes() {
   return (
@@ -26,9 +27,20 @@ function HomeRoutes() {
         <Route path="/allReviews" element={<AllReviews />} />
         <Route path="/allDepartments" element={<AllDepartments />} />
         <Route path="/deptSubjects" element={<DeptSubjects />} />
-        <Route path="/admin" element={<Admin />} />
       </Routes>
       <Bottom />
+    </>
+  );
+}
+
+function AdminRoute() {
+  return (
+    <>
+      <Navbar />
+      <Routes>
+        <Route path="/" element={<Admin />} />
+      </Routes>
+      <BottomAdmin />
     </>
   );
 }
@@ -45,6 +57,7 @@ function App() {
         <Route path="/forgotPassword" element={<ForgotPass />} />
         <Route path="/login" element={<Login />} />
         <Route path="/loading" element={<Loading />} />
+        <Route path="/admin/*" element={<AdminRoute />} />
       </Routes>
     </>
   );

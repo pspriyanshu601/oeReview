@@ -95,5 +95,10 @@ export const adminUserAtom = atom({
 
 export const adminWorkAtom = atom({
   key: "adminWorkAtom",
-  default: null,
+  default: 0,
 });
+
+// export const pageAtom = atom({
+//   key: "pageAtom",
+//   default: "home",
+// });

@@ -273,7 +273,7 @@ function ResponsiveAppBar() {
     if (page == "Departments") {
       navigate("/home/allDepartments");
     } else if (page == "Admin") {
-      navigate("/home/admin");
+      navigate("/admin");
     } else if (page == "Home") {
       navigate("/home");
     }
@@ -289,7 +289,7 @@ function ResponsiveAppBar() {
       setUsername(null);
       navigate("/");
     } else if (setting == "Profile") {
-      // navigate("/home/profile");
+      //
     }
   };
 

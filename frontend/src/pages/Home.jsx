@@ -43,26 +43,31 @@ export default function Home() {
     error: errorOverall,
     response: responseOverall,
   } = useFetch(allReviews.length == 0, "GET", "/user/weightedSubjects/page/0");
+
   const { error: errorAttendance, response: responseAttendance } = useFetch(
     attendanceReviews.length == 0,
     "GET",
     "/user/weightedSubjects/filter/attendance/page/0"
   );
+
   const { error: errorQuality, response: responseQuality } = useFetch(
     qualityReviews.length == 0,
     "GET",
     "/user/weightedSubjects/filter/quality/page/0"
   );
+
   const { error: errorGrades, response: responseGrades } = useFetch(
     gradesReviews.length == 0,
     "GET",
     "/user/weightedSubjects/filter/grades/page/0"
   );
+
   const { error: errorDepts, response: responseDepts } = useFetch(
     allDepts.length == 0,
     "GET",
     "/user/allDepartments"
   );
+
   const { error: errorSubjects, response: responseSubjects } = useFetch(
     Object.keys(deptSubjects).length == 0,
     "GET",
