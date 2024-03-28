@@ -18,8 +18,9 @@ const defaultTheme = createTheme({
   },
 });
 
+const width = window.innerWidth;
+
 export default function ProfileCard({ review }) {
-  const [width, setWidth] = useState(window.innerWidth);
   return (
     <ThemeProvider theme={defaultTheme}>
       <Card
@@ -29,7 +30,7 @@ export default function ProfileCard({ review }) {
           height: "full",
           transition: "width 0.3s ease-out", // Add transition for smooth effect
           ":hover": {
-            width: "420px",
+            ...(width > 870 && { width: "420px" }), // Apply hover effect only if width > 870
           },
         }}
         onClick={() => {

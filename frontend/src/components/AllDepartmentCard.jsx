@@ -18,6 +18,7 @@ const defaultTheme = createTheme({
     },
   },
 });
+const width = window.innerWidth;
 
 export default function HomeCard({ department }) {
   // const width = useRecoilValue(widthAtom);
@@ -33,11 +34,11 @@ export default function HomeCard({ department }) {
         // }}
         sx={{
           bgcolor: "primary.main",
-          width: (window.innerWidth > 870 && "400px") || "100%",
+          width: (width > 870 && "400px") || "100%",
           height: "full",
           transition: "width 0.3s ease-out", // Add transition for smooth effect
           ":hover": {
-            width: "420px",
+            ...(width > 870 && { width: "420px" }), // Apply hover effect only if width > 870
           },
         }}
         onClick={() => {

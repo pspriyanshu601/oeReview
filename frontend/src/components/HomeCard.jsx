@@ -92,7 +92,7 @@ export default function HomeCard({ review, rank, width }) {
           height: "full",
           transition: "width 0.3s ease-out", // Add transition for smooth effect
           ":hover": {
-            width: "420px",
+            ...(width > 870 && { width: "420px" }), // Apply hover effect only if width > 870
           },
         }}
         onClick={() => {
