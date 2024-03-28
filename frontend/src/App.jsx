@@ -15,6 +15,7 @@ import { AllDepartments } from "./pages/AllDepartments.jsx";
 import { DeptSubjects } from "./pages/DeptSubjects.jsx";
 import Bottom from "./components/Bottom.jsx";
 import BottomAdmin from "./components/BottomAdmin.jsx";
+import Profile from "./pages/Profile.jsx";
 
 function HomeRoutes() {
   return (
@@ -27,6 +28,7 @@ function HomeRoutes() {
         <Route path="/allReviews" element={<AllReviews />} />
         <Route path="/allDepartments" element={<AllDepartments />} />
         <Route path="/deptSubjects" element={<DeptSubjects />} />
+        <Route path="/profile" element={<Profile />} />
       </Routes>
       <Bottom />
     </>

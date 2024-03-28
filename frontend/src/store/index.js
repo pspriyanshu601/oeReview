@@ -106,3 +106,8 @@ export const adminWorkAtom = atom({
 //   key: "pageAtom",
 //   default: "home",
 // });
+
+export const userDataAtom = atom({
+  key: "userDataAtom",
+  default: [],
+});

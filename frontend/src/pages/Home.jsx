@@ -15,7 +15,6 @@ import {
 } from "../store";
 import useAuth from "../hooks/useAuth";
 import HomeCard from "../components/HomeCard";
-import useScreenWidth from "../hooks/useScreenWidth";
 import useFetch from "../hooks/useFetch";
 import toast from "react-hot-toast";
 import { Pagination } from "@mui/material";
@@ -34,8 +33,7 @@ const defaultTheme = createTheme({
 
 export default function Home() {
   useAuth();
-  useScreenWidth();
-  const width = useRecoilValue(widthAtom);
+  const [width, setWidth] = useState(window.innerWidth);
   const sortValue = useRecoilValue(sortAtom);
   const [page, setPage] = useState(1);
   const [reviews, setReviews] = useRecoilState(reviewsAtom);

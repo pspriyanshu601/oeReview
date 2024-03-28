@@ -306,7 +306,7 @@ function ResponsiveAppBar() {
       setUsername(null);
       navigate("/");
     } else if (setting == "Profile") {
-      //
+      navigate("/home/profile");
     }
   };
 

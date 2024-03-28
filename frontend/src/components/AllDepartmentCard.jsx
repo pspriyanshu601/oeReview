@@ -20,16 +20,25 @@ const defaultTheme = createTheme({
 });
 
 export default function HomeCard({ department }) {
-  const width = useRecoilValue(widthAtom);
+  // const width = useRecoilValue(widthAtom);
   const navigate = useNavigate();
   const setDepartmentId = useSetRecoilState(departmentIdAtom);
   return (
     <ThemeProvider theme={defaultTheme}>
       <Card
+        // sx={{
+        //   bgcolor: "primary.main",
+        //   width: (window.innerWidth > 870 && "400px") || "100%",
+        //   height: "full",
+        // }}
         sx={{
           bgcolor: "primary.main",
-          width: (width > 870 && "400px") || "100%",
+          width: (window.innerWidth > 870 && "400px") || "100%",
           height: "full",
+          transition: "width 0.3s ease-out", // Add transition for smooth effect
+          ":hover": {
+            width: "420px",
+          },
         }}
         onClick={() => {
           setDepartmentId(department.department_id);
