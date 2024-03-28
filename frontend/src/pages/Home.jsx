@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import Loading from "./Loading";
 import { useRecoilState, useRecoilValue } from "recoil";
 import {
+  courseAtom,
   departmentsAtom,
   deptSubjectsAtom,
   reviewsAtom,
@@ -36,6 +37,7 @@ export default function Home() {
     useRecoilState(reviewsQualityAtom);
   const [allDepts, setAllDepts] = useRecoilState(departmentsAtom);
   const [deptSubjects, setDeptSubjects] = useRecoilState(deptSubjectsAtom);
+  const [courses, setCourses] = useRecoilState(courseAtom);
 
   // load reviews and departments and subjects from the server
   const {
@@ -74,6 +76,12 @@ export default function Home() {
     "/user/allSubjects"
   );
 
+  const { error: errorCourses, response: responseCourses } = useFetch(
+    courses.length == 0,
+    "GET",
+    "/user/allSubjects"
+  );
+
   // handle pagination
   useEffect(() => {
     if (allReviews.length == 0) return;
@@ -104,6 +112,7 @@ export default function Home() {
   if (errorGrades) toast.error("Error fetching grades reviews");
   if (errorDepts) toast.error("Error fetching departments");
   if (errorSubjects) toast.error("Error fetching subjects");
+  if (errorCourses) toast.error("Error fetching Course");
 
   if (responseOverall) setAllReviews(responseOverall.reviews);
   if (responseAttendance) setAttendanceReviews(responseAttendance.reviews);
@@ -111,6 +120,18 @@ export default function Home() {
   if (responseSubjects) setDeptSubjects(responseSubjects.subjects);
   if (responseQuality) setQualityReviews(responseQuality.reviews);
   if (responseGrades) setGradesReviews(responseGrades.reviews);
+  if (responseCourses && courses.length == 0) {
+    let temp = [];
+    for (let i = 1; i <= 18; i++) {
+      temp = temp.concat(
+        responseCourses.subjects[i].map((item) => {
+          const name = item.subject_name + " " + item.course_code;
+          return { id: item.subject_id, name: name };
+        })
+      );
+    }
+    setCourses(temp);
+  }
 
   if (loadingOverall) return <Loading />;
 

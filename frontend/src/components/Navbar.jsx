@@ -234,6 +234,7 @@ import { useState } from "react";
 import { useRecoilValue, useSetRecoilState } from "recoil";
 import { usernameAtom } from "../store";
 import { useNavigate } from "react-router-dom";
+import axios from "axios";
 
 const pages = ["Departments", "Admin", "Home"];
 const settings = ["Profile", "Add Review", "Logout"];
@@ -279,11 +280,27 @@ function ResponsiveAppBar() {
     }
   };
 
-  const handleCloseUserMenu = (e, setting) => {
+  const handleCloseUserMenu = async (e, setting) => {
     e.stopPropagation();
     setAnchorElUser(null);
     if (setting == "Add Review") {
-      navigate("/home/addSubjects");
+      try {
+        const link = import.meta.env.VITE_REVIEWLINK + "/user/hasAddedSubjects";
+        const token = localStorage.getItem("token");
+        const resp = await axios.get(link, {
+          headers: {
+            Authorization: token,
+          },
+        });
+        console.log("response", resp);
+        if (resp.data.hasAddedSubjects) {
+          navigate("/home/addReview");
+        } else {
+          navigate("/home/addSubjects");
+        }
+      } catch (err) {
+        console.log(err);
+      }
     } else if (setting == "Logout") {
       localStorage.removeItem("token");
       setUsername(null);

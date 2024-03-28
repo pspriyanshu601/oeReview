@@ -32,6 +32,10 @@ export const reviewsQualityAtom = atom({
   default: [],
 });
 
+export const courseAtom = atom({
+  key: "courseAtom",
+  default: [],
+});
 // departments
 
 export const departmentsAtom = atom({
