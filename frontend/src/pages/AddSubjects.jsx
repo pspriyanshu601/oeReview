@@ -289,7 +289,6 @@ export default function AddSubjects() {
                   color="primary"
                   size="large"
                   onClick={async () => {
-                    alert("Submitted");
                     try {
                       const token = localStorage.getItem("token");
                       console.log(seleted);

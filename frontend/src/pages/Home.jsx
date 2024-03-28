@@ -18,8 +18,19 @@ import HomeCard from "../components/HomeCard";
 import useScreenWidth from "../hooks/useScreenWidth";
 import useFetch from "../hooks/useFetch";
 import toast from "react-hot-toast";
+import { Pagination } from "@mui/material";
+import { ThemeProvider, createTheme } from "@mui/material";
 
-const len = 10;
+const defaultTheme = createTheme({
+  palette: {
+    primary: {
+      main: "#ADD8E6",
+    },
+    secondary: {
+      main: "#EEEEEE",
+    },
+  },
+});
 
 export default function Home() {
   useAuth();
@@ -38,6 +49,13 @@ export default function Home() {
   const [allDepts, setAllDepts] = useRecoilState(departmentsAtom);
   const [deptSubjects, setDeptSubjects] = useRecoilState(deptSubjectsAtom);
   const [courses, setCourses] = useRecoilState(courseAtom);
+
+  const [len, setLen] = useState(3);
+
+  useEffect(() => {
+    if (width < 640) setLen(10);
+    else setLen(3);
+  }, [width]);
 
   // load reviews and departments and subjects from the server
   const {
@@ -100,6 +118,7 @@ export default function Home() {
     allReviews,
     attendanceReviews,
     gradesReviews,
+    len,
     page,
     qualityReviews,
     setReviews,
@@ -137,7 +156,7 @@ export default function Home() {
 
   return (
     <div className="min-h-screen pt-[68px] bg-gray-50 dark:bg-gray-400">
-      <div className="flex flex-wrap gap-4 justify-center p-6 mb-12">
+      <div className="flex flex-wrap gap-4 justify-center p-6 md:p-16">
         {reviews.map((review, index) => {
           const rank = index + 1 + (page - 1) * len;
           return (
@@ -145,6 +164,35 @@ export default function Home() {
           );
         })}
       </div>
+
+      <div className={`bw-full pb-16 flex justify-center gap-12`}>
+        <ThemeProvider theme={defaultTheme}>
+          <Pagination
+            count={
+              allReviews.length % len == 0
+                ? parseInt(allReviews.length / len)
+                : parseInt(allReviews.length / len) + 1
+            }
+            color="primary"
+            page={page}
+            onChange={(e, v) => setPage(v)}
+          />
+        </ThemeProvider>
+      </div>
+
+      {/* <div className="fixed bottom-0  bg-red-300 w-full pb-16 flex justify-center gap-0">
+        <Pagination
+          count={
+            allReviews.length % len == 0
+              ? parseInt(allReviews.length / len)
+              : parseInt(allReviews.length / len) + 1
+          }
+          page={page}
+          onChange={(e, v) => setPage(v)}
+        />
+      </div> */}
+
+      {/* <Pagination count={10} hidePrevButton hideNextButton /> */}
     </div>
   );
 }
