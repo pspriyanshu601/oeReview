@@ -116,13 +116,11 @@ import axios from "axios";
 import toast from "react-hot-toast";
 import Loading from "./Loading";
 import useAuth from "../hooks/useAuth";
-import { useRecoilState, useRecoilValue } from "recoil";
-import { loadingAtom, usernameAtom } from "../store";
-import { useEffect } from "react";
+import { useRecoilState } from "recoil";
+import { loadingAtom } from "../store";
+import { createRef, useEffect, useRef, useState } from "react";
 import Avatar from "@mui/material/Avatar";
-import Button from "@mui/material/Button";
 import CssBaseline from "@mui/material/CssBaseline";
-import TextField from "@mui/material/TextField";
 import Link from "@mui/material/Link";
 import Box from "@mui/material/Box";
 import LockOutlinedIcon from "@mui/icons-material/LockOutlined";
@@ -157,51 +155,85 @@ const defaultTheme = createTheme({
 export default function Verify() {
   useAuth(true);
   const navigate = useNavigate();
-  const username = useRecoilValue(usernameAtom);
   const [loading, setLoading] = useRecoilState(loadingAtom);
+  const [otp, setOTP] = useState(["", "", "", "", "", ""]);
+  const inputRefs = useRef([
+    createRef(),
+    createRef(),
+    createRef(),
+    createRef(),
+    createRef(),
+    createRef(),
+  ]);
+  const [focusedIndex, setFocusedIndex] = useState(0);
 
-  // send user to home if already logged in
   useEffect(() => {
-    if (!loading && username != null) {
-      navigate("/home", { replace: true });
-    }
-  }, [loading, navigate, username]);
-
-  const handleSubmit = async (event) => {
-    event.preventDefault();
-    const data = new FormData(event.currentTarget);
-
-    try {
-      setLoading(true);
-      const link = import.meta.env.VITE_REVIEWLINK + "/auth/verifyEmail";
-      const response = await axios.post(link, {
-        email: data.get("email"),
-        otp: data.get("otp"),
-      });
-      toast.success(response.data.message);
-      if (response.data.token)
-        localStorage.setItem("token", response.data.token);
-      if (response.data.path) {
-        navigate("/" + response.data.path, { replace: true });
+    const verifyEmail = async (otp) => {
+      try {
+        setLoading(true);
+        const link = import.meta.env.VITE_REVIEWLINK + "/auth/verifyEmail";
+        const response = await axios.post(
+          link,
+          {
+            otp,
+          },
+          {
+            headers: {
+              Authorization: localStorage.getItem("token"),
+            },
+          }
+        );
+        toast.success(response.data.message);
+        if (response.data.token)
+          localStorage.setItem("token", response.data.token);
+        if (response.data.path) {
+          navigate("/" + response.data.path, { replace: true });
+        }
+        setLoading(false);
+        setOTP(["", "", "", "", "", ""]);
+      } catch (error) {
+        console.log(error);
+        if (error.response.data.path)
+          navigate("/" + error.response.data.path, { replace: true });
+        setLoading(false);
+        setOTP(["", "", "", "", "", ""]);
       }
-
-      setLoading(false);
-    } catch (error) {
-      console.log(error);
-      if (error.response.data.message) toast.error(error.response.data.message);
-      else toast.error("An error occurred");
-      setLoading(false);
+    };
+    if (loading) return;
+    if (
+      otp.every(
+        (digit) => digit !== "" && !isNaN(digit) && digit >= 0 && digit <= 9
+      )
+    ) {
+      verifyEmail(otp.join(""));
     }
-  };
+  }, [loading, otp, navigate, setLoading]);
+
+  useEffect(() => {
+    if (focusedIndex == 0) {
+      inputRefs.current[0].current.focus();
+    }
+    if (focusedIndex < 6) {
+      inputRefs.current[focusedIndex].current.focus();
+      setOTP((prev) => {
+        const newArr = [...prev];
+        for (let i = focusedIndex + 1; i < 6; i++) {
+          newArr[i] = "";
+        }
+        return newArr;
+      });
+    }
+  }, [focusedIndex]);
 
   if (loading) return <Loading />;
+
   return (
     <ThemeProvider theme={defaultTheme}>
       <Container component="main" maxWidth="xs">
         <CssBaseline />
         <Box
           sx={{
-            marginTop: 8,
+            marginTop: 20,
             display: "flex",
             flexDirection: "column",
             alignItems: "center",
@@ -211,41 +243,65 @@ export default function Verify() {
             <LockOutlinedIcon />
           </Avatar>
           <Typography component="h1" variant="h5">
-            Otp Verification
+            OTP Verification
           </Typography>
-          <Box
-            component="form"
-            onSubmit={handleSubmit}
-            noValidate
-            sx={{ mt: 1 }}
-          >
-            <TextField
-              margin="normal"
-              required
-              fullWidth
-              id="email"
-              label="Email Address"
-              name="email"
-              autoComplete="email"
-              autoFocus
-            />
-            <TextField
-              margin="normal"
-              required
-              fullWidth
-              name="otp"
-              label="OTP"
-              type="text"
-              id="otp"
-            />
-            <Button
-              type="submit"
-              fullWidth
-              variant="contained"
-              sx={{ mt: 3, mb: 2 }}
+          <Box component="form" noValidate sx={{ mt: 1 }}>
+            <Box
+              sx={{
+                display: "flex",
+                justifyContent: "center",
+                alignItems: "center",
+              }}
             >
-              Verify
-            </Button>
+              {otp.map((digit, index) => (
+                <input
+                  key={index}
+                  ref={inputRefs.current[index]}
+                  type="text"
+                  name={`otp${index}`}
+                  inputMode="numeric"
+                  value={
+                    digit === ""
+                      ? ""
+                      : isNaN(digit)
+                      ? ""
+                      : digit > 9
+                      ? digit % 10
+                      : digit < 0
+                      ? 0
+                      : digit
+                  }
+                  onChange={(e) => {
+                    let value = parseInt(e.target.value);
+                    if (isNaN(value)) {
+                      setOTP((prev) => {
+                        const newArr = [...prev];
+                        newArr[index] = "";
+                        for (let i = index + 1; i < 6; i++) {
+                          newArr[i] = "";
+                        }
+                        return newArr;
+                      });
+                      return;
+                    }
+                    setOTP((prev) => {
+                      const newArr = [...prev];
+                      newArr[index] = value;
+                      return newArr;
+                    });
+                    setFocusedIndex(() => {
+                      if (e.target.value && index < 5) {
+                        return index + 1;
+                      } else if (!e.target.value && index > 0) {
+                        return index - 1;
+                      }
+                    });
+                  }}
+                  className={`w-16 h-16 text-3xl text-center appearance-none m-1 border-2 border-gray-300 rounded-md focus:outline-none focus:border-primary-600 bg-black`}
+                  maxLength="1"
+                />
+              ))}
+            </Box>
           </Box>
         </Box>
         <Copyright sx={{ mt: 8, mb: 4 }} />

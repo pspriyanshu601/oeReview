@@ -2,6 +2,7 @@ import pool from "../../database/db.js";
 import bcrypt from "bcrypt";
 import validateForgotPasswordBody from "../../validators/forgotPassword.js";
 import sendOTP from "../../utils/sendOTP.js";
+import jwt from "jsonwebtoken";
 
 const saltRounds = 10;
 
@@ -25,6 +26,9 @@ const forgotPasswordController = async (req, res) => {
         path: "register",
       });
     }
+    const email_token = jwt.sign({ email }, process.env.JWT_SECRET, {
+      expiresIn: "1h",
+    });
 
     await sendOTP(email);
     //updating the password
@@ -38,6 +42,7 @@ const forgotPasswordController = async (req, res) => {
       success: true,
       message: "OTP Sent Via Email",
       path: "verifyEmail",
+      token: email_token,
     });
   } catch (error) {
     console.log(error);

@@ -123,13 +123,13 @@ export default function Home() {
     sortValue,
   ]);
 
-  if (errorOverall) toast.error("Error fetching overall reviews");
-  if (errorAttendance) toast.error("Error fetching attendance reviews");
-  if (errorQuality) toast.error("Error fetching quality reviews");
-  if (errorGrades) toast.error("Error fetching grades reviews");
-  if (errorDepts) toast.error("Error fetching departments");
-  if (errorSubjects) toast.error("Error fetching subjects");
-  if (errorCourses) toast.error("Error fetching Course");
+  if (errorOverall) console.log(errorOverall);
+  if (errorAttendance) console.log(errorAttendance);
+  if (errorQuality) console.log(errorQuality);
+  if (errorGrades) console.log(errorGrades);
+  if (errorDepts) console.log(errorDepts);
+  if (errorSubjects) console.log(errorSubjects);
+  if (errorCourses) console.log(errorCourses);
 
   if (responseOverall) setAllReviews(responseOverall.reviews);
   if (responseAttendance) setAttendanceReviews(responseAttendance.reviews);

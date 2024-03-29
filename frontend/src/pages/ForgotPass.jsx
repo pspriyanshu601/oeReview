@@ -69,6 +69,8 @@ export default function ForgotPass() {
       toast.success(response.data.message);
       console.log(response.data);
       if (response.data.path) navigate("/" + response.data.path);
+      if (response.data.token)
+        localStorage.setItem("token", response.data.token);
 
       setLoading(false);
     } catch (error) {
@@ -76,6 +78,8 @@ export default function ForgotPass() {
       if (error.response.data.message) toast.error(error.response.data.message);
       else toast.error("An error occurred");
       if (error.response.data.path) navigate("/" + error.response.data.path);
+      if (error.response.data.token)
+        localStorage.setItem("token", error.response.data.token);
       setLoading(false);
     }
   };

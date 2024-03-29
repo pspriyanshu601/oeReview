@@ -81,6 +81,8 @@ export default function Login() {
       if (error.response.data.message) toast.error(error.response.data.message);
       else toast.error("An error occurred");
       if (error.response.data.path) navigate("/" + error.response.data.path);
+      if (error.response.data.token)
+        localStorage.setItem("token", error.response.data.token);
       setLoading(false);
     }
   };

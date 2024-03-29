@@ -66,12 +66,18 @@ const loginController = async (req, res) => {
       [email, false]
     );
 
+    const email_token = jwt.sign({ email }, process.env.JWT_SECRET, {
+      expiresIn: "1h",
+    });
+
     if (findUser.rows.length > 0) {
       await sendOTP(email);
+
       return res.status(200).json({
         success: true,
         message: "OTP sent via Email",
         path: "verifyEmail",
+        token: email_token,
       });
     }
 

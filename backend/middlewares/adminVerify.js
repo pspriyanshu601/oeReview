@@ -7,6 +7,12 @@ const adminVerifyMiddleware = async (req, res, next) => {
     const token = req.headers.authorization;
     try {
       data = jwt.verify(token, process.env.JWT_SECRET);
+      if (!data.id) {
+        return res.status(401).json({
+          success: false,
+          message: "Unauthorized User",
+        });
+      }
     } catch (error) {
       return res.status(401).json({
         success: false,

@@ -2,6 +2,7 @@ import pool from "../../database/db.js";
 import bcrypt from "bcrypt";
 import validateRegisterBody from "../../validators/register.js";
 import sendOTP from "../../utils/sendOTP.js";
+import jwt from "jsonwebtoken";
 
 const saltRounds = 10;
 
@@ -52,13 +53,17 @@ const registerController = async (req, res) => {
       [email]
     );
 
+    const email_token = jwt.sign({ email }, process.env.JWT_SECRET, {
+      expiresIn: "1h",
+    });
+
     if (unVerifiedUser.rows.length > 0) {
       await sendOTP(email);
-
       return res.status(200).json({
         success: false,
         message: "OTP Sent Via Email",
         path: "verifyEmail",
+        token: email_token,
       });
     }
 
@@ -75,6 +80,7 @@ const registerController = async (req, res) => {
       success: true,
       message: "OTP Sent Via Email",
       path: "verifyEmail",
+      token: email_token,
     });
   } catch (error) {
     console.log(error);

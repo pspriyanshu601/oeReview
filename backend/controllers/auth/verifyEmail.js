@@ -11,8 +11,33 @@ const verifyEmailController = async (req, res) => {
         message: errorMessage[0],
       });
     }
-    var { email, otp } = req.body;
-    email=email.toLowerCase();
+
+    const email_token = req.headers.authorization;
+    if (!email_token)
+      return res
+        .status(400)
+        .json({ success: false, message: "Email Doesnt Exist" });
+
+    var email;
+
+    try {
+      const decoded = jwt.verify(email_token, process.env.JWT_SECRET);
+      if (!decoded.email) {
+        return res.status(400).json({
+          success: false,
+          message: "Unauthorized User",
+        });
+      }
+      email = decoded.email;
+    } catch (error) {
+      return res.status(400).json({
+        success: false,
+        message: "Unauthorized User",
+      });
+    }
+
+    var { otp } = req.body;
+    email = email.toLowerCase();
 
     //check if user exist or not
     const user = await pool.query("SELECT * FROM users WHERE email=$1", [
@@ -49,7 +74,6 @@ const verifyEmailController = async (req, res) => {
       email,
     ]);
 
-    // const token = jwt.sign()
     const token = jwt.sign(
       { id: userData.rows[0].id },
       process.env.JWT_SECRET,
