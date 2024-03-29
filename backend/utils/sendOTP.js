@@ -1,5 +1,4 @@
 import nodemailer from "nodemailer";
-import otpGenerator from "otp-generator";
 import pool from "../database/db.js";
 
 const transporter = nodemailer.createTransport({
@@ -10,15 +9,17 @@ const transporter = nodemailer.createTransport({
   },
 });
 
+function generateSixDigitOTP() {
+  let otp = "";
+  for (let i = 0; i < 6; i++) {
+    otp += Math.floor(Math.random() * 10); // Generate a random digit between 0 and 9
+  }
+  return otp;
+}
+
 export default async function sendOTP(email) {
   try {
-    // Generate OTP
-    const otp = otpGenerator.generate(6, {
-      digits: true,
-      alphabets: false,
-      upperCase: false,
-      specialChars: false,
-    });
+    const otp = generateSixDigitOTP();
 
     const mailOptions = {
       from: "maileroereview@gmail.com",
