@@ -297,7 +297,7 @@ export default function Verify() {
                       }
                     });
                   }}
-                  className={`w-16 h-16 text-3xl text-center appearance-none m-1 border-2 border-gray-300 rounded-md focus:outline-none focus:border-primary-600 bg-black`}
+                  className={`max-md:w-10 max-md:h-10 md:w-16 md:h-16 text-3xl text-center appearance-none m-1 border-2 border-gray-300 rounded-md focus:outline-none focus:border-primary-600 bg-black`}
                   maxLength="1"
                 />
               ))}
