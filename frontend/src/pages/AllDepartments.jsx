@@ -15,7 +15,7 @@ export const AllDepartments = () => {
   }, [allDepts, navigate]);
 
   return (
-    <div className="min-h-screen pt-[68px] bg-gray-50 dark:bg-gray-400">
+    <div className="min-h-screen pt-[68px] bg-gray-50 dark:bg-gray-700">
       <div className="flex flex-wrap gap-4 justify-center p-6 mb-16">
         {allDepts.map((dept) => {
           return (

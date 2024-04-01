@@ -24,6 +24,18 @@ export default function HomeCard({ department }) {
   // const width = useRecoilValue(widthAtom);
   const navigate = useNavigate();
   const setDepartmentId = useSetRecoilState(departmentIdAtom);
+
+  const cardStyle = {
+    bgcolor: "primary.main",
+    width: (width > 870 && "400px") || "100%",
+    height: "full",
+    transition: "width 0.3s ease-out", // Add transition for smooth effect
+    ":hover": {
+      ...(width > 870 && { width: "420px" }), // Apply hover effect only if width > 870
+    },
+    boxShadow: "0px 4px 8px rgba(255, 255, 255, 0.2)",
+  }
+
   return (
     <ThemeProvider theme={defaultTheme}>
       <Card
@@ -32,15 +44,7 @@ export default function HomeCard({ department }) {
         //   width: (window.innerWidth > 870 && "400px") || "100%",
         //   height: "full",
         // }}
-        sx={{
-          bgcolor: "primary.main",
-          width: (width > 870 && "400px") || "100%",
-          height: "full",
-          transition: "width 0.3s ease-out", // Add transition for smooth effect
-          ":hover": {
-            ...(width > 870 && { width: "420px" }), // Apply hover effect only if width > 870
-          },
-        }}
+        sx={cardStyle}
         onClick={() => {
           setDepartmentId(department.department_id);
           navigate("/home/deptSubjects");

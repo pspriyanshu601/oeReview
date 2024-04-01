@@ -2,26 +2,85 @@ import PropTypes from "prop-types";
 import { useSetRecoilState } from "recoil";
 import { courseCodeAtom } from "../store";
 import { useNavigate } from "react-router-dom";
+import { ThemeProvider } from "@emotion/react";
+import {
+  Box,
+  Card,
+  CardActionArea,
+  CardContent,
+  createTheme
+} from "@mui/material";
+
+const defaultTheme = createTheme({
+  palette: {
+    primary: {
+      main: "#282c34",
+    },
+    secondary: {
+      main: "#EEEEEE",
+    },
+  },
+});
 
 export const DeptSubjectsCard = ({ subject }) => {
   const navigate = useNavigate();
   const setCourseCode = useSetRecoilState(courseCodeAtom);
 
+  const width = window.innerWidth;
+
+  const cardStyles = {
+    bgcolor: "primary.main",
+    width: "250px", // Set fixed width to 64 units
+    height: "200px", // Set fixed height to 64 units (square)
+    transition: "width 0.3s ease-out",
+    boxShadow: "0px 4px 8px rgba(255, 255, 255, 0.2)",
+    ":hover": {
+      ...(width > 870 && { width: "260px" }), // Adjust hover width if needed
+    },
+    margin: "10px"
+  }
+
   return (
-    <div className="w-64 p-4">
-      <div
-        className="bg-gray-900 text-white p-6 flex flex-col justify-between h-40 shadow-whiteBottom rounded-lg transform transition-transform hover:scale-105 cursor-pointer"
+    <ThemeProvider theme={defaultTheme}>
+      <Card
+        // sx={{
+        //   bgcolor: "primary.main",
+        //   width: (window.innerWidth > 870 && "400px") || "100%",
+        //   height: "full",
+        // }}
+        sx={cardStyles}
         onClick={() => {
           setCourseCode(subject.course_code);
           navigate("/home/allReviews");
         }}
       >
-        <div>
-          <p className="font-medium mb-3 text-3xl">{subject.course_code}</p>
-          <p className="">{subject.subject_name}</p>
-        </div>
-      </div>
-    </div>
+        <CardActionArea>
+          <CardContent>
+            <Box
+              color="secondary.main"
+              sx={{
+                gap: "5px",
+                textAlign: "left",
+                paddingTop: "20px"
+              }}
+            >
+              <h5 style={{ fontSize: "30px" }}>{subject.course_code}</h5>
+            </Box>
+            <Box
+              color="secondary.main"
+              sx={{
+                gap: "5px",
+                textAlign: "left",
+                paddingTop: "20px"
+              }}
+            >
+              <h5 style={{ fontSize: "18px" }}>{subject.subject_name}</h5>
+            </Box>
+          </CardContent>
+        </CardActionArea>
+      </Card>
+    </ThemeProvider>
+
   );
 };
 
