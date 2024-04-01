@@ -11,12 +11,11 @@ import {
   reviewsOverallAtom,
   reviewsQualityAtom,
   sortAtom,
-  widthAtom,
 } from "../store";
 import useAuth from "../hooks/useAuth";
 import HomeCard from "../components/HomeCard";
 import useFetch from "../hooks/useFetch";
-import toast from "react-hot-toast";
+// import toast from "react-hot-toast";
 import { Pagination } from "@mui/material";
 import { ThemeProvider, createTheme } from "@mui/material";
 
@@ -153,7 +152,7 @@ export default function Home() {
   if (loadingOverall) return <Loading />;
 
   return (
-    <div className="min-h-screen pt-[68px] bg-gray-400">
+    <div className="min-h-screen pt-[68px] bg-gray-700">
       <div className="flex flex-wrap gap-4 justify-center p-6 md:p-16">
         {reviews.map((review, index) => {
           const rank = index + 1 + (page - 1) * len;
