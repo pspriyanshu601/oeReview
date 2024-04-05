@@ -312,7 +312,6 @@ function ResponsiveAppBar() {
 
   return (
     <>
-      {username != null && username != "notallowed" && (
         <ThemeProvider theme={defaultTheme}>
           <AppBar position="fixed">
             <Container maxWidth="xl">
@@ -488,7 +487,6 @@ function ResponsiveAppBar() {
             </Container>
           </AppBar>
         </ThemeProvider>
-      )}
     </>
   );
 }
