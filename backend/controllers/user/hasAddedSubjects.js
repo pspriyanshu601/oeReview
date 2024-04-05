@@ -1,4 +1,3 @@
-import { has } from "lodash";
 import pool from "../../database/db.js";
 
 const hasAddedSubjectsController = async (req, res) => {
