@@ -20,7 +20,7 @@ const userRouter = express.Router();
 
 userRouter.get("/username", verifyMiddleware, usernameController);
 userRouter.get("/allDepartments", allDepartmentsController);
-userRouter.get("/allSubjects", verifyMiddleware, allSubjectsController);
+userRouter.get("/allSubjects", allSubjectsController);
 userRouter.get(
   "/allVerifiedReviews/courseCode/:courseCode",
   verifyMiddleware,
