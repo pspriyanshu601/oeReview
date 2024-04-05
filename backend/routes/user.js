@@ -46,7 +46,6 @@ userRouter.get(
 );
 userRouter.get(
   "/hasAddedSubjects",
-  verifyMiddleware,
   hasAddedSubjectsController
 );
 userRouter.get("/userSubjects", verifyMiddleware, userSubjectsController);
