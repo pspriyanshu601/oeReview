@@ -447,13 +447,13 @@ function ResponsiveAppBar() {
                   <Tooltip title="Open settings">
                     <IconButton onClick={handleOpenUserMenu} sx={{ p: 0 }}>
                       <Avatar
-                        alt={username.toUpperCase()}
+                        alt={(username == null || username == "notallowed") ? "G" : username.toUpperCase() }
                         src="none"
                         sx={{
                           bgcolor: "gray",
                         }}
                       >
-                        {username[0].toUpperCase()}
+                        {(username == null || username == "notallowed") ? "G" : username.toUpperCase()}
                       </Avatar>
                     </IconButton>
                   </Tooltip>

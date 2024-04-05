@@ -1,3 +1,4 @@
+/* eslint-disable react/prop-types */
 import Card from "@mui/material/Card";
 import CardContent from "@mui/material/CardContent";
 import CardMedia from "@mui/material/CardMedia";
@@ -7,7 +8,6 @@ import { ThemeProvider, createTheme } from "@mui/material";
 import { useRecoilValue, useSetRecoilState } from "recoil";
 import { courseCodeAtom, sortAtom } from "../store";
 import { useNavigate } from "react-router-dom";
-import PropTypes from 'prop-types';
 
 const defaultTheme = createTheme({
   palette: {
@@ -111,19 +111,3 @@ export default function HomeCard({ review, rank, width }) {
     </ThemeProvider>
   );
 }
-
-HomeCard.propTypes = {
-  review: PropTypes.shape({
-    department_image: PropTypes.string.isRequired,
-    subject_name: PropTypes.string.isRequired,
-    department_name: PropTypes.string.isRequired,
-    course_code: PropTypes.string.isRequired,
-    average_rating: PropTypes.number.isRequired,
-    average_quality_rating: PropTypes.number.isRequired,
-    average_grades_rating: PropTypes.number.isRequired,
-    average_attendance_rating: PropTypes.number.isRequired,
-    comments: PropTypes.number.isRequired,
-  }).isRequired,
-  rank: PropTypes.number.isRequired,
-  width: PropTypes.number.isRequired,
-};
