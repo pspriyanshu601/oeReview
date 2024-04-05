@@ -25,7 +25,7 @@ export const DeptSubjects = () => {
   }, [deptSubjects, departmentId]);
 
   return (
-    <div className="min-h-screen pt-[68px] bg-gray-50 dark:bg-gray-800">
+    <div className="min-h-screen pt-[68px] bg-gray-800">
       <div className="flex flex-wrap gap-4 justify-center p-6 mb-12">
         {subjects.map((subject) => {
           return (

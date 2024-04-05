@@ -3,16 +3,16 @@
 function OneRow({ rating, value }) {
   return (
     <div className="flex items-center mt-4 bg-green-30">
-      <a className="w-[36px] text-sm font-medium text-blue-600 dark:text-blue-500 hover:underline">
+      <a className="w-[36px] text-sm font-medium text-blue-500 hover:underline">
         {rating} star
       </a>
-      <div className="w-3/4  h-5 mx-4 bg-gray-200 rounded dark:bg-gray-700">
+      <div className="w-3/4  h-5 mx-4 rounded bg-gray-700">
         <div
           className="h-5 bg-yellow-300 rounded"
           style={{ width: `${value}%` }}
         />
       </div>
-      <span className="text-sm font-medium text-gray-500 dark:text-gray-400">
+      <span className="text-sm font-medium text-gray-400">
         {value}%
       </span>
     </div>
@@ -32,7 +32,7 @@ function OneStar({ full }) {
     </svg>
   ) : (
     <svg
-      className="w-4 h-4 text-gray-300 me-1 dark:text-gray-500"
+      className="w-4 h-4 me-1 text-gray-500"
       aria-hidden="true"
       xmlns="http://www.w3.org/2000/svg"
       fill="currentColor"
@@ -56,17 +56,17 @@ export default function StarStat({ rating, arrOneToFive, totalRatings }) {
           {[...Array(5)].map((_, i) => (
             <OneStar key={i} full={i < roundedRating} />
           ))}
-          <p className="ms-1 text-sm font-medium text-gray-500 dark:text-gray-400">
+          <p className="ms-1 text-sm font-medium text-gray-400">
             {rating}
           </p>
-          <p className="ms-1 text-sm font-medium text-gray-500 dark:text-gray-400">
+          <p className="ms-1 text-sm font-medium text-gray-400">
             out of
           </p>
-          <p className="ms-1 text-sm font-medium text-gray-500 dark:text-gray-400">
+          <p className="ms-1 text-sm font-medium text-gray-400">
             5
           </p>
         </div>
-        <p className="text-sm font-medium text-gray-500 dark:text-gray-400">
+        <p className="text-sm font-medium text-gray-400">
           {totalRatings} ratings
         </p>
         {percentArrOneToFive.map((rating, index) => (

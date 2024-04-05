@@ -5,7 +5,6 @@ import Typography from "@mui/material/Typography";
 import { Box, CardActionArea, Rating } from "@mui/material";
 import { ThemeProvider, createTheme } from "@mui/material";
 import { toast } from "react-hot-toast";
-import { useState } from "react";
 
 const defaultTheme = createTheme({
   palette: {

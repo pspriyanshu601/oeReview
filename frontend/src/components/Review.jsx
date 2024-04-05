@@ -44,7 +44,7 @@ export default function Review({ courseName, last, courseCode }) {
         <div className="flex justify-between w-full p-4 items-center">
           <label
             htmlFor="rating"
-            className="block mb-2 px-1 text-sm font-medium text-gray-900 dark:text-white"
+            className="block mb-2 px-1 text-sm font-medium text-white"
           >
             Overall
           </label>
@@ -53,7 +53,7 @@ export default function Review({ courseName, last, courseCode }) {
         <div className="flex justify-between w-full p-4 items-center">
           <label
             htmlFor="ratingQuality"
-            className="block mb-2 px-1 text-sm font-medium text-gray-900 dark:text-white"
+            className="block mb-2 px-1 text-sm font-medium text-white"
           >
             Quality
           </label>
@@ -62,7 +62,7 @@ export default function Review({ courseName, last, courseCode }) {
         <div className="flex justify-between w-full p-4 items-center">
           <label
             htmlFor="ratingAttendance"
-            className="block mb-2 px-1 text-sm font-medium text-gray-900 dark:text-white"
+            className="block mb-2 px-1 text-sm font-medium text-white"
           >
             Attendance
           </label>
@@ -71,7 +71,7 @@ export default function Review({ courseName, last, courseCode }) {
         <div className="flex justify-between w-full p-4 items-center">
           <label
             htmlFor="ratingMarks"
-            className="block mb-2 px-1 text-sm font-medium text-gray-900 dark:text-white"
+            className="block mb-2 px-1 text-sm font-medium text-white"
           >
             Marks
           </label>

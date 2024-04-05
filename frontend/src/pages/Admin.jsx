@@ -15,7 +15,7 @@ export default function Admin() {
   if (loading) return <Loading />;
   if (!loading && (username == null || username === "notallowed")) {
     return (
-      <div className="min-h-screen pt-[68px] bg-gray-50 dark:bg-gray-400">
+      <div className="min-h-screen pt-[68px] bg-gray-400">
         <div className="flex justify-center items-center h-full mt-12">
           <h1>Hi There , looks like you are not an admin !</h1>
         </div>
@@ -23,7 +23,7 @@ export default function Admin() {
     );
   }
   return (
-    <div className="min-h-screen pt-[68px] bg-gray-50 dark:bg-gray-400">
+    <div className="min-h-screen pt-[68px] bg-gray-400">
       <div className="p-6 mb-12">
         {adminWork === 0 && <VerifyReview />}
         {adminWork === 1 && <DeleteReview />}

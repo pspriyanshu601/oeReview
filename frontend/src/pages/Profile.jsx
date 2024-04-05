@@ -24,12 +24,10 @@ export default function Profile() {
     }
   }, [response, setUserData]);
 
-  const [page, setPage] = useState(1);
-
   if (loading) return <Loading />;
 
   return (
-    <div className="min-h-screen pt-[68px] bg-gray-50 dark:bg-gray-400">
+    <div className="min-h-screen pt-[68px] -gray-400">
       <div className="flex flex-col mb-16">
         <h1 className="text-2xl text-center">Hi, {username}</h1>
         <Typography variant="h4" className="text-center mt-4">
