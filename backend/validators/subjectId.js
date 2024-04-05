@@ -21,7 +21,7 @@ const subjectIdChecker = async (subjectId) => {
 };
 
 const numberOfSubjectChecker = (noOfSubjects) => {
-  const noOfSubjectsCheckerSchema = z.number().int().min(1).max(3);
+  const noOfSubjectsCheckerSchema = z.number().int().min(1).max(6);
 
   try {
     noOfSubjectsCheckerSchema.parse(noOfSubjects);

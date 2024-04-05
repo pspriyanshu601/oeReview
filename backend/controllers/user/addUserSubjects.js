@@ -8,14 +8,41 @@ const addUserSubjectsController = async (req, res) => {
     if (!numberOfSubjectChecker(req.body.noOfSubjects)) {
       return res.status(400).json({
         success: false,
-        message: "Only upto 3 subjects allowed",
+        message: "Only upto 6 subjects allowed",
       });
     }
+
+    const user = await pool.query("SELECT * FROM users WHERE id=$1", [
+      req.body.userId,
+    ]);
+
     const { userId, noOfSubjects } = req.body;
     const subjectIdsArray = [];
+    if (user.rows[0].no_of_subjects === 6) {
+      return res.status(400).json({
+        success: false,
+        message: "Max subject limit exceeded for this semester",
+      });
+    }
+    if (noOfSubjects+user.rows[0].no_of_subjects > 6) {
+      return res.status(400).json({
+        success: false,
+        message: `you can add only ${6 - user.rows[0].no_of_subjects} more subjects`,
+      });
+    }
 
     for (var i = 1; i <= noOfSubjects; i++) {
       const subjectId = req.body[`subject${i}Id`];
+
+      const existingSubjectIds = Object.values(user.rows[0].subject_ids || {});
+
+      if (existingSubjectIds.includes(subjectId)) {
+        return res.status(400).json({
+          success: false,
+          message: "Subject ID already exists for the user",
+        });
+      }
+
       if (
         typeof subjectId === "undefined" ||
         !(await subjectIdChecker(subjectId))
@@ -27,37 +54,25 @@ const addUserSubjectsController = async (req, res) => {
       }
       subjectIdsArray.push(req.body[`subject${i}Id`]);
     }
-    const hasDuplicates = subjectIdsArray.length !== new Set(subjectIdsArray).size;
-    if(hasDuplicates){
+    const hasDuplicates =
+      subjectIdsArray.length !== new Set(subjectIdsArray).size;
+    if (hasDuplicates) {
       return res.status(400).json({
-        success:false,
-        message:'Duplicate subjects not allowed'
+        success: false,
+        message: "Duplicate subjects not allowed",
       });
     }
 
     const subjectIdsObject = {};
     for (let i = 0; i < noOfSubjects; i++) {
-      subjectIdsObject[`subject_${i + 1}`] = subjectIdsArray[i];
-    }
-
-    //checking if users has alreay added subject
-    const alreadyAddedSubjects = await pool.query(
-      "SELECT subject_Ids FROM users WHERE id=$1",
-      [userId]
-    );
-
-    if (Object.keys(alreadyAddedSubjects.rows[0].subject_ids).length > 0) {
-      return res.status(400).json({
-        success: false,
-        message: "Already added subjects wait for next sem to add subjects",
-      });
+      subjectIdsObject[`subject_${i + user.rows[0].no_of_subjects + 1}`] =
+        subjectIdsArray[i];
     }
 
     // Execute the SQL query to update the users table
     const query = `
     UPDATE users
-    SET subject_ids = $1::jsonb,
-        no_of_subjects = $2
+    SET subject_ids = subject_ids || $1,no_of_subjects=no_of_subjects+$2
     WHERE id = $3;
     `;
     await pool.query(query, [subjectIdsObject, noOfSubjects, userId]);

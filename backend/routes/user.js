@@ -23,7 +23,6 @@ userRouter.get("/allDepartments", allDepartmentsController);
 userRouter.get("/allSubjects", allSubjectsController);
 userRouter.get(
   "/allVerifiedReviews/courseCode/:courseCode",
-  verifyMiddleware,
   subjectReviewsController
 );
 userRouter.get(
@@ -46,6 +45,7 @@ userRouter.get(
 );
 userRouter.get(
   "/hasAddedSubjects",
+  verifyMiddleware,
   hasAddedSubjectsController
 );
 userRouter.get("/userSubjects", verifyMiddleware, userSubjectsController);
