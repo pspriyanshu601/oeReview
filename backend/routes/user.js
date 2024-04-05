@@ -19,7 +19,7 @@ import upadteUserReviewController from "../controllers/user/updateUserReview.js"
 const userRouter = express.Router();
 
 userRouter.get("/username", verifyMiddleware, usernameController);
-userRouter.get("/allDepartments", verifyMiddleware, allDepartmentsController);
+userRouter.get("/allDepartments", allDepartmentsController);
 userRouter.get("/allSubjects", verifyMiddleware, allSubjectsController);
 userRouter.get(
   "/allVerifiedReviews/courseCode/:courseCode",
@@ -28,12 +28,10 @@ userRouter.get(
 );
 userRouter.get(
   "/weightedSubjects/page/:page",
-  verifyMiddleware,
   pagedSubjectsController
 );
 userRouter.get(
   "/weightedSubjects/filter/:filter/page/:page",
-  verifyMiddleware,
   pagedSubjectsQueryController
 );
 userRouter.get(

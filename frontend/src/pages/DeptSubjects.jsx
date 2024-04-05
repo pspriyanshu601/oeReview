@@ -3,10 +3,8 @@ import { departmentIdAtom, deptSubjectsAtom } from "../store";
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { DeptSubjectsCard } from "../components/DeptSubjectsCard";
-import useAuth from "../hooks/useAuth";
 
 export const DeptSubjects = () => {
-  useAuth();
   const navigate = useNavigate();
   const departmentId = useRecoilValue(departmentIdAtom);
   const deptSubjects = useRecoilValue(deptSubjectsAtom);

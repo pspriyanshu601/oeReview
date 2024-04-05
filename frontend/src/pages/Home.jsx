@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import Loading from "./Loading";
-import { useRecoilState, useRecoilValue } from "recoil";
+import { useRecoilState, useRecoilValue, useSetRecoilState } from "recoil";
 import {
   courseAtom,
   departmentsAtom,
@@ -12,7 +12,6 @@ import {
   reviewsQualityAtom,
   sortAtom,
 } from "../store";
-import useAuth from "../hooks/useAuth";
 import HomeCard from "../components/HomeCard";
 import useFetch from "../hooks/useFetch";
 // import toast from "react-hot-toast";
@@ -31,8 +30,6 @@ const defaultTheme = createTheme({
 });
 
 export default function Home() {
-  useAuth();
-  const [width, setWidth] = useState(window.innerWidth);
   const sortValue = useRecoilValue(sortAtom);
   const [page, setPage] = useState(1);
   const [reviews, setReviews] = useRecoilState(reviewsAtom);
@@ -44,15 +41,15 @@ export default function Home() {
   const [qualityReviews, setQualityReviews] =
     useRecoilState(reviewsQualityAtom);
   const [allDepts, setAllDepts] = useRecoilState(departmentsAtom);
-  const [deptSubjects, setDeptSubjects] = useRecoilState(deptSubjectsAtom);
+  const setDeptSubjects = useSetRecoilState(deptSubjectsAtom);
   const [courses, setCourses] = useRecoilState(courseAtom);
 
   const [len, setLen] = useState(3);
 
   useEffect(() => {
-    if (width < 640) setLen(10);
+    if (window.innerWidth < 640) setLen(10);
     else setLen(3);
-  }, [width]);
+  }, []);
 
   // load reviews and departments and subjects from the server
   const {
@@ -85,11 +82,6 @@ export default function Home() {
     "/user/allDepartments"
   );
 
-  const { error: errorSubjects, response: responseSubjects } = useFetch(
-    Object.keys(deptSubjects).length == 0,
-    "GET",
-    "/user/allSubjects"
-  );
 
   const { error: errorCourses, response: responseCourses } = useFetch(
     courses.length == 0,
@@ -127,16 +119,15 @@ export default function Home() {
   if (errorQuality) console.log(errorQuality);
   if (errorGrades) console.log(errorGrades);
   if (errorDepts) console.log(errorDepts);
-  if (errorSubjects) console.log(errorSubjects);
   if (errorCourses) console.log(errorCourses);
 
   if (responseOverall) setAllReviews(responseOverall.reviews);
   if (responseAttendance) setAttendanceReviews(responseAttendance.reviews);
   if (responseDepts) setAllDepts(responseDepts.departments);
-  if (responseSubjects) setDeptSubjects(responseSubjects.subjects);
   if (responseQuality) setQualityReviews(responseQuality.reviews);
   if (responseGrades) setGradesReviews(responseGrades.reviews);
   if (responseCourses && courses.length == 0) {
+    setDeptSubjects(responseCourses.subjects);
     let temp = [];
     for (let i = 1; i <= 18; i++) {
       temp = temp.concat(
@@ -157,7 +148,7 @@ export default function Home() {
         {reviews.map((review, index) => {
           const rank = index + 1 + (page - 1) * len;
           return (
-            <HomeCard key={index} review={review} rank={rank} width={width} />
+            <HomeCard key={index} review={review} rank={rank} width={window.innerWidth} />
           );
         })}
       </div>

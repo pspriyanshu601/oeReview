@@ -1,12 +1,10 @@
 import AllDepartmentCard from "../components/AllDepartmentCard";
 import { useRecoilValue } from "recoil";
-import useAuth from "../hooks/useAuth";
 import { departmentsAtom } from "../store";
 import { useNavigate } from "react-router-dom";
 import { useEffect } from "react";
 
 export const AllDepartments = () => {
-  useAuth();
   const allDepts = useRecoilValue(departmentsAtom);
   const navigate = useNavigate();
 
