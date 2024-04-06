@@ -283,210 +283,230 @@ function ResponsiveAppBar() {
   const handleCloseUserMenu = async (e, setting) => {
     e.stopPropagation();
     setAnchorElUser(null);
-    if (setting == "Add Review") {
-      try {
-        const link = import.meta.env.VITE_REVIEWLINK + "/user/hasAddedSubjects";
-        const token = localStorage.getItem("token");
-        const resp = await axios.get(link, {
-          headers: {
-            Authorization: token,
-          },
-        });
-        console.log("response", resp);
-        if (resp.data.hasAddedSubjects) {
-          navigate("/home/addReview");
-        } else {
-          navigate("/home/addSubjects");
+    if (setting === "Add Review") {
+      if (username === null) {
+        navigate("/login");
+      } else {
+        try {
+          const link =
+            import.meta.env.VITE_REVIEWLINK + "/user/hasAddedSubjects";
+          const token = localStorage.getItem("token");
+          const resp = await axios.get(link, {
+            headers: {
+              Authorization: token,
+            },
+          });
+          console.log("response", resp);
+          if (resp.data.hasAddedSubjects) {
+            navigate("/home/addReview");
+          } else {
+            navigate("/home/addSubjects");
+          }
+        } catch (err) {
+          console.log(err);
         }
-      } catch (err) {
-        console.log(err);
       }
-    } else if (setting == "Logout") {
+    } else if (setting === "Logout") {
       localStorage.removeItem("token");
       setUsername(null);
       navigate("/");
-    } else if (setting == "Profile") {
+    } else if (setting === "Profile") {
       navigate("/home/profile");
     }
   };
 
+  // Inside the return statement:
+  <Button
+    key={settings[1]} // Assuming "Add Review" is at index 1
+    onClick={username === null ? () => navigate("/login") : handleCloseUserMenu}
+    sx={{ my: 2, color: "white", display: "block" }}
+  >
+    {settings[1]} {/* Display "Add Review" */}
+  </Button>;
+
   return (
     <>
-        <ThemeProvider theme={defaultTheme}>
-          <AppBar position="fixed">
-            <Container maxWidth="xl">
-              <Toolbar disableGutters>
-                <Box
-                  sx={{
-                    display: { xs: "none", md: "flex" },
-                    mr: 1,
-                    cursor: "pointer",
+      <ThemeProvider theme={defaultTheme}>
+        <AppBar position="fixed">
+          <Container maxWidth="xl">
+            <Toolbar disableGutters>
+              <Box
+                sx={{
+                  display: { xs: "none", md: "flex" },
+                  mr: 1,
+                  cursor: "pointer",
+                }}
+                onClick={() => {
+                  window.open(
+                    "https://github.com/pspriyanshu601/oeReview",
+                    "_blank"
+                  );
+                }}
+              >
+                <img
+                  src={Logo}
+                  className="h-8 rounded-lg object-contain"
+                  alt="Flowbite Logo"
+                />
+              </Box>
+              <Typography
+                variant="h6"
+                noWrap
+                component="a"
+                href="https://github.com/pspriyanshu601/oeReview"
+                target="_blank"
+                sx={{
+                  mr: 2,
+                  display: { xs: "none", md: "flex" },
+                  fontFamily: "monospace",
+                  fontWeight: 700,
+                  letterSpacing: ".3rem",
+                  color: "inherit",
+                  textDecoration: "none",
+                }}
+              >
+                Review
+              </Typography>
+              <Box sx={{ flexGrow: 1, display: { xs: "flex", md: "none" } }}>
+                <IconButton
+                  size="large"
+                  aria-label="account of current user"
+                  aria-controls="menu-appbar"
+                  aria-haspopup="true"
+                  onClick={handleOpenNavMenu}
+                  color="inherit"
+                >
+                  <MenuIcon />
+                </IconButton>
+                <Menu
+                  id="menu-appbar"
+                  anchorEl={anchorElNav}
+                  anchorOrigin={{
+                    vertical: "bottom",
+                    horizontal: "left",
                   }}
-                  onClick={() => {
-                    window.open(
-                      "https://github.com/pspriyanshu601/oeReview",
-                      "_blank"
-                    );
+                  keepMounted
+                  transformOrigin={{
+                    vertical: "top",
+                    horizontal: "left",
+                  }}
+                  open={Boolean(anchorElNav)}
+                  onClose={handleCloseNavMenu}
+                  sx={{
+                    display: { xs: "block", md: "none" },
                   }}
                 >
-                  <img
-                    src={Logo}
-                    className="h-8 rounded-lg object-contain"
-                    alt="Flowbite Logo"
-                  />
-                </Box>
-                <Typography
-                  variant="h6"
-                  noWrap
-                  component="a"
-                  href="https://github.com/pspriyanshu601/oeReview"
-                  target="_blank"
-                  sx={{
-                    mr: 2,
-                    display: { xs: "none", md: "flex" },
-                    fontFamily: "monospace",
-                    fontWeight: 700,
-                    letterSpacing: ".3rem",
-                    color: "inherit",
-                    textDecoration: "none",
-                  }}
-                >
-                  Review
-                </Typography>
-                <Box sx={{ flexGrow: 1, display: { xs: "flex", md: "none" } }}>
-                  <IconButton
-                    size="large"
-                    aria-label="account of current user"
-                    aria-controls="menu-appbar"
-                    aria-haspopup="true"
-                    onClick={handleOpenNavMenu}
-                    color="inherit"
-                  >
-                    <MenuIcon />
-                  </IconButton>
-                  <Menu
-                    id="menu-appbar"
-                    anchorEl={anchorElNav}
-                    anchorOrigin={{
-                      vertical: "bottom",
-                      horizontal: "left",
-                    }}
-                    keepMounted
-                    transformOrigin={{
-                      vertical: "top",
-                      horizontal: "left",
-                    }}
-                    open={Boolean(anchorElNav)}
-                    onClose={handleCloseNavMenu}
-                    sx={{
-                      display: { xs: "block", md: "none" },
-                    }}
-                  >
-                    {pages.map((page) => (
-                      <MenuItem
-                        key={page}
-                        onClick={(e) => handleCloseNavMenu(e, page)}
-                      >
-                        <Typography textAlign="center">{page}</Typography>
-                      </MenuItem>
-                    ))}
-                  </Menu>
-                </Box>
-                <Box
-                  sx={{
-                    display: { xs: "flex", md: "none" },
-                    mr: 1,
-                    cursor: "pointer",
-                  }}
-                  onClick={() => {
-                    window.open(
-                      "https://github.com/pspriyanshu601/oeReview",
-                      "_blank"
-                    );
-                  }}
-                >
-                  <img
-                    src={Logo}
-                    className="h-8 rounded-lg object-contain"
-                    alt="Flowbite Logo"
-                  />
-                </Box>
-                <Typography
-                  variant="h5"
-                  noWrap
-                  component="a"
-                  href="https://github.com/pspriyanshu601/oeReview"
-                  target="_blank"
-                  sx={{
-                    mr: 2,
-                    display: { xs: "flex", md: "none" },
-                    flexGrow: 1,
-                    fontFamily: "monospace",
-                    fontWeight: 700,
-                    letterSpacing: ".3rem",
-                    color: "inherit",
-                    textDecoration: "none",
-                  }}
-                >
-                  Review
-                </Typography>
-                <Box sx={{ flexGrow: 1, display: { xs: "none", md: "flex" } }}>
                   {pages.map((page) => (
-                    <Button
+                    <MenuItem
                       key={page}
-                      onClick={handleCloseNavMenu}
-                      sx={{ my: 2, color: "white", display: "block" }}
-                      onClickCapture={(e) => handleCloseNavMenu(e, page)}
+                      onClick={(e) => handleCloseNavMenu(e, page)}
                     >
-                      {page}
-                    </Button>
+                      <Typography textAlign="center">{page}</Typography>
+                    </MenuItem>
                   ))}
-                </Box>
-
-                <Box sx={{ flexGrow: 0 }}>
-                  <Tooltip title="Open settings">
-                    <IconButton onClick={handleOpenUserMenu} sx={{ p: 0 }}>
-                      <Avatar
-                        alt={(username == null || username == "notallowed") ? "G" : username.toUpperCase() }
-                        src="none"
-                        sx={{
-                          bgcolor: "gray",
-                        }}
-                      >
-                        {(username == null || username == "notallowed") ? "G" : username.toUpperCase()}
-                      </Avatar>
-                    </IconButton>
-                  </Tooltip>
-                  <Menu
-                    sx={{ mt: "45px" }}
-                    id="menu-appbar"
-                    anchorEl={anchorElUser}
-                    anchorOrigin={{
-                      vertical: "top",
-                      horizontal: "right",
-                    }}
-                    keepMounted
-                    transformOrigin={{
-                      vertical: "top",
-                      horizontal: "right",
-                    }}
-                    open={Boolean(anchorElUser)}
-                    onClose={handleCloseUserMenu}
+                </Menu>
+              </Box>
+              <Box
+                sx={{
+                  display: { xs: "flex", md: "none" },
+                  mr: 1,
+                  cursor: "pointer",
+                }}
+                onClick={() => {
+                  window.open(
+                    "https://github.com/pspriyanshu601/oeReview",
+                    "_blank"
+                  );
+                }}
+              >
+                <img
+                  src={Logo}
+                  className="h-8 rounded-lg object-contain"
+                  alt="Flowbite Logo"
+                />
+              </Box>
+              <Typography
+                variant="h5"
+                noWrap
+                component="a"
+                href="https://github.com/pspriyanshu601/oeReview"
+                target="_blank"
+                sx={{
+                  mr: 2,
+                  display: { xs: "flex", md: "none" },
+                  flexGrow: 1,
+                  fontFamily: "monospace",
+                  fontWeight: 700,
+                  letterSpacing: ".3rem",
+                  color: "inherit",
+                  textDecoration: "none",
+                }}
+              >
+                Review
+              </Typography>
+              <Box sx={{ flexGrow: 1, display: { xs: "none", md: "flex" } }}>
+                {pages.map((page) => (
+                  <Button
+                    key={page}
+                    onClick={handleCloseNavMenu}
+                    sx={{ my: 2, color: "white", display: "block" }}
+                    onClickCapture={(e) => handleCloseNavMenu(e, page)}
                   >
-                    {settings.map((setting) => (
-                      <MenuItem
-                        key={setting}
-                        onClick={(e) => handleCloseUserMenu(e, setting)}
-                      >
-                        <Typography textAlign="center">{setting}</Typography>
-                      </MenuItem>
-                    ))}
-                  </Menu>
-                </Box>
-              </Toolbar>
-            </Container>
-          </AppBar>
-        </ThemeProvider>
+                    {page}
+                  </Button>
+                ))}
+              </Box>
+
+              <Box sx={{ flexGrow: 0 }}>
+                <Tooltip title="Open settings">
+                  <IconButton onClick={handleOpenUserMenu} sx={{ p: 0 }}>
+                    <Avatar
+                      alt={
+                        username === null || username === "notallowed"
+                          ? "G"
+                          : username.charAt(0).toUpperCase()
+                      }
+                      src="none"
+                      sx={{
+                        bgcolor: "gray",
+                      }}
+                    >
+                      {username === null || username === "notallowed"
+                        ? "G"
+                        : username.charAt(0).toUpperCase()}
+                    </Avatar>
+                  </IconButton>
+                </Tooltip>
+                <Menu
+                  sx={{ mt: "45px" }}
+                  id="menu-appbar"
+                  anchorEl={anchorElUser}
+                  anchorOrigin={{
+                    vertical: "top",
+                    horizontal: "right",
+                  }}
+                  keepMounted
+                  transformOrigin={{
+                    vertical: "top",
+                    horizontal: "right",
+                  }}
+                  open={Boolean(anchorElUser)}
+                  onClose={handleCloseUserMenu}
+                >
+                  {settings.map((setting) => (
+                    <MenuItem
+                      key={setting}
+                      onClick={(e) => handleCloseUserMenu(e, setting)}
+                    >
+                      <Typography textAlign="center">{setting}</Typography>
+                    </MenuItem>
+                  ))}
+                </Menu>
+              </Box>
+            </Toolbar>
+          </Container>
+        </AppBar>
+      </ThemeProvider>
     </>
   );
 }

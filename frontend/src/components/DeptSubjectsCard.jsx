@@ -8,7 +8,7 @@ import {
   Card,
   CardActionArea,
   CardContent,
-  createTheme
+  createTheme,
 } from "@mui/material";
 
 const defaultTheme = createTheme({
@@ -37,8 +37,8 @@ export const DeptSubjectsCard = ({ subject }) => {
     ":hover": {
       ...(width > 870 && { width: "260px" }), // Adjust hover width if needed
     },
-    margin: "10px"
-  }
+    margin: "10px",
+  };
 
   return (
     <ThemeProvider theme={defaultTheme}>
@@ -61,7 +61,7 @@ export const DeptSubjectsCard = ({ subject }) => {
               sx={{
                 gap: "5px",
                 textAlign: "left",
-                paddingTop: "20px"
+                paddingTop: "20px",
               }}
             >
               <h5 style={{ fontSize: "30px" }}>{subject.course_code}</h5>
@@ -71,7 +71,7 @@ export const DeptSubjectsCard = ({ subject }) => {
               sx={{
                 gap: "5px",
                 textAlign: "left",
-                paddingTop: "20px"
+                paddingTop: "20px",
               }}
             >
               <h5 style={{ fontSize: "18px" }}>{subject.subject_name}</h5>
@@ -80,7 +80,6 @@ export const DeptSubjectsCard = ({ subject }) => {
         </CardActionArea>
       </Card>
     </ThemeProvider>
-
   );
 };
 

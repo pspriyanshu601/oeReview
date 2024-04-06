@@ -34,7 +34,7 @@ export default function HomeCard({ department }) {
       ...(width > 870 && { width: "420px" }), // Apply hover effect only if width > 870
     },
     boxShadow: "0px 4px 8px rgba(255, 255, 255, 0.2)",
-  }
+  };
 
   return (
     <ThemeProvider theme={defaultTheme}>
