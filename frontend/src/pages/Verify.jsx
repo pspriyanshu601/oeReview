@@ -193,6 +193,9 @@ export default function Verify() {
         setOTP(["", "", "", "", "", ""]);
       } catch (error) {
         console.log(error);
+        if (error.response.data.message)
+          toast.error(error.response.data.message);
+        else toast.error("An error occurred");
         if (error.response.data.path)
           navigate("/" + error.response.data.path, { replace: true });
         setLoading(false);
