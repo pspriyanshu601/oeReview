@@ -493,14 +493,22 @@ function ResponsiveAppBar() {
                   open={Boolean(anchorElUser)}
                   onClose={handleCloseUserMenu}
                 >
-                  {settings.map((setting) => (
-                    <MenuItem
-                      key={setting}
-                      onClick={(e) => handleCloseUserMenu(e, setting)}
-                    >
-                      <Typography textAlign="center">{setting}</Typography>
-                    </MenuItem>
-                  ))}
+                  {settings
+                    .filter(
+                      (setting) =>
+                        !(
+                          setting === "Logout" &&
+                          (username === null || username === "notallowed")
+                        )
+                    )
+                    .map((setting) => (
+                      <MenuItem
+                        key={setting}
+                        onClick={(e) => handleCloseUserMenu(e, setting)}
+                      >
+                        <Typography textAlign="center">{setting}</Typography>
+                      </MenuItem>
+                    ))}
                 </Menu>
               </Box>
             </Toolbar>
