@@ -42,6 +42,7 @@ export default function AddReview() {
           },
         });
         if (response.data.userUnreviewedSubjects.length === 0) {
+          toast(() => <span>Semester subject review limit reached.</span>);
           navigate("/home", { replace: true });
         }
         setSubjects(response.data.userUnreviewedSubjects);

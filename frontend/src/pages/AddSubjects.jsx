@@ -231,6 +231,7 @@ import { courseAtom } from "../store";
 import useAuth from "../hooks/useAuth";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
+import toast from "react-hot-toast";
 
 const defaultTheme = createTheme({
   palette: {
@@ -308,8 +309,11 @@ export default function AddSubjects() {
                         },
                       });
                       navigate("/home/addReview", { replace: true });
-                    } catch (err) {
-                      console.log(err);
+                    } catch (error) {
+                      console.log(error);
+                      if (error.response.data.message)
+                        toast.error(error.response.data.message);
+                      else toast.error("An error occurred");
                     }
                   }}
                 >
