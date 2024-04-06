@@ -21,7 +21,7 @@ const addUserSubjectsController = async (req, res) => {
     if (user.rows[0].no_of_subjects === 6) {
       return res.status(400).json({
         success: false,
-        message: "Max subject limit exceeded for this semester",
+        message: "Semester subject review limit reached.",
       });
     }
     if (noOfSubjects+user.rows[0].no_of_subjects > 6) {
@@ -39,7 +39,7 @@ const addUserSubjectsController = async (req, res) => {
       if (existingSubjectIds.includes(subjectId)) {
         return res.status(400).json({
           success: false,
-          message: "Subject ID already exists for the user",
+          message: "You have already reviewed this subject",
         });
       }
 

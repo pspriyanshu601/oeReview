@@ -1,7 +1,7 @@
 import z from "zod";
 
 const registerSchema = z.object({
-  details: z.string(),
+  details: z.string().min(1, { message: "Remarks should not be empty" }),
   stars: z
     .number()
     .int()
@@ -27,12 +27,14 @@ const registerSchema = z.object({
       message: "Quality stars must be between 1 and 5",
     }),
 });
+
 const validateUpdateBody = (body) => {
   try {
     registerSchema.parse(body);
     return true;
   } catch (err) {
-    return err.errors.map((error) => error.message); 
+    return err.errors.map((error) => error.message);
   }
 };
+
 export default validateUpdateBody;
