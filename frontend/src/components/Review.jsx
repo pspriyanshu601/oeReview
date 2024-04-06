@@ -22,10 +22,21 @@ export default function Review({ courseName, last, courseCode }) {
   if (loading) return <Loading />;
 
   return (
-    <div className="md:w-1/2 w-full h-full flex flex-col items-center bg-slate-900 rounded-lg mt-12 p-4">
-      <Typography variant="h5" className="text-center mt-4 text-white">
+    <div className="md:w-1/2 w-full h-full flex flex-col items-center bg-slate-800 rounded-lg mt-12 p-4">
+      <Typography
+        variant="h5"
+        className="text-center mt-4 text-white"
+        style={{
+          fontWeight: "bold",
+          fontSize: "1.5rem",
+          textShadow: "2px 2px 4px rgba(0, 0, 0, 0.5)", // Add a text shadow for depth
+          letterSpacing: "1px", // Add letter spacing for better readability
+          textDecoration: "underline", // Add underline for emphasis
+        }}
+      >
         {courseName}
       </Typography>
+
       <div className="p-4 w-full max-md:mb-4">
         <TextField
           id="filled-basic"
@@ -33,7 +44,17 @@ export default function Review({ courseName, last, courseCode }) {
           fullWidth
           variant="filled"
           placeholder="Your Opinion Matters"
-          InputProps={{ style: { color: "white" } }}
+          InputProps={{
+            style: {
+              color: "white",
+              backgroundColor: "rgba(255, 255, 255, 0.1)",
+              borderRadius: "8px",
+              padding: "12px",
+            },
+            classes: {
+              root: "textfield-root",
+            },
+          }}
           InputLabelProps={{ style: { color: "white" } }}
           value={remark}
           onChange={(e) => setRemark(e.target.value)}
@@ -85,7 +106,6 @@ export default function Review({ courseName, last, courseCode }) {
             background: "lightblue",
             color: "black",
             borderRadius: "10px",
-            // textTransform: "center",
             padding: "10px",
           }}
           onClick={async () => {
