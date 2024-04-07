@@ -56,6 +56,7 @@ const loginController = async (req, res) => {
         isadmin: true,
         message: "Logged in successfully",
         token,
+        username:user.rows[0].username,
         path: "home",
       });
     }
