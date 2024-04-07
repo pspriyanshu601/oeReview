@@ -235,6 +235,7 @@ import { useRecoilValue, useSetRecoilState } from "recoil";
 import { usernameAtom } from "../store";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
+import useFetch from "../hooks/useFetch";
 
 const pages = ["Departments", "Admin", "Home"];
 const settings = ["Profile", "Add Review", "Logout"];
@@ -258,6 +259,13 @@ function ResponsiveAppBar() {
   const [anchorElUser, setAnchorElUser] = useState(null);
 
   const setUsername = useSetRecoilState(usernameAtom);
+  const { error: errorUsername, response: responseUsername } = useFetch(
+    username === null || username === "notallowed",
+    "GET",
+    "/user/username"
+  );
+  if (errorUsername) console.log(errorUsername);
+  if (responseUsername) setUsername(responseUsername.name);
 
   const handleOpenNavMenu = (event) => {
     console.log(event);
@@ -306,7 +314,7 @@ function ResponsiveAppBar() {
           console.log(err);
         }
       }
-    } else if (setting === "Logout") {
+    } else if (setting === "Logout"||setting ==="Login") {
       localStorage.removeItem("token");
       setUsername(null);
       navigate("/");
@@ -493,22 +501,18 @@ function ResponsiveAppBar() {
                   open={Boolean(anchorElUser)}
                   onClose={handleCloseUserMenu}
                 >
-                  {settings
-                    .filter(
-                      (setting) =>
-                        !(
-                          setting === "Logout" &&
-                          (username === null || username === "notallowed")
-                        )
-                    )
-                    .map((setting) => (
-                      <MenuItem
-                        key={setting}
-                        onClick={(e) => handleCloseUserMenu(e, setting)}
-                      >
-                        <Typography textAlign="center">{setting}</Typography>
-                      </MenuItem>
-                    ))}
+                  {settings.map((setting) => (
+                    <MenuItem
+                      key={setting}
+                      onClick={(e) => handleCloseUserMenu(e, setting)}
+                    >
+                      {setting === "Logout"
+                        ? username !== null && username !== "notallowed"
+                          ? "Logout"
+                          : "Login"
+                        : setting}
+                    </MenuItem>
+                  ))}
                 </Menu>
               </Box>
             </Toolbar>

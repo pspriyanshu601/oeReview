@@ -26,9 +26,7 @@ export default function ReviewCard({
         <h5 className="mb-1 text-xl font-medium text-white">
           {review.subject_name}
         </h5>
-        <span className="text-sm text-gray-400">
-          {review.course_code}
-        </span>
+        <span className="text-sm text-gray-400">{review.course_code}</span>
         <div className="flex items-center mt-4">
           <span className="text-sm font-medium text-gray-100">
             By {review.username}
@@ -90,9 +88,9 @@ export default function ReviewCard({
             </a>
           )}
           <a
-            className={`cursor-pointer py-2 px-4 ms-2 text-sm font-medium text-gray-900 focus:outline-none bg-white rounded-lg border border-gray-200 hover:bg-gray-100 hover:text-blue-700 focus:z-10 focus:ring-4 focus:ring-gray-700 ${
+            className={`cursor-pointer py-2 px-4 ms-2 text-sm font-medium text-gray-900 focus:outline-none rounded-lg border border-gray-200 hover:bg-gray-100 hover:text-blue-700 focus:z-10 focus:ring-4 focus:ring-gray-700 ${
               colorDelete
-                ? `bg-red-600 text-white `
+                ? `bg-red-600 text-white`
                 : `bg-gray-800 text-gray-400`
             }  border-gray-600 hover:text-white hover:bg-gray-700`}
             onClick={async () => {

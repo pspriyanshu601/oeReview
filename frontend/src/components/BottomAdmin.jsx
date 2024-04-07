@@ -22,6 +22,7 @@ const defaultTheme = createTheme({
 
 export default function Bottom() {
   const [value, setValue] = useRecoilState(adminWorkAtom);
+
   return (
     <ThemeProvider theme={defaultTheme}>
       <Box position="fixed" bottom="0px" width="100%">
@@ -31,22 +32,59 @@ export default function Bottom() {
           onChange={(event, newValue) => {
             setValue(newValue);
           }}
-          sx={{
-            "& .Mui-selected": {
-              color: "#FF5733", // Selected color
-              backgroundColor: "#FFFFFF", // Background color when selected
-            },
-            "& .MuiBottomNavigationAction-root": {
+        >
+          <BottomNavigationAction
+            sx={{
+              "&.Mui-selected": {
+                color: "#FF5733", // Selected color
+                backgroundColor: "#FFFFFF", // Background color when selected
+              },
               "&:hover": {
                 backgroundColor: "#EEEEEE", // Background color on hover
               },
-            },
-          }}
-        >
-          <BottomNavigationAction label="Verify" icon={<VerifiedIcon />} />
-          <BottomNavigationAction label="Delete" icon={<RemoveCircleIcon />} />
-          <BottomNavigationAction label="Reset" icon={<LockResetIcon />} />
-          <BottomNavigationAction label="Clear" icon={<DeleteIcon />} />
+            }}
+            label="Verify"
+            icon={<VerifiedIcon />}
+          />
+          <BottomNavigationAction
+            sx={{
+              "&.Mui-selected": {
+                color: "#FF5733", // Selected color
+                backgroundColor: "#FFFFFF", // Background color when selected
+              },
+              "&:hover": {
+                backgroundColor: "#EEEEEE", // Background color on hover
+              },
+            }}
+            label="Delete"
+            icon={<RemoveCircleIcon />}
+          />
+          <BottomNavigationAction
+            sx={{
+              "&.Mui-selected": {
+                color: "#FF5733", // Selected color
+                backgroundColor: "#FFFFFF", // Background color when selected
+              },
+              "&:hover": {
+                backgroundColor: "#EEEEEE", // Background color on hover
+              },
+            }}
+            label="Reset"
+            icon={<LockResetIcon />}
+          />
+          <BottomNavigationAction
+            sx={{
+              "&.Mui-selected": {
+                color: "#FF5733", // Selected color
+                backgroundColor: "#FFFFFF", // Background color when selected
+              },
+              "&:hover": {
+                backgroundColor: "#EEEEEE", // Background color on hover
+              },
+            }}
+            label="Clear"
+            icon={<DeleteIcon />}
+          />
         </BottomNavigation>
       </Box>
     </ThemeProvider>
