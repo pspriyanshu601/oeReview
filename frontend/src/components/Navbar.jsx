@@ -284,7 +284,7 @@ function ResponsiveAppBar() {
     e.stopPropagation();
     setAnchorElUser(null);
     if (setting === "Add Review") {
-      if (username === null) {
+      if (username === null || username === "notallowed") {
         navigate("/login");
       } else {
         try {

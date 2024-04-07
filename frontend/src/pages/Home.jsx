@@ -3,6 +3,7 @@ import Loading from "./Loading";
 import { Button } from "@mui/material";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
+import { usernameAtom } from "../store";
 import { useRecoilState, useRecoilValue, useSetRecoilState } from "recoil";
 import {
   courseAtom,
@@ -34,6 +35,7 @@ const defaultTheme = createTheme({
 
 export default function Home() {
   const navigate = useNavigate();
+  const username = useRecoilValue(usernameAtom);
   const sortValue = useRecoilValue(sortAtom);
   const [page, setPage] = useState(1);
   const [reviews, setReviews] = useRecoilState(reviewsAtom);
@@ -86,7 +88,6 @@ export default function Home() {
     "/user/allDepartments"
   );
 
-
   const { error: errorCourses, response: responseCourses } = useFetch(
     courses.length == 0,
     "GET",
@@ -94,26 +95,28 @@ export default function Home() {
   );
 
   const handleAddReview = async () => {
-    
-            try {
-          const link =
-            import.meta.env.VITE_REVIEWLINK + "/user/hasAddedSubjects";
-          const token = localStorage.getItem("token");
-          const resp = await axios.get(link, {
-            headers: {
-              Authorization: token,
-            },
-          });
-          console.log("response", resp);
-          if (resp.data.hasAddedSubjects) {
-            navigate("/home/addReview");
-          } else {
-            navigate("/home/addSubjects");
-          }
-        } catch (err) {
-          console.log(err);
+    if (username === null || username === "notallowed") {
+      navigate("/login");
+    } else {
+      try {
+        const link = import.meta.env.VITE_REVIEWLINK + "/user/hasAddedSubjects";
+        const token = localStorage.getItem("token");
+        const resp = await axios.get(link, {
+          headers: {
+            Authorization: token,
+          },
+        });
+        console.log("response", resp);
+        if (resp.data.hasAddedSubjects) {
+          navigate("/home/addReview");
+        } else {
+          navigate("/home/addSubjects");
         }
-  }
+      } catch (err) {
+        console.log(err);
+      }
+    }
+  };
 
   // handle pagination
   useEffect(() => {
