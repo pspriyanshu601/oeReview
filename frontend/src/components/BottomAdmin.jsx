@@ -12,10 +12,10 @@ import DeleteIcon from "@mui/icons-material/Delete";
 const defaultTheme = createTheme({
   palette: {
     primary: {
-      main: "#282c34",
+      main: "#282c34", // Background color
     },
     secondary: {
-      main: "#EEEEEE",
+      main: "#EEEEEE", // Secondary background color
     },
   },
 });
@@ -30,6 +30,17 @@ export default function Bottom() {
           value={value}
           onChange={(event, newValue) => {
             setValue(newValue);
+          }}
+          sx={{
+            "& .Mui-selected": {
+              color: "#FF5733", // Selected color
+              backgroundColor: "#FFFFFF", // Background color when selected
+            },
+            "& .MuiBottomNavigationAction-root": {
+              "&:hover": {
+                backgroundColor: "#EEEEEE", // Background color on hover
+              },
+            },
           }}
         >
           <BottomNavigationAction label="Verify" icon={<VerifiedIcon />} />

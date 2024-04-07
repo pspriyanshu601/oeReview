@@ -33,12 +33,57 @@ export default function Bottom() {
             setValue(newValue);
           }}
         >
-          <BottomNavigationAction label="Overall" icon={<FavoriteIcon />} />
-          <BottomNavigationAction label="Quality" icon={<SchoolIcon />} />
-          <BottomNavigationAction label="Grades" icon={<AbcIcon />} />
+          <BottomNavigationAction
+            label="Overall"
+            icon={<FavoriteIcon />}
+            sx={{
+              "&.Mui-selected": {
+                color: "#FF5733", // Selected color
+                backgroundColor: "#FFFFFF", // Background color when selected
+              },
+              "&:hover": {
+                backgroundColor: "#EEEEEE", // Background color on hover
+              },
+            }}
+          />
+          <BottomNavigationAction
+            label="Quality"
+            icon={<SchoolIcon />}
+            sx={{
+              "&.Mui-selected": {
+                color: "#FF5733", // Selected color
+                backgroundColor: "#FFFFFF", // Background color when selected
+              },
+              "&:hover": {
+                backgroundColor: "#EEEEEE", // Background color on hover
+              },
+            }}
+          />
+          <BottomNavigationAction
+            label="Grades"
+            icon={<AbcIcon />}
+            sx={{
+              "&.Mui-selected": {
+                color: "#FF5733", // Selected color
+                backgroundColor: "#FFFFFF", // Background color when selected
+              },
+              "&:hover": {
+                backgroundColor: "#EEEEEE", // Background color on hover
+              },
+            }}
+          />
           <BottomNavigationAction
             label="Attendance"
             icon={<SelfImprovementIcon />}
+            sx={{
+              "&.Mui-selected": {
+                color: "#FF5733", // Selected color
+                backgroundColor: "#FFFFFF", // Background color when selected
+              },
+              "&:hover": {
+                backgroundColor: "#EEEEEE", // Background color on hover
+              },
+            }}
           />
         </BottomNavigation>
       </Box>

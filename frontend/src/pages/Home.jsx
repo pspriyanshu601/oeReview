@@ -4,6 +4,7 @@ import { Button } from "@mui/material";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
 import { usernameAtom } from "../store";
+import Bottom from "../components/Bottom";
 import { useRecoilState, useRecoilValue, useSetRecoilState } from "recoil";
 import {
   courseAtom,
@@ -227,6 +228,7 @@ export default function Home() {
           />
         </ThemeProvider>
       </div>
+      <Bottom />
     </div>
   );
 }
