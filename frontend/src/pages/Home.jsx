@@ -182,7 +182,7 @@ export default function Home() {
   if (loadingOverall) return <Loading />;
 
   return (
-    <div className="min-h-screen pt-[68px] bg-gray-700">
+    <div className="min-h-screen pt-[68px] bg-slate-600">
       <div className="flex justify-end mt-4 px-10">
         <Button
           variant="contained"

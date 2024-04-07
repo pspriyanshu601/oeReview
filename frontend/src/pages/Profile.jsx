@@ -27,7 +27,7 @@ export default function Profile() {
   if (loading) return <Loading />;
 
   return (
-    <div className="min-h-screen pt-[68px] -gray-400">
+    <div className="min-h-screen pt-[68px] bg-slate-600">
       <div className="flex flex-col mb-16">
         <h1 className="text-2xl text-center">Hi, {username}</h1>
         <Typography variant="h4" className="text-center mt-4">
