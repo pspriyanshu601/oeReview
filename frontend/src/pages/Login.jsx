@@ -3,7 +3,7 @@ import axios from "axios";
 import toast from "react-hot-toast";
 import Loading from "./Loading";
 import useAuth from "../hooks/useAuth";
-import { useRecoilState, useRecoilValue } from "recoil";
+import { useRecoilState, useRecoilValue, useSetRecoilState } from "recoil";
 import { loadingAtom, usernameAtom } from "../store";
 import { useEffect } from "react";
 import Avatar from "@mui/material/Avatar";
@@ -49,6 +49,7 @@ export default function Login() {
   const navigate = useNavigate();
   const username = useRecoilValue(usernameAtom);
   const [loading, setLoading] = useRecoilState(loadingAtom);
+  const setUsername = useSetRecoilState(usernameAtom);
 
   // send user to home if already logged in
   useEffect(() => {
@@ -70,6 +71,7 @@ export default function Login() {
       });
       if (response.data.success) {
         localStorage.setItem("token", response.data.token);
+        setUsername(response.data.username);
         toast.success(response.data.message);
       }
       if (response.data.path) {
