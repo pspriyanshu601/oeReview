@@ -57,6 +57,8 @@ export default function Home() {
     else setLen(3);
   }, []);
 
+  const setUsername = useSetRecoilState(usernameAtom);
+
   // load reviews and departments and subjects from the server
   const {
     loading: loadingOverall,
@@ -64,6 +66,11 @@ export default function Home() {
     response: responseOverall,
   } = useFetch(allReviews.length == 0, "GET", "/user/weightedSubjects/page/0");
 
+  const { error: errorUsername, response: responseUsername } = useFetch(
+    username === null || username === "notallowed",
+    "GET",
+    "/user/username"
+  );
   const { error: errorAttendance, response: responseAttendance } = useFetch(
     attendanceReviews.length == 0,
     "GET",
@@ -149,12 +156,14 @@ export default function Home() {
   if (errorGrades) console.log(errorGrades);
   if (errorDepts) console.log(errorDepts);
   if (errorCourses) console.log(errorCourses);
+  if (errorUsername) console.log(errorUsername);
 
   if (responseOverall) setAllReviews(responseOverall.reviews);
   if (responseAttendance) setAttendanceReviews(responseAttendance.reviews);
   if (responseDepts) setAllDepts(responseDepts.departments);
   if (responseQuality) setQualityReviews(responseQuality.reviews);
   if (responseGrades) setGradesReviews(responseGrades.reviews);
+  if (responseUsername) setUsername(responseUsername.name);
   if (responseCourses && courses.length == 0) {
     setDeptSubjects(responseCourses.subjects);
     let temp = [];
