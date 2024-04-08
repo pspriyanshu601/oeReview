@@ -16,6 +16,8 @@ import userDataController from "../controllers/user/userData.js";
 import deleteUserReviewController from "../controllers/user/deleteUserReview.js";
 import upadteUserReviewController from "../controllers/user/updateUserReview.js";
 
+import pool from "../database/db.js";
+
 const userRouter = express.Router();
 
 userRouter.get("/username", verifyMiddleware, usernameController);

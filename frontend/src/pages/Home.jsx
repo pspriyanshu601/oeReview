@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import Loading from "./Loading";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
-import { usernameAtom } from "../store";
+import { showAddReviewButtonAtom, usernameAtom } from "../store";
 import Bottom from "../components/Bottom";
 import { useRecoilState, useRecoilValue, useSetRecoilState } from "recoil";
 import FloatingButton from "../components/FloatingButton";
@@ -53,6 +53,8 @@ export default function Home() {
 
   const [len, setLen] = useState(3);
 
+  const [showButton, setShowButton] = useRecoilState(showAddReviewButtonAtom);
+
   useEffect(() => {
     if (window.innerWidth < 640) setLen(10);
     else setLen(3);
@@ -64,6 +66,16 @@ export default function Home() {
     error: errorOverall,
     response: responseOverall,
   } = useFetch(allReviews.length == 0, "GET", "/user/weightedSubjects/page/0");
+
+  const {
+    loading: loadingButton,
+    error: errorButton,
+    response: responseButton,
+  } = useFetch(
+    username != null && username != "notallowed",
+    "GET",
+    "/user/showAddReviewButton"
+  );
 
   const { error: errorAttendance, response: responseAttendance } = useFetch(
     attendanceReviews.length == 0,
@@ -107,7 +119,6 @@ export default function Home() {
             Authorization: token,
           },
         });
-        console.log("response", resp);
         if (resp.data.hasAddedSubjects) {
           navigate("/home/addReview");
         } else {
@@ -144,18 +155,20 @@ export default function Home() {
     sortValue,
   ]);
 
-  if (errorOverall) console.log(errorOverall);
-  if (errorAttendance) console.log(errorAttendance);
-  if (errorQuality) console.log(errorQuality);
-  if (errorGrades) console.log(errorGrades);
-  if (errorDepts) console.log(errorDepts);
-  if (errorCourses) console.log(errorCourses);
+  // if (errorOverall) console.log(errorOverall);
+  // if (errorAttendance) console.log(errorAttendance);
+  // if (errorQuality) console.log(errorQuality);
+  // if (errorGrades) console.log(errorGrades);
+  // if (errorDepts) console.log(errorDepts);
+  // if (errorCourses) console.log(errorCourses);
+  // if (errorButton) console.log(errorButton);
 
   if (responseOverall) setAllReviews(responseOverall.reviews);
   if (responseAttendance) setAttendanceReviews(responseAttendance.reviews);
   if (responseDepts) setAllDepts(responseDepts.departments);
   if (responseQuality) setQualityReviews(responseQuality.reviews);
   if (responseGrades) setGradesReviews(responseGrades.reviews);
+  if (responseButton) setShowButton(responseButton.value);
 
   if (responseCourses && courses.length == 0) {
     setDeptSubjects(responseCourses.subjects);
@@ -175,7 +188,9 @@ export default function Home() {
 
   return (
     <div className="min-h-screen pt-[68px] bg-slate-600">
-      <FloatingButton onClick={handleAddReview} />
+      {(username == null || username == "notallowed" || showButton) && (
+        <FloatingButton onClick={handleAddReview} />
+      )}
       <div className="flex flex-wrap gap-4 justify-center p-6 md:p-16">
         {reviews.map((review, index) => {
           const rank = index + 1 + (page - 1) * len;

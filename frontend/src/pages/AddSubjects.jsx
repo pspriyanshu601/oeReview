@@ -249,7 +249,6 @@ export default function AddSubjects() {
   useAuth();
   const courses = useRecoilValue(courseAtom);
   const [seleted, setSelected] = useState([]);
-  console.log(seleted);
   return (
     <div className="min-h-screen min-w-screen pt-[68px] bg-gray-400">
       <div className="w-full p-2 px-4 md:w-1/2 md:m-auto md:mt-12">
@@ -292,7 +291,6 @@ export default function AddSubjects() {
                   onClick={async () => {
                     try {
                       const token = localStorage.getItem("token");
-                      console.log(seleted);
                       const data = {
                         noOfSubjects: seleted.length,
                       };

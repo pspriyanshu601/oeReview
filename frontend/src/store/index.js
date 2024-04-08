@@ -111,3 +111,8 @@ export const userDataAtom = atom({
   key: "userDataAtom",
   default: [],
 });
+
+export const showAddReviewButtonAtom = atom({
+  key: "showAddReviewButtonAtom",
+  default: null,
+});
