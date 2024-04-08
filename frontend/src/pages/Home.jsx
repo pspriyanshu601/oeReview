@@ -184,7 +184,7 @@ export default function Home() {
     setCourses(temp);
   }
 
-  if (loadingOverall) return <Loading />;
+  if (loadingOverall || loadingButton) return <Loading />;
 
   return (
     <div className="min-h-screen pt-[68px] bg-slate-600">
