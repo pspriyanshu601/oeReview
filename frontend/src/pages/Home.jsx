@@ -1,11 +1,11 @@
 import { useEffect, useState } from "react";
 import Loading from "./Loading";
-import { Button } from "@mui/material";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
 import { usernameAtom } from "../store";
 import Bottom from "../components/Bottom";
 import { useRecoilState, useRecoilValue, useSetRecoilState } from "recoil";
+import FloatingButton from "../components/FloatingButton";
 import {
   courseAtom,
   departmentsAtom,
@@ -175,21 +175,7 @@ export default function Home() {
 
   return (
     <div className="min-h-screen pt-[68px] bg-slate-600">
-      <div className="flex justify-end mt-4 px-10">
-        <Button
-          variant="contained"
-          sx={{
-            backgroundColor: "#797474", // Use a muted or desaturated color
-            color: "#FFFFFF", // Text color
-            "&:hover": {
-              backgroundColor: "#7c7979", // Darken the background color on hover
-            },
-          }}
-          onClick={handleAddReview}
-        >
-          Add Review
-        </Button>
-      </div>
+      <FloatingButton onClick={handleAddReview} />
       <div className="flex flex-wrap gap-4 justify-center p-6 md:p-16">
         {reviews.map((review, index) => {
           const rank = index + 1 + (page - 1) * len;
