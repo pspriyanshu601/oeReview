@@ -314,10 +314,10 @@ function ResponsiveAppBar() {
           console.log(err);
         }
       }
-    } else if (setting === "Logout"||setting ==="Login") {
+    } else if (setting === "Logout" || setting === "Login") {
       localStorage.removeItem("token");
       setUsername(null);
-      navigate("/");
+      navigate("/home");
     } else if (setting === "Profile") {
       navigate("/home/profile");
     }

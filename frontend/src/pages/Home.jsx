@@ -155,13 +155,13 @@ export default function Home() {
     sortValue,
   ]);
 
-  // if (errorOverall) console.log(errorOverall);
-  // if (errorAttendance) console.log(errorAttendance);
-  // if (errorQuality) console.log(errorQuality);
-  // if (errorGrades) console.log(errorGrades);
-  // if (errorDepts) console.log(errorDepts);
-  // if (errorCourses) console.log(errorCourses);
-  // if (errorButton) console.log(errorButton);
+  if (errorOverall) console.log(errorOverall);
+  if (errorAttendance) console.log(errorAttendance);
+  if (errorQuality) console.log(errorQuality);
+  if (errorGrades) console.log(errorGrades);
+  if (errorDepts) console.log(errorDepts);
+  if (errorCourses) console.log(errorCourses);
+  if (errorButton) console.log(errorButton);
 
   if (responseOverall) setAllReviews(responseOverall.reviews);
   if (responseAttendance) setAttendanceReviews(responseAttendance.reviews);
