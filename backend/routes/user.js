@@ -25,10 +25,7 @@ userRouter.get(
   "/allVerifiedReviews/courseCode/:courseCode",
   subjectReviewsController
 );
-userRouter.get(
-  "/weightedSubjects/page/:page",
-  pagedSubjectsController
-);
+userRouter.get("/weightedSubjects/page/:page", pagedSubjectsController);
 userRouter.get(
   "/weightedSubjects/filter/:filter/page/:page",
   pagedSubjectsQueryController
@@ -57,6 +54,47 @@ userRouter.post(
 );
 
 userRouter.get("/userData", verifyMiddleware, userDataController);
+userRouter.get("/showAddReviewButton", verifyMiddleware, async (req, res) => {
+  const userId = req.body.userId;
+  const hasAddedSubjects = await pool.query("SELECT * FROM users WHERE id=$1", [
+    userId,
+  ]);
+  if (hasAddedSubjects.rows[0].no_of_subjects < 6) {
+    return res.status(200).json({
+      success: true,
+      value: true,
+    });
+  }
+  const unReviewedSubjectQuery = `SELECT    
+    u.id AS user_id, 
+    s.subject_name, 
+    s.subject_id,
+    s.course_code
+    FROM 
+    users u
+    JOIN 
+    LATERAL jsonb_each_text(u.subject_ids) AS s_id ON true
+    JOIN 
+    subjects s ON s.subject_id = (s_id.value)::int
+    LEFT JOIN 
+    reviews r ON u.id = r.user_id AND s.subject_id = r.subject_id
+    WHERE 
+    u.id = $1
+    AND r.review_id IS NULL;`;
+  const userUnreviewedSubjects = await pool.query(unReviewedSubjectQuery, [
+    userId,
+  ]);
+  if (userUnreviewedSubjects.rows.length > 0) {
+    return res.status(200).json({
+      success: true,
+      value: true,
+    });
+  }
+  return res.status(200).json({
+    success: true,
+    value: false,
+  });
+});
 
 userRouter.delete(
   "/deleteReview/reviewId/:reviewId",
