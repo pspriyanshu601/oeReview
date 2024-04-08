@@ -97,9 +97,13 @@ function ResponsiveAppBar() {
         }
       }
     } else if (setting === "Logout" || setting === "Login") {
-      localStorage.removeItem("token");
-      setUsername(null);
-      navigate("/");
+      if (username == null || username == "notallowed") {
+        navigate("/login");
+      } else {
+        setUsername(null);
+        localStorage.removeItem("token");
+        navigate("/home");
+      }
     } else if (setting === "Profile") {
       navigate("/home/profile");
     }
