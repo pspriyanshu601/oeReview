@@ -9,7 +9,7 @@ const FloatingButton = ({ onClick }) => {
           aria-label="add"
           style={{
             position: "fixed",
-            bottom: "60px",
+            bottom: "70px",
             right: "20px",
             zIndex: 1000, // Adjust the zIndex as needed
             backgroundColor: "#797474",
