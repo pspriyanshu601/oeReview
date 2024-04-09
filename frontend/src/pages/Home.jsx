@@ -190,9 +190,7 @@ export default function Home() {
     <div className="min-h-screen pt-[68px] bg-slate-600">
       {(username == null || username == "notallowed" || showButton) && (
         
-        <FloatingButton sx={{
-          
-        }} onClick={handleAddReview} />
+        <FloatingButton onClick={handleAddReview} />
       )}
       <div className="flex flex-wrap gap-4 justify-center p-6 md:p-16">
         {reviews.map((review, index) => {
