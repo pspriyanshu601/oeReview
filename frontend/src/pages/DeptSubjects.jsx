@@ -24,7 +24,7 @@ export const DeptSubjects = () => {
 
   return (
     <div className="min-h-screen pt-[68px] bg-gray-800">
-      <div className="flex flex-wrap gap-4 justify-center p-6 mb-12">
+      <div className="flex flex-wrap gap-4 justify-center p-6">
         {subjects.map((subject) => {
           return (
             <DeptSubjectsCard key={subject.course_code} subject={subject} />

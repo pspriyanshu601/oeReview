@@ -28,22 +28,26 @@ export default function HomeCard({ review, rank, width }) {
     sortval === 0
       ? review.average_rating
       : sortval === 1
-      ? review.average_quality_rating
-      : sortval === 2
-      ? review.average_grades_rating
-      : review.average_attendance_rating;
+        ? review.average_quality_rating
+        : sortval === 2
+          ? review.average_grades_rating
+          : review.average_attendance_rating;
+
+  const cardStyle = {
+    bgcolor: "primary.main",
+    width: (width > 870 && "400px") || "100%",
+    height: "full",
+    transition: "width 0.3s ease-out", // Add transition for smooth effect
+    ":hover": {
+      ...(width > 870 && { width: "420px" }), // Apply hover effect only if width > 870
+    },
+    boxShadow: "0px 4px 8px rgba(255, 255, 255, 0.2)",
+  };
+
   return (
     <ThemeProvider theme={defaultTheme}>
       <Card
-        sx={{
-          bgcolor: "primary.main",
-          width: (width > 870 && "360px") || "100%",
-          height: "full",
-          transition: "width 0.3s ease-out", // Add transition for smooth effect
-          ":hover": {
-            ...(width > 870 && { width: "370px" }), // Apply hover effect only if width > 870
-          },
-        }}
+        sx={cardStyle}
         onClick={() => {
           setCourseCode(review.course_code);
           navigate("/home/allReviews");

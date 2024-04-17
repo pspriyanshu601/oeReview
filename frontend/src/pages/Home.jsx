@@ -187,7 +187,7 @@ export default function Home() {
   if (loadingOverall || loadingButton) return <Loading />;
 
   return (
-    <div className="min-h-screen pt-[68px] bg-slate-600">
+    <div className="min-h-screen pt-[68px] bg-slate-800">
       {(username == null || username == "notallowed" || showButton) && (
         
         <FloatingButton onClick={handleAddReview} />

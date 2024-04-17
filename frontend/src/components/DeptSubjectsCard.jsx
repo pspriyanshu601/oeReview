@@ -30,14 +30,13 @@ export const DeptSubjectsCard = ({ subject }) => {
 
   const cardStyles = {
     bgcolor: "primary.main",
-    width: "250px", // Set fixed width to 64 units
-    height: "200px", // Set fixed height to 64 units (square)
-    transition: "width 0.3s ease-out",
-    boxShadow: "0px 4px 8px rgba(255, 255, 255, 0.2)",
+    width: (width > 870 && "400px") || "100%",
+    height: "full",
+    transition: "width 0.3s ease-out", // Add transition for smooth effect
     ":hover": {
-      ...(width > 870 && { width: "260px" }), // Adjust hover width if needed
+      ...(width > 870 && { width: "420px" }), // Apply hover effect only if width > 870
     },
-    margin: "10px",
+    boxShadow: "0px 4px 8px rgba(255, 255, 255, 0.2)",
   };
 
   return (
@@ -72,6 +71,7 @@ export const DeptSubjectsCard = ({ subject }) => {
                 gap: "5px",
                 textAlign: "left",
                 paddingTop: "20px",
+                paddingBottom: "10px"
               }}
             >
               <h5 style={{ fontSize: "18px" }}>{subject.subject_name}</h5>

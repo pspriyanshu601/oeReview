@@ -17,21 +17,26 @@ const defaultTheme = createTheme({
   },
 });
 
+
+
 const width = window.innerWidth;
 
 export default function ProfileCard({ review }) {
+  const cardStyle = {
+    bgcolor: "primary.main",
+    width: (width > 870 && "400px") || "100%",
+    height: "full",
+    transition: "width 0.3s ease-out", // Add transition for smooth effect
+    ":hover": {
+      ...(width > 870 && { width: "410px" }), // Apply hover effect only if width > 870
+    },
+    boxShadow: "0px 4px 8px rgba(255, 255, 255, 0.2)",
+  };
+
   return (
     <ThemeProvider theme={defaultTheme}>
       <Card
-        sx={{
-          bgcolor: "primary.main",
-          width: (width > 870 && "400px") || "100%",
-          height: "full",
-          transition: "width 0.3s ease-out", // Add transition for smooth effect
-          ":hover": {
-            ...(width > 870 && { width: "420px" }), // Apply hover effect only if width > 870
-          },
-        }}
+        sx={cardStyle}
         onClick={() => {
           toast.error("You can't edit your reviews yet");
         }}

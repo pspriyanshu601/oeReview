@@ -2,8 +2,8 @@ import { useRecoilState } from "recoil";
 import useAuth from "../hooks/useAuth";
 import useFetch from "../hooks/useFetch";
 import { userDataAtom, usernameAtom } from "../store";
-import { useEffect, useState } from "react";
-import { Card, Typography, useMediaQuery } from "@mui/material";
+import { useEffect } from "react";
+import { Typography } from "@mui/material";
 import ProfileCard from "../components/ProfileCard";
 import Loading from "./Loading";
 
@@ -27,13 +27,13 @@ export default function Profile() {
   if (loading) return <Loading />;
 
   return (
-    <div className="min-h-screen pt-[68px] bg-slate-600">
-      <div className="flex flex-col mb-16">
-        <h1 className="text-2xl text-center">Hi, {username}</h1>
-        <Typography variant="h4" className="text-center mt-4">
+    <div className="min-h-screen pt-[68px] bg-slate-800">
+      <div className="flex flex-col pb-16">
+        <h1 className="text-2xl text-center text-white mt-4">Hi, {username}</h1>
+        <Typography variant="h4" className="text-center mt-4 text-white">
           Your Reviews
         </Typography>
-        <div className="flex flex-wrap gap-4 justify-center p-6 md:p-16">
+        <div className="flex flex-wrap gap-8 justify-center p-6">
           {userData.map((review, index) => (
             <ProfileCard key={index} review={review} />
           ))}

@@ -4,8 +4,8 @@ import CardContent from "@mui/material/CardContent";
 import CardMedia from "@mui/material/CardMedia";
 import { Box, CardActionArea } from "@mui/material";
 import { ThemeProvider, createTheme } from "@mui/material";
-import { useRecoilValue, useSetRecoilState } from "recoil";
-import { departmentIdAtom, widthAtom } from "../store";
+import { useSetRecoilState } from "recoil";
+import { departmentIdAtom } from "../store";
 import { useNavigate } from "react-router-dom";
 
 const defaultTheme = createTheme({
