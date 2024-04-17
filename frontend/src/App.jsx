@@ -15,6 +15,7 @@ import { AllDepartments } from "./pages/AllDepartments.jsx";
 import { DeptSubjects } from "./pages/DeptSubjects.jsx";
 import BottomAdmin from "./components/BottomAdmin.jsx";
 import Profile from "./pages/Profile.jsx";
+import { Analytics } from "@vercel/analytics/react";
 
 function HomeRoutes() {
   return (
@@ -60,6 +61,7 @@ function App() {
         <Route path="/loading" element={<Loading />} />
         <Route path="/admin/*" element={<AdminRoute />} />
       </Routes>
+      <Analytics />
     </>
   );
 }
