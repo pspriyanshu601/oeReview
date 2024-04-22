@@ -4,8 +4,6 @@ import authRouter from "./routes/auth.js";
 import adminRouter from "./routes/admin.js";
 import userRouter from "./routes/user.js";
 import cors from "cors";
-import authLimiter from "./middlewares/authLimiter.js";
-import userLimiter from "./middlewares/userLimiter.js";
 
 dotenv.config();
 const app = express();
@@ -21,8 +19,8 @@ app.get("/", async (req, res) => {
   });
 });
 
-app.use("/auth", authLimiter, authRouter);
-app.use("/admin", userLimiter, adminRouter);
-app.use("/user", userLimiter, userRouter);
+app.use("/auth", authRouter);
+app.use("/admin", adminRouter);
+app.use("/user", userRouter);
 
 app.listen(port);

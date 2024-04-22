@@ -15,11 +15,12 @@ import departmentPagedSubjectsController from "../controllers/user/departmentPag
 import userDataController from "../controllers/user/userData.js";
 import deleteUserReviewController from "../controllers/user/deleteUserReview.js";
 import upadteUserReviewController from "../controllers/user/updateUserReview.js";
-
+import userLimiter from "../middlewares/userLimiter.js";
 import pool from "../database/db.js";
 
 const userRouter = express.Router();
 
+userRouter.use(userLimiter);
 userRouter.get("/username", verifyMiddleware, usernameController);
 userRouter.get("/allDepartments", allDepartmentsController);
 userRouter.get("/allSubjects", allSubjectsController);
