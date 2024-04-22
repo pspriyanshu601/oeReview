@@ -56,7 +56,9 @@ export default function StarStat({ rating, arrOneToFive, totalRatings }) {
               <OneStar key={i} full={i < roundedRating} />
             ))}
           </div>
-          <p className="ms-1 text-sm font-medium text-gray-400">{rating}</p>
+          <p className="ms-1 text-sm font-medium text-gray-400">
+            {rating.toFixed(1)}
+          </p>
           <p className="ms-1 text-sm font-medium text-gray-400">out of</p>
           <p className="ms-1 text-sm font-medium text-gray-400">5</p>
         </div>
