@@ -13,13 +13,7 @@ export default function AllReviews() {
   const courseCode = useRecoilValue(courseCodeAtom);
   const [reviews, setReviews] = useState([]);
   const [stars, setStars] = useState([0, 0, 0, 0, 0]);
-  const [attendanceStars, setAttendanceStars] = useState([0, 0, 0, 0, 0]);
-  const [gradesStars, setGradesStars] = useState([0, 0, 0, 0, 0]);
-  const [qualityStars, setQualityStars] = useState([0, 0, 0, 0, 0]);
   const [avgStars, setAvgStars] = useState(0);
-  const [avgAttendanceStars, setAvgAttendanceStars] = useState(0);
-  const [avgGradesStars, setAvgGradesStars] = useState(0);
-  const [avgQualityStars, setAvgQualityStars] = useState(0);
   const naivigate = useNavigate();
 
   // send user back to home page if they have not selected a course
@@ -40,13 +34,7 @@ export default function AllReviews() {
     if (response) {
       setReviews(response.subjectReviews);
       setStars(response.stars);
-      setAttendanceStars(response.attendanceStars);
-      setGradesStars(response.gradesStars);
-      setQualityStars(response.qualityStars);
       setAvgStars(response.avgStars);
-      setAvgAttendanceStars(response.avgAttendanceStars);
-      setAvgGradesStars(response.avgGradesStars);
-      setAvgQualityStars(response.avgQualityStars);
     }
   }, [response]);
 
@@ -64,16 +52,17 @@ export default function AllReviews() {
       ) : (
         <div className="flex flex-col items-center">
           <div className="flex flex-col items-center justify-center">
-            <h1 className="text-white text-2xl text-center mb-4">
+            <h1 className="text-white text-4xl text-center mb-4">
               {reviews[0].subject_name}
             </h1>
           </div>
-
-          <StarStat
-            arrOneToFive={stars}
-            rating={avgStars}
-            totalRatings={reviews.length}
-          />
+          <div className="max-md:w-full w-2/3 p-6">
+            <StarStat
+              arrOneToFive={stars}
+              rating={avgStars}
+              totalRatings={reviews.length}
+            />
+          </div>
 
           <div className="mt-6 p-6">
             {reviews.map((review, index) => (

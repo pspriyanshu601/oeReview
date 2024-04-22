@@ -27,10 +27,10 @@ export default function Profile() {
   if (loading) return <Loading />;
 
   return (
-    <div className="min-h-screen pt-[68px] bg-slate-800">
+    <div className="min-h-screen pt-[68px] bg-gray-500">
       <div className="flex flex-col pb-16">
-        <h1 className="text-2xl text-center text-white mt-4">Hi, {username}</h1>
-        <Typography variant="h4" className="text-center mt-4 text-white">
+        <h1 className="text-4xl text-center mt-4">Hi, {username}</h1>
+        <Typography variant="h4" className="text-center mt-4">
           Your Reviews
         </Typography>
         <div className="flex flex-wrap gap-8 justify-center p-6">

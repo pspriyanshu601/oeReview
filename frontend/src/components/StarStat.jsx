@@ -2,19 +2,17 @@
 
 function OneRow({ rating, value }) {
   return (
-    <div className="flex items-center mt-4 bg-green-30">
-      <a className="w-[36px] text-sm font-medium text-blue-500 hover:underline">
+    <div className="flex items-center mt-4 bg-green-30 relative">
+      <a className="w-[36px] text-sm font-medium text-blue-500 hover:underline text-nowrap">
         {rating} star
       </a>
-      <div className="w-3/4  h-5 mx-4 rounded bg-gray-700">
+      <div className="h-5 absolute left-12 w-3/4 rounded bg-gray-700">
         <div
           className="h-5 bg-yellow-300 rounded"
           style={{ width: `${value}%` }}
         />
       </div>
-      <span className="text-sm font-medium text-gray-400">
-        {value}%
-      </span>
+      {/* <span className="text-sm font-medium text-gray-400">{value}%</span> */}
     </div>
   );
 }
@@ -50,28 +48,26 @@ export default function StarStat({ rating, arrOneToFive, totalRatings }) {
   );
 
   return (
-    <div className="w-full bg-blue-30 flex justify-center">
+    <div className="w-full bg-blue-30 flex justify-center md:ml-12">
       <div className="w-4/5 bg-red-40">
         <div className="flex items-center mb-2">
-          {[...Array(5)].map((_, i) => (
-            <OneStar key={i} full={i < roundedRating} />
-          ))}
-          <p className="ms-1 text-sm font-medium text-gray-400">
-            {rating}
-          </p>
-          <p className="ms-1 text-sm font-medium text-gray-400">
-            out of
-          </p>
-          <p className="ms-1 text-sm font-medium text-gray-400">
-            5
-          </p>
+          <div className="flex">
+            {[...Array(5)].map((_, i) => (
+              <OneStar key={i} full={i < roundedRating} />
+            ))}
+          </div>
+          <p className="ms-1 text-sm font-medium text-gray-400">{rating}</p>
+          <p className="ms-1 text-sm font-medium text-gray-400">out of</p>
+          <p className="ms-1 text-sm font-medium text-gray-400">5</p>
         </div>
         <p className="text-sm font-medium text-gray-400">
           {totalRatings} ratings
         </p>
-        {percentArrOneToFive.map((rating, index) => (
-          <OneRow key={index} rating={index + 1} value={rating} />
-        ))}
+        <div>
+          {percentArrOneToFive.map((rating, index) => (
+            <OneRow key={index} rating={index + 1} value={rating} />
+          ))}
+        </div>
       </div>
     </div>
   );

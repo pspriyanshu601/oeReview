@@ -21,18 +21,6 @@ import HomeCard from "../components/HomeCard";
 import useFetch from "../hooks/useFetch";
 // import toast from "react-hot-toast";
 import { Pagination } from "@mui/material";
-import { ThemeProvider, createTheme } from "@mui/material";
-
-const defaultTheme = createTheme({
-  palette: {
-    primary: {
-      main: "#ADD8E6",
-    },
-    secondary: {
-      main: "#EEEEEE",
-    },
-  },
-});
 
 export default function Home() {
   const navigate = useNavigate();
@@ -187,9 +175,8 @@ export default function Home() {
   if (loadingOverall || loadingButton) return <Loading />;
 
   return (
-    <div className="min-h-screen pt-[68px] bg-slate-800">
+    <div className="min-h-screen pt-[68px] bg-gray-500">
       {(username == null || username == "notallowed" || showButton) && (
-        
         <FloatingButton onClick={handleAddReview} />
       )}
       <div className="flex flex-wrap gap-4 justify-center p-6 md:p-16">
@@ -207,20 +194,18 @@ export default function Home() {
       </div>
 
       <div
-        className={`md:fixed md:bottom-8 md:w-full bw-full pb-16 flex justify-center`}
+        className={`md:fixed md:bottom-8 md:w-full bw-full pb-16 flex justify-center text-white bg-gray-500`}
       >
-        <ThemeProvider theme={defaultTheme}>
-          <Pagination
-            count={
-              allReviews.length % len == 0
-                ? parseInt(allReviews.length / len)
-                : parseInt(allReviews.length / len) + 1
-            }
-            color="primary"
-            page={page}
-            onChange={(e, v) => setPage(v)}
-          />
-        </ThemeProvider>
+        <Pagination
+          count={
+            allReviews.length % len == 0
+              ? parseInt(allReviews.length / len)
+              : parseInt(allReviews.length / len) + 1
+          }
+          page={page}
+          onChange={(e, v) => setPage(v)}
+          style={{ color: "white" }}
+        />
       </div>
       <Bottom />
     </div>

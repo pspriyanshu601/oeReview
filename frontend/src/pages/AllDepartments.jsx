@@ -13,7 +13,7 @@ export const AllDepartments = () => {
   }, [allDepts, navigate]);
 
   return (
-    <div className="min-h-screen pt-[68px] bg-slate-800">
+    <div className="min-h-screen pt-[68px] bg-gray-500">
       <div className="flex flex-wrap gap-4 justify-center p-6 pb-16">
         {allDepts.map((dept) => {
           return (

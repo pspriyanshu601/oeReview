@@ -31,7 +31,7 @@ export default function HomeCard({ department }) {
     height: "full",
     transition: "width 0.3s ease-out", // Add transition for smooth effect
     ":hover": {
-      ...(width > 870 && { width: "420px" }), // Apply hover effect only if width > 870
+      ...(width > 870 && { width: "405px" }), // Apply hover effect only if width > 870
     },
     boxShadow: "0px 4px 8px rgba(255, 255, 255, 0.2)",
   };
@@ -39,11 +39,6 @@ export default function HomeCard({ department }) {
   return (
     <ThemeProvider theme={defaultTheme}>
       <Card
-        // sx={{
-        //   bgcolor: "primary.main",
-        //   width: (window.innerWidth > 870 && "400px") || "100%",
-        //   height: "full",
-        // }}
         sx={cardStyle}
         onClick={() => {
           setDepartmentId(department.department_id);

@@ -34,7 +34,7 @@ export const DeptSubjectsCard = ({ subject }) => {
     height: "full",
     transition: "width 0.3s ease-out", // Add transition for smooth effect
     ":hover": {
-      ...(width > 870 && { width: "420px" }), // Apply hover effect only if width > 870
+      ...(width > 870 && { width: "405px" }), // Apply hover effect only if width > 870
     },
     boxShadow: "0px 4px 8px rgba(255, 255, 255, 0.2)",
   };
@@ -71,7 +71,7 @@ export const DeptSubjectsCard = ({ subject }) => {
                 gap: "5px",
                 textAlign: "left",
                 paddingTop: "20px",
-                paddingBottom: "10px"
+                paddingBottom: "10px",
               }}
             >
               <h5 style={{ fontSize: "18px" }}>{subject.subject_name}</h5>

@@ -28,10 +28,10 @@ export default function HomeCard({ review, rank, width }) {
     sortval === 0
       ? review.average_rating
       : sortval === 1
-        ? review.average_quality_rating
-        : sortval === 2
-          ? review.average_grades_rating
-          : review.average_attendance_rating;
+      ? review.average_quality_rating
+      : sortval === 2
+      ? review.average_grades_rating
+      : review.average_attendance_rating;
 
   const cardStyle = {
     bgcolor: "primary.main",
@@ -39,7 +39,7 @@ export default function HomeCard({ review, rank, width }) {
     height: "full",
     transition: "width 0.3s ease-out", // Add transition for smooth effect
     ":hover": {
-      ...(width > 870 && { width: "420px" }), // Apply hover effect only if width > 870
+      ...(width > 870 && { width: "405px" }), // Apply hover effect only if width > 870
     },
     boxShadow: "0px 4px 8px rgba(255, 255, 255, 0.2)",
   };
