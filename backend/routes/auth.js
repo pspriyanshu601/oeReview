@@ -3,7 +3,7 @@ import registerController from "../controllers/auth/register.js";
 import loginController from "../controllers/auth/login.js";
 import emailVerifyController from "../controllers/auth/verifyEmail.js";
 import forgotPasswordController from "../controllers/auth/forgotPassword.js";
-import authLimiter from "../middlewares/rateLimiter.js";
+import authLimiter from "../middlewares/authLimiter.js";
 
 const authRouter = express.Router();
 
